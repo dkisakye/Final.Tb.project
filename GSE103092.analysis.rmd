@@ -1,0 +1,347 @@
+---
+title: "GSE103092.analysis"
+author: "Diana.kisakye"
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    highlight: tango
+    number_sections: no
+    fig_caption: yes
+    theme: sandstone
+    code_folding: hide
+---
+
+  
+<style>
+h1 {background: darkblue;color: white;padding-left: 7px;}
+h2 {color: darkblue;}
+.code-folding-btn {display: none;}
+</style>
+  
+<script>
+  function show_span(id) {
+    var x = document.getElementById(id);
+    if (x.style.display === 'none') {
+      x.style.display = 'inline';
+    } else {
+      x.style.display = 'none';
+    }
+  }
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.style.display === 'none') {
+    x.style.display = 'block';
+  } else {
+    x.style.display = 'none';
+  }
+}
+</script>
+
+```{r cleanup, warning=FALSE, message=FALSE, error=FALSE}
+# CHECK R VERSION
+ stopifnot(R.version.string == "R version 3.5.3 (2019-03-11)")
+
+# CLEANUP
+# Clear all variables:
+rm(list=ls(all=TRUE))
+
+# Unload current packages:
+if (!is.null(names(utils::sessionInfo()[["otherPkgs"]]))) pacman::p_unload("all") 
+```
+
+```{r setup}
+# KNITR DEFAULTS
+knitr::opts_chunk$set(eval = TRUE, fig.height = 10)
+```
+
+## Load packages
+```{r packages, results="hide", warning=FALSE, message=FALSE, error=FALSE}
+library(magrittr)
+library(dplyr)
+library(tidyr)
+library(biomaRt)
+library(AnnotationDbi) 
+# BiocManager::install("org.Hs.eg.db")
+library(org.Hs.eg.db)
+```
+
+
+```{r setup_script, eval=TRUE, results='hide'}
+# GET CURRENT SCRIPT NAME
+(this.script <- rstudioapi::getActiveDocumentContext() %>% .$path %>% basename)
+getwd()
+list.files()
+stopifnot(this.script != "")
+```
+
+
+## Load data file
+```{r}
+data.file <- "data.in/GSE103092.txt"
+stopifnot(file.exists(data.file))
+df <- read.table(data.file, header = T, sep = "\t", stringsAsFactors = F)
+dim(df) # 57355     9
+head(df)
+```
+
+## Summary of the variables
+```{r}
+sapply(df, class) %>% as.data.frame
+```
+
+## Do all probes have a proper GB accession id?
+```{r}
+# Are there any instances of a single space instead of a GB accesion? 
+any(df$GB_ACC == " ") # FALSE
+# Are there any instances of one or more spaces instead of a GB accession?
+any(grepl(" +", df$GB_ACC)) # FALSE
+# Are there any instances of EMPTY STRINGS instead of a GB accession?
+any(df$GB_ACC =="") # TRUE
+sum(df$GB_ACC =="") #19202
+df2 <- filter(df, GB_ACC !="") # remove probes that don't have a proper gene bank accession id
+nrow(df) #57355
+nrow(df2)  #38153
+
+```
+## Are any GB accession IDs duplicated ?
+```{r}
+any(duplicated(df2$GB_ACC)) # TRUE
+sum(duplicated(df2$GB_ACC)) # 7474
+gb.acc.unique <- unique(df2$GB_ACC) # only probes with a unique gene bank accession id
+length(gb.acc.unique) # 30679
+#(sum(30679,7474)) "38153"
+```
+## Load biomart data
+```{r, results='hide'}
+ensembl = useMart("ensembl", dataset = "hsapiens_gene_ensembl" )
+Mapped.ids <- getBM(attributes = c("refseq_mrna","hgnc_symbol"),
+        filters = "refseq_mrna",
+        values = df2$GB_ACC,
+        mart = ensembl)
+dim(Mapped.ids) # 24584     2
+sapply(Mapped.ids, class) 
+# refseq_mrna hgnc_symbol 
+# "character" "character" 
+print(head(Mapped.ids), row.names = F)
+```
+
+## How many GB accession IDs could be mapped using BioMart?
+```{r}
+all(df$GB_ACC %in% Mapped.ids$refseq_mrna)
+length(df$GB_ACC) # 57355
+sum(df$GB_ACC %in% Mapped.ids$refseq_mrna) # 24685 gene accession ids in the original gene expression data could be mapped to gene symbols, many of which are duplicates
+```
+
+## How many unique GB accession IDs could be mapped?
+```{r}
+sum(gb.acc.unique %in% Mapped.ids$refseq_mrna) #19794
+pc <- sum(gb.acc.unique %in% Mapped.ids$refseq_mrna)/ length(gb.acc.unique) *100 # 64.5% unique ids could be mapped using the biomart database. 
+pc <- round(pc, digits = 1)
+paste0(pc, "%") #" 64.5%"
+```
+## How many unique GB IDs could not be mapped?
+```{r}
+acc.not.mapped <- setdiff(df$GB_ACC, Mapped.ids$refseq_mrna) 
+length(acc.not.mapped) # 10886
+tail(acc.not.mapped)
+head(acc.not.mapped)
+# "AY766452"     "XR_109632"    "AK130765"     "NM_020914"    "NM_001077493" "AY358259"
+# "NR_038853" "NR_038945" "AL039002"  "XR_132554" "NR_024075" "BG202344" 
+```
+
+## Map more GB Accession IDs using annotation hub
+```{r}
+
+Mapped.ids.2 <- select(org.Hs.eg.db, keys = acc.not.mapped, columns = c("REFSEQ","SYMBOL"), keytype = "REFSEQ") 
+Mapped.ids.3 <- Mapped.ids.2 %>%
+  filter( !is.na(SYMBOL)) 
+ 
+#dim(Mapped.ids.3) # 2976    2
+head(Mapped.ids.3)
+
+```
+
+## Combine the two mapping tables with rbind  
+```{r}
+# When combining two data frames with rbind, the column names must be the same:
+#names(Mapped.ids) # "refseq_mrna" "hgnc_symbol"
+# names(Mapped.ids.3) # "REFSEQ" "SYMBOL"
+names(Mapped.ids) <- names(Mapped.ids.3)
+mapped.ids.all <- rbind(Mapped.ids, Mapped.ids.3)
+#dim(mapped.ids.all) # 27560     2
+any(duplicated(mapped.ids.all)) # TRUE
+sum((duplicated(mapped.ids.all))) # 4732
+
+```
+
+## Remove duplicate rows
+```{r}
+mapped.ids.uniq <- distinct(mapped.ids.all)
+dim(mapped.ids.uniq) # 22828     2
+```
+
+```{r}
+sum(Mapped.ids$SYMBOL %in% mapped.ids.uniq$SYMBOL) # 24584
+sum(Mapped.ids.3$SYMBOL %in% mapped.ids.uniq$SYMBOL) # 2976
+
+```
+
+
+## What percentage of GB accession IDs could now be mapped to gene symbols?  
+```{r}
+# length(unique(df2$GB_ACC)) # 30679
+ sum(mapped.ids.uniq$REFSEQ %in% df2$GB_ACC) # 22828
+paste0(round((sum(mapped.ids.uniq$REFSEQ %in% df2$GB_ACC)) / (length(unique(df2$GB_ACC))) * 100, 1), "%") %>% 
+  cat(.) #74.4%
+```
+
+## Merge mapped ids with expression data  
+```{r}
+# names(df2)
+# "ID"        "adj.P.Val" "P.Value"   "t"         "B"         "logFC"     "GB_ACC"    "SEQUENCE"  "SPOT_ID"
+names(mapped.ids.uniq)
+# "REFSEQ" "SYMBOL"
+df3 <- merge(x=df2, y=mapped.ids.uniq, by.x = "GB_ACC", by.y = "REFSEQ", all.x = T, all.y = F)
+names(df3)
+# "GB_ACC"    "ID"        "adj.P.Val" "P.Value"   "t"         "B"         "logFC"     "SEQUENCE"  "SPOT_ID"   "SYMBOL"
+```
+
+## How many cases are  missing gene symbols?
+```{r}
+sum(is.na(df3$SYMBOL)) # 9121
+```
+
+## Keep only those rows with identifiable gene symbols
+```{r}
+df4 <- subset(df3, !is.na(SYMBOL)) %>% 
+  dplyr::select(SYMBOL, adj.P.Val, P.Value, logFC)
+nrow(df4) # 29102
+```
+
+
+## Up-regulated probes
+```{r}
+df.probes.up <- df4 %>%
+  filter(adj.P.Val <= 0.01 ) %>%
+  filter(logFC >=1 )
+nrow(df.probes.up) #8
+```
+
+## Up-regulated probes associated with gene symbols
+```{r}
+genes.up <- df4 %>%
+  filter(adj.P.Val <= 0.01) %>%
+  filter(logFC >=1 ) %>% 
+  distinct(SYMBOL)
+head(genes.up)
+nrow(genes.up) # 8
+
+
+any(duplicated(genes.up$SYMBOL))  # FALSE
+
+
+genes.up.uniq <- sort(genes.up$SYMBOL)
+length(genes.up.uniq) # 8 unique genes
+```
+
+## Save file
+```{r}
+out.file.up <- paste0("data.out/", this.script, ".genes.up.uniq.txt")
+out.file.up
+cat(genes.up.uniq, file = out.file.up, sep = "\n")
+cat("File saved:", out.file.up)
+
+```
+
+## Down-regulated probes
+```{r}
+df.probes.down <- df4 %>%
+  filter(adj.P.Val <= 0.01) %>% 
+  filter(logFC <= -1)
+nrow(df.probes.down) #56
+```
+
+## Down-regulated probes associated with gene symbols
+```{r}
+genes.down <- df4 %>%
+  filter(adj.P.Val <= 0.01) %>%
+  filter(logFC <= -1) %>%
+  distinct(SYMBOL)
+nrow(genes.down) # 48
+
+any(duplicated(genes.down$SYMBOL )) # FALSE
+genes.down.uniq <- sort(genes.down$SYMBOL)
+length(genes.down.uniq) #48
+head(genes.down)
+
+```
+## Save file
+```{r}
+out.file.down <- paste0("data.out/", this.script, ".genes.down.uniq.txt")
+out.file.down
+cat(genes.down.uniq, file = out.file.down, sep = "\n")
+cat("File saved:", out.file.down)
+
+```
+
+
+## Regulated genes as a function of parameters
+```{r}
+# Create empty matrices
+p.value.cutoffs <- c(0.001, 0.005, 0.01, 0.05)
+fc.cutoffs.up <- c(0.5, 1, 1.5, 2)
+parameter.table.up <- matrix(rep(NA, (length(p.value.cutoffs) * length(fc.cutoffs.up))),
+                                 ncol = length(fc.cutoffs.up),
+                                 dimnames = list(
+                                as.character(p.value.cutoffs),
+                                as.character(fc.cutoffs.up)),
+                                )
+parameter.table.up
+
+
+fc.cutoffs.down <- fc.cutoffs.up*-1
+fc.cutoffs.down
+parameter.table.down <- parameter.table.up %>%
+  set_colnames(fc.cutoffs.down)
+parameter.table.down
+```
+
+## Up-regulated genes as a function of parameters
+```{r}
+
+for (i in seq_along(fc.cutoffs.up)) {
+  for (j in seq_along(p.value.cutoffs)) {
+    parameter.table.up[i,j] <- df4 %>%
+      filter(adj.P.Val <= p.value.cutoffs[i]) %>%
+      filter(logFC >= fc.cutoffs.up[j]) %>%
+      distinct(SYMBOL) %>%
+      nrow
+ }
+
+}
+parameter.table.up
+```
+
+## Down-regulated genes as a function of parameters
+```{r}
+for (i in seq_along(fc.cutoffs.down)) {
+  for (j in seq_along(p.value.cutoffs)) {
+    parameter.table.down[i,j] <- df4 %>%
+      filter(adj.P.Val <= p.value.cutoffs[i]) %>%
+      filter(logFC <= fc.cutoffs.down[j]) %>%
+      distinct(SYMBOL) %>%
+      nrow 
+  }
+  
+}
+parameter.table.down
+```
+
+
+```{r}
+
+```
+
