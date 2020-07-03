@@ -1,0 +1,273 @@
+---
+title: "Volcano plots of microarray data"
+author: "A. Nohturfft"
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    df_print: paged
+    toc: yes
+    highlight: tango
+    number_sections: no
+    fig_caption: yes
+    theme: sandstone
+    code_folding: hide
+    toc_depth: 3
+    toc_float: yes
+---
+  
+<style>
+h1 {background: darkblue;color: white;padding-left: 7px;}
+h2 {color: darkblue;}
+.code-folding-btn {display: none;}
+</style>
+  
+<script>
+  function show_span(id) {
+    var x = document.getElementById(id);
+    if (x.style.display === 'none') {
+      x.style.display = 'inline';
+    } else {
+      x.style.display = 'none';
+    }
+  }
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.style.display === 'none') {
+    x.style.display = 'block';
+  } else {
+    x.style.display = 'none';
+  }
+}
+</script>
+
+## Objective  
+
+Generate volcano plots of microarray data.  
+Overview:  
+
+1. Load fold change data generated with Geo2r  
+2. Aggregate by gene symbol; where the same gene is represented by several probes, calculate the _**median**_ fold change  
+3. combine all datasets into a single data frame  
+4. Generate plots using ggplot() / facet_wrap()  
+
+  
+```{r include=FALSE}
+# About <style> chunk above:
+# * provides custom formatting for level-1 and level-2 headers
+# * hides the 'code' buttons next to every code chunk in the html output; leaves only one 'code' button at the top of the html notebook.
+
+# About the <script> chunk at the top and bottom of the file:
+# * allows to insert <div>'s whose content visbility is toggled with a button.
+# * I use this to show/hide te output of sessionInfo() at the end of the script (see below)
+```
+
+
+```{r include=FALSE}
+# RMARKDOWN HELP
+# Rmarkdown:
+# https://bookdown.org/yihui/rmarkdown/
+
+# Chunk options:
+# https://yihui.name/knitr/options
+```
+
+```{r cleanup, warning=FALSE, message=FALSE, error=FALSE}
+# CHECK R VERSION
+# stopifnot(R.version.string == "R version 3.4.3 (2017-11-30)")
+
+# CLEANUP
+# Clear all variables:
+rm(list=ls(all=TRUE))
+
+# Unload current packages:
+# if (!is.null(names(utils::sessionInfo()[["otherPkgs"]]))) pacman::p_unload("all")
+```
+
+```{r setup}
+# KNITR DEFAULTS
+knitr::opts_chunk$set(eval = TRUE, fig.height = 10)
+```
+
+```{r packages, results="hide", warning=FALSE, message=FALSE, error=FALSE}
+# LOAD PACKAGES:
+if (!require(magrittr)) install.packages("magrittr")
+library(magrittr)
+if (!require(dplyr)) install.packages("dplyr")
+library(dplyr)
+if (!require(scales)) install.packages("scales")
+library(scales)
+if (!require(knitr)) install.packages("knitr")
+library(knitr)
+if (!require(kableExtra)) install.packages("kableExtra")
+library(kableExtra)
+if (!require(ggplot2)) install.packages("ggplot2")
+library(ggplot2)
+```
+
+```{r setup_script, eval=TRUE, results='hide'}
+# GET CURRENT SCRIPT NAME
+(this.script <- rstudioapi::getActiveDocumentContext() %>% .$path %>% basename)
+getwd()
+list.files()
+stopifnot(this.script != "")
+```
+
+## GEO2R data  
+
+### Geo2r data files  
+```{r results="hide"}
+geo2r.data.files <- list.files(path="../source_data", recursive = T, 
+                               pattern="^GSE.*Geo2r.*txt$", full.names = T)
+cat(basename(geo2r.data.files), sep="<br>\n")
+```
+
+```{r results="hide"}
+tailleux.data.files <- list.files(path="../source_data", recursive = T,
+                                  pattern="*tailleux.*txt", full.names = T)
+cat(basename(tailleux.data.files), sep="<br>\n")
+
+```
+
+```{r results="asis"}
+muarray.data.files <- c(geo2r.data.files, tailleux.data.files)
+muarray.data.files <- grep("GSE29731", muarray.data.files, invert = T, value=T)
+cat(basename(muarray.data.files), sep="<br>\n")
+```
+
+### Load Geo2r data  
+```{r results="hide"}
+geo2r.data.list <- lapply(muarray.data.files, function(f) {
+  a <- read.table(f, sep="\t", header=T, quote='"', stringsAsFactors = F)
+  names(a)[grep("symbol", names(a), ignore.case = T)] <- "Gene.symbol"
+  names(a) <- stringr::str_remove(names(a), "^X\\.")
+  names(a) <- stringr::str_remove(names(a), "\\.$")
+  a
+}) %>% 
+  set_names(stringr::str_remove_all(basename(muarray.data.files), "\\.txt"))
+
+names(geo2r.data.list) <- stringr::str_remove(names(geo2r.data.list), "^X")
+names(geo2r.data.list)[grep("DC", names(geo2r.data.list))] <- "A-BUGS-23_DC"
+names(geo2r.data.list)[grep("MP", names(geo2r.data.list))] <- "A-BUGS-23_MP"
+names(geo2r.data.list) <- stringr:: str_remove(names(geo2r.data.list), "_Geo2r.*$")
+
+# class(geo2r.data.list) # "list"
+# length(geo2r.data.list) # 5
+# sapply(geo2r.data.list, class)
+# sapply(geo2r.data.list, nrow) %>% unname # 29102 72000 47231 24501 24501
+```
+
+```{r}
+data.frame(List.item = names(geo2r.data.list),
+           class = sapply(geo2r.data.list, class),
+           Columns = sapply(geo2r.data.list, ncol),
+           Rows = comma(sapply(geo2r.data.list, nrow)),
+           Has.Gene.Symbols = sapply(geo2r.data.list, function(x) {any(grepl("Gene.symbol", names(x)))})
+           # Unique.genes = sapply(geo2r.data.list, function(x) {length(unique(x$))})
+           ) %>% 
+  mutate(Has.Gene.Symbols = cell_spec(Has.Gene.Symbols, "html", color = ifelse(Has.Gene.Symbols == "TRUE", "black", "red"))) %>% 
+  knitr::kable(., row.names = F, align=c("l", "l", "c", "c", "c"), format = "html", escape = F) %>% 
+  kable_styling("striped", full_width = T)
+```
+
+```{r}
+head(geo2r.data.list[[2]])
+```
+
+
+## Aggregate logFC by gene symbol  
+```{r results="hide"}
+# help(do, package="dplyr")
+get.max.fc.row <- function(dafra) {
+  dafra$tmp <- abs(dafra$logFC)
+  the.max <- max(dafra$tmp)
+  indx <- which(dafra$tmp==the.max)[1]
+  dafra[indx,-which(names(dafra)=="tmp")]
+}
+all.df <- lapply(seq_along(geo2r.data.list), function(i, list.names) {
+  df <- geo2r.data.list[[i]]
+  x <- dplyr::select(df, Gene.symbol, logFC, P.Value) %>% 
+    dplyr::mutate(Gene.symbol = ifelse(Gene.symbol=="", NA, Gene.symbol)) %>% 
+    tidyr::drop_na(.) %>% 
+    dplyr::mutate(logFC = as.numeric(logFC)) %>% 
+    dplyr::mutate(Gene.symbol = stringr::str_remove_all(Gene.symbol, '\\"')) %>% 
+    tidyr::drop_na(.) %>% 
+    dplyr::group_by(Gene.symbol) %>% 
+    dplyr::do(get.max.fc.row(.)) %>% 
+    tidyr::drop_na(.) %>% 
+    dplyr::mutate(Dataset = names(geo2r.data.list)[i]) %>% 
+    dplyr::select(Dataset, dplyr::everything())
+  x
+}, list.names = names(geo2r.data.list)) %>% 
+  do.call(rbind, .)
+
+```
+
+```{r}
+# dim(all.df) # 69323     4
+head(all.df)
+```
+
+
+## Plot  
+```{r}
+gg1 <- all.df %>% 
+  ggplot(aes(x=logFC, y=-log10(P.Value))) +
+  geom_point(alpha=0.4) +
+  facet_wrap(~Dataset, scales="free") +
+  theme(strip.text.x = element_text(size = 10, face="bold"))
+gg1
+```
+
+Use a different color for significant genes:  
+```{r}
+d1 <- dplyr::filter(all.df, (abs(logFC) >= 1 & P.Value <= 0.01))
+d2 <- dplyr::filter(all.df, (abs(logFC) < 1 | P.Value > 0.01))
+```
+
+```{r message=FALSE, warning=FALSE}
+font.size <- 10
+gg2 <- ggplot(data=d2, mapping=aes(x=logFC, y=-log10(P.Value))) +
+  geom_point(colour="gray", alpha=0.2) +
+  geom_point(data=d1, alpha=0.4, colour="blue") +
+  facet_wrap(~Dataset, scales="free") +
+  theme(strip.text.x = element_text(size = 12, face="bold"),
+        text = element_text(size=font.size, face="bold"),
+            axis.text.x = element_text(size=font.size, face="bold"),
+            axis.text.y = element_text(size=font.size, face="bold"),
+            axis.title.x = element_text(size=font.size, face="bold"),
+            axis.title.y = element_text(size=font.size, face="bold"),
+            plot.title = element_text(size=font.size, face="bold")) +
+  scale_x_continuous(limits=c(-7,7))
+gg2
+```
+
+Save plot as PDF:  
+```{r}
+out.file.2 <- paste0(this.script, ".plot.pdf")
+ggsave(filename=out.file.2, plot = gg2, width = 16, height= 16, units="cm")
+cat("Saved:", out.file.2)
+```
+
+
+
+## Session info  
+<button class="button" onclick="myFunction('DIV_5')">Show/hide session info</button>
+<div id="DIV_5" class="div_default_hide">
+
+```{r print_date_and_time}
+Sys.time()
+```
+
+```{r print_session_info}
+# sessionInfo()
+devtools::session_info()
+```
+</div>
+  
+<script>
+  var divsToHide = document.getElementsByClassName("div_default_hide");
+for(var i = 0; i < divsToHide.length; i++)
+{
+  divsToHide[i].style.display = 'none';
+}
+</script>
