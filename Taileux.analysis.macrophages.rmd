@@ -2,7 +2,8 @@
 title: "Data analysis markdown document for Taileux et al. (Macrophages)."
 author: '9401'
 date: "04/06/2020"
-output:html_notebook:
+output:
+  html_notebook:
     toc: yes
     toc_depth: 3
     toc_float: yes
@@ -254,7 +255,5 @@ for (i in seq_along(fc.cutoffs.down)) {
 parameter.table.down
 
 ```
-
-
 
 
