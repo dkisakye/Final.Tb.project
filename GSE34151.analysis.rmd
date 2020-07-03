@@ -125,7 +125,7 @@ paste0(pc, "%") # "33.8%"
 
 ```
 
-## Are any genes are duplicated?
+## Are any genes duplicated?
 ```{r}
 any(duplicated(df2$Gene.symbol))  # TRUE
 symb.uniq <- unique(df2$Gene.symbol) 

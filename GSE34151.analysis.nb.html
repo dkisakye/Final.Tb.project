@@ -3051,6 +3051,25 @@ function myFunction(id) {
 <h2>Load data file</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YS5maWxlIDwtIFwiZGF0YS5pbi9HU0UzNDE1MS50eHRcIlxuc3RvcGlmbm90KGZpbGUuZXhpc3RzKGRhdGEuZmlsZSkpXG5kZiA8LSByZWFkLnRhYmxlKGRhdGEuZmlsZSwgaGVhZGVyID0gVCwgc2VwID0gXCJcXHRcIiwgc3RyaW5nc0FzRmFjdG9ycyA9IEYpXG5kaW0oZGYpICMgICA0NzIzMSAgICAgOFxuYGBgIn0= -->
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">data.file &lt;-<span class="st"> &quot;data.in/GSE34151.txt&quot;</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">stopifnot</span>(<span class="kw">file.exists</span>(data.file))</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">df &lt;-<span class="st"> </span><span class="kw">read.table</span>(data.file, <span class="dt">header =</span> T, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">stringsAsFactors =</span> F)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw">dim</span>(df) <span class="co">#   47231     8</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDQ3MjMxICAgICA4XG4ifQ== -->
+<pre><code>[1] 47231     8</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChkZilcbmBgYCJ9 -->
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">head</span>(df)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6OCwibnJvdyI6Nn0sInJkZiI6IlVrUllNZ3BZQ2dBQUFBSUFBd1VEQUFJREFBQUFCQUlBQUFBQkFBUUFDUUFBQUFGNEFBQURFd0FBQUFnQUFBQVFBQUFBQmdBRUFBa0FBQUFNU1V4TlRsOHhOalU1T1RFekFBUUFDUUFBQUF4SlRFMU9Yek15TXprNU5qVUFCQUFKQUFBQURFbE1UVTVmTVRjNE1qTTRPUUFFQUFrQUFBQU1TVXhOVGw4eE5qVTJNekV3QUFRQUNRQUFBQXhKVEUxT1h6RTRNVEV6TmpRQUJBQUpBQUFBREVsTVRVNWZNVFk1TVRnME5nQUFBQTRBQUFBR0dMK0xoUmU0WGZ3YU1UVjRrVlY2eFJxeUY0WDIwT0RGRzBaekZEMTNXcFFkZW1yd3ozQ1c4eDg3cmNvS3ZlRHBBQUFBRGdBQUFBWVh4ZGRnZDZNZGhobEg0UFVod0k0eUdkTFUvOVRGTk04YWJ4SlNsS0Z5L3h5bXpQOWFnWmRvSG16TEJUWmdqV0VBQUFBT0FBQUFCc0JWaTVQYjZuY0N3RlFwMEh3WlZoTEFVN0FZNzdzT1hzQlRLbjJHUFp4RHdGRmRETVNmQU9MQVVBbXAybGw5U2dBQUFBNEFBQUFHUUhzVjlyTzdnODlBZWc0NnZKUndaVUI1cjNmdVRpYlZRSGxFNmtxTUZVMUFkNzYwZ3I2THdVQjJoeE1nMlpSYkFBQUFEZ0FBQUFiQUZiaFI2NFVldU1BV3VGSHJoUjY0d0JROWNLUFhDajNBRm5yaFI2NFVlOEFQQ2oxd285Y0t3QS9DajF3bzljTUFBQUFRQUFBQUJnQUVBQWtBQUFBRlNWTkhNakFBQkFBSkFBQUFCRWxFVHpFQUJBQUpBQUFBQkV4QlJERUFCQUFKQUFBQUJFbEVUekVBQkFBSkFBQUFCVk5IVUZBeUFBUUFDUUFBQUFSSE1GTXlBQUFBRUFBQUFBWUFCQUFKQUFBQUtXbHVkR1Z5Wm1WeWIyNGdjM1JwYlhWc1lYUmxaQ0JsZUc5dWRXTnNaV0Z6WlNCblpXNWxJREl3QUFRQUNRQUFBQjFwYm1SdmJHVmhiV2x1WlNBeUxETXRaR2x2ZUhsblpXNWhjMlVnTVFBRUFBa0FBQUFKYkdGa2FXNXBiaUF4QUFRQUNRQUFBQjFwYm1SdmJHVmhiV2x1WlNBeUxETXRaR2x2ZUhsblpXNWhjMlVnTVFBRUFBa0FBQUFsYzNCb2FXNW5iM05wYm1VdE1TMXdhRzl6Y0doaGRHVWdjR2h2YzNCb1lYUmhjMlVnTWdBRUFBa0FBQUFPUnpBdlJ6RWdjM2RwZEdOb0lESUFBQVFDQUFBQUFRQUVBQWtBQUFBRmJtRnRaWE1BQUFBUUFBQUFDQUFFQUFrQUFBQUNTVVFBQkFBSkFBQUFDV0ZrYWk1UUxsWmhiQUFFQUFrQUFBQUhVQzVXWVd4MVpRQUVBQWtBQUFBQmRBQUVBQWtBQUFBQlFnQUVBQWtBQUFBRmJHOW5Sa01BQkFBSkFBQUFDMGRsYm1VdWMzbHRZbTlzQUFRQUNRQUFBQXBIWlc1bExuUnBkR3hsQUFBRUFnQUFBQUVBQkFBSkFBQUFDWEp2ZHk1dVlXMWxjd0FBQUEwQUFBQUNnQUFBQUFBQUFBWUFBQVFDQUFBQUFRQUVBQWtBQUFBRlkyeGhjM01BQUFBUUFBQUFBUUFFQUFrQUFBQUtaR0YwWVM1bWNtRnRaUUFBQVA0QUFBUUNBQUFBQVFBRUFBa0FBQUFIYjNCMGFXOXVjd0FBQWhNQUFBQUhBQUFBRUFBQUFBRUFCQUFKQUFBQUFYSUFBQUFLQUFBQUFRQUFBQUVBQUFBT0FBQUFBVUFrQUFBQUFBQUFBQUFBRUFBQUFBRUFCQUFKQUFBQUQzVnVibUZ0WldRdFkyaDFibXN0TVFBQUFBb0FBQUFCQUFBQUFRQUFBQTBBQUFBQkFBQUFCZ0FBQUEwQUFBQUJBQUFBQ0FBQUJBSUFBQUwvQUFBQUVBQUFBQWNBQkFBSkFBQUFCbVZ1WjJsdVpRQUVBQWtBQUFBRVpYWmhiQUFFQUFrQUFBQUtabWxuTG1obGFXZG9kQUFFQUFrQUFBQUZiR0ZpWld3QUJBQUpBQUFBRG5KdmQyNWhiV1Z6TG5CeWFXNTBBQVFBQ1FBQUFBcHliM2R6TG5SdmRHRnNBQVFBQ1FBQUFBcGpiMnh6TG5SdmRHRnNBQUFBL2dBQUFQND0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["ID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["adj.P.Val"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["P.Value"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["t"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["B"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["logFC"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Gene.symbol"],"name":[7],"type":["chr"],"align":["left"]},{"label":["Gene.title"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"ILMN_1659913","2":"1.77e-189","3":"3.74e-194","4":"-86.18090","5":"433.3727","6":"-5.43","7":"ISG20","8":"interferon stimulated exonuclease gene 20","_rn_":"1"},{"1":"ILMN_3239965","2":"1.62e-182","3":"6.86e-187","4":"-80.65335","5":"416.8893","6":"-5.68","7":"IDO1","8":"indoleamine 2,3-dioxygenase 1","_rn_":"2"},{"1":"ILMN_1782389","2":"4.36e-180","3":"2.77e-184","4":"-78.75152","5":"410.9668","6":"-5.06","7":"LAD1","8":"ladinin 1","_rn_":"3"},{"1":"ILMN_1656310","2":"2.77e-177","3":"2.34e-181","4":"-76.66391","5":"404.3072","6":"-5.62","7":"IDO1","8":"indoleamine 2,3-dioxygenase 1","_rn_":"4"},{"1":"ILMN_1811364","2":"1.12e-166","3":"1.18e-170","4":"-69.45390","5":"379.9191","6":"-3.88","7":"SGPP2","8":"sphingosine-1-phosphate phosphatase 2","_rn_":"5"},{"1":"ILMN_1691846","2":"3.15e-158","3":"4.00e-162","4":"-64.15099","5":"360.4422","6":"-3.97","7":"G0S2","8":"G0/G1 switch 2","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[8]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3058,6 +3077,16 @@ function myFunction(id) {
 <h2>Summary of the variables</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2FwcGx5KGRmLCBjbGFzcykgJT4lIGFzLmRhdGEuZnJhbWVcbmBgYCJ9 -->
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">sapply</span>(df, class) <span class="op">%&gt;%</span><span class="st"> </span>as.data.frame</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MSwibnJvdyI6OH0sInJkZiI6IlVrUllNZ3BZQ2dBQUFBSUFBd1VEQUFJREFBQUFCQUlBQUFBQkFBUUFDUUFBQUFGNEFBQURFd0FBQUFFQUFBTU5BQUFBQ0FBQUFBRUFBQUFDQUFBQUFnQUFBQUlBQUFBQ0FBQUFBZ0FBQUFFQUFBQUJBQUFFQWdBQUFBRUFCQUFKQUFBQUJteGxkbVZzY3dBQUFCQUFBQUFDQUFRQUNRQUFBQWxqYUdGeVlXTjBaWElBQkFBSkFBQUFCMjUxYldWeWFXTUFBQVFDQUFBQUFRQUVBQWtBQUFBRlkyeGhjM01BQUFBUUFBQUFBUUFFQUFrQUFBQUdabUZqZEc5eUFBQUEvZ0FBQkFJQUFBQUJBQVFBQ1FBQUFBVnVZVzFsY3dBQUFCQUFBQUFCQUFRQUNRQUFBQUV1QUFBRUFnQUFBQUVBQkFBSkFBQUFDWEp2ZHk1dVlXMWxjd0FBQUJBQUFBQUlBQVFBQ1FBQUFBSkpSQUFFQUFrQUFBQUpZV1JxTGxBdVZtRnNBQVFBQ1FBQUFBZFFMbFpoYkhWbEFBUUFDUUFBQUFGMEFBUUFDUUFBQUFGQ0FBUUFDUUFBQUFWc2IyZEdRd0FFQUFrQUFBQUxSMlZ1WlM1emVXMWliMndBQkFBSkFBQUFDa2RsYm1VdWRHbDBiR1VBQUFRQ0FBQUQvd0FBQUJBQUFBQUJBQVFBQ1FBQUFBcGtZWFJoTG1aeVlXMWxBQUFBL2dBQUJBSUFBQUFCQUFRQUNRQUFBQWR2Y0hScGIyNXpBQUFDRXdBQUFBY0FBQUFRQUFBQUFRQUVBQWtBQUFBQmNnQUFBQW9BQUFBQkFBQUFBUUFBQUE0QUFBQUJRQ1FBQUFBQUFBQUFBQUFRQUFBQUFRQUVBQWtBQUFBUGRXNXVZVzFsWkMxamFIVnVheTB5QUFBQUNnQUFBQUVBQUFBQkFBQUFEUUFBQUFFQUFBQUlBQUFBRFFBQUFBRUFBQUFCQUFBRUFnQUFCUDhBQUFBUUFBQUFCd0FFQUFrQUFBQUdaVzVuYVc1bEFBUUFDUUFBQUFSbGRtRnNBQVFBQ1FBQUFBcG1hV2N1YUdWcFoyaDBBQVFBQ1FBQUFBVnNZV0psYkFBRUFBa0FBQUFPY205M2JtRnRaWE11Y0hKcGJuUUFCQUFKQUFBQUNuSnZkM011ZEc5MFlXd0FCQUFKQUFBQUNtTnZiSE11ZEc5MFlXd0FBQUQrQUFBQS9nPT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["."],"name":[1],"type":["fctr"],"align":["left"]}],"data":[{"1":"character","_rn_":"ID"},{"1":"numeric","_rn_":"adj.P.Val"},{"1":"numeric","_rn_":"P.Value"},{"1":"numeric","_rn_":"t"},{"1":"numeric","_rn_":"B"},{"1":"numeric","_rn_":"logFC"},{"1":"character","_rn_":"Gene.symbol"},{"1":"character","_rn_":"Gene.title"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[8]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3065,6 +3094,55 @@ function myFunction(id) {
 <h2>Do all probes have a proper gene symbol?</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIEFyZSB0aGVyZSBhbnkgaW5zdGFuY2VzIG9mIGEgc2luZ2xlIHNwYWNlIGluc3RlYWQgb2YgYSBnZW5lIHN5bWJvbD9cbmFueShkZiRHZW5lLnN5bWJvbCA9PSBcIiBcIikgIyBGQUxTRVxuYGBgIn0= -->
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co"># Are there any instances of a single space instead of a gene symbol?</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw">any</span>(df<span class="op">$</span>Gene.symbol <span class="op">==</span><span class="st"> &quot; &quot;</span>) <span class="co"># FALSE</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG4ifQ== -->
+<pre><code>[1] FALSE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBBcmUgdGhlcmUgYW55IGluc3RhbmNlcyBvZiBvbmUgb3IgbW9yZSBzcGFjZXMgdXNlZCBpbnN0ZWFkIG9mIGEgZ2VuZSBzeW1ib2w/XG5hbnkoZ3JlcGwocGF0dGVybiA9IFwiICtcIiwgZGYkR2VuZS5zeW1ib2wpKSAjIEZBTFNFIFxuYGBgIn0= -->
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># Are there any instances of one or more spaces used instead of a gene symbol?</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">any</span>(<span class="kw">grepl</span>(<span class="dt">pattern =</span> <span class="st">&quot; +&quot;</span>, df<span class="op">$</span>Gene.symbol)) <span class="co"># FALSE </span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG4ifQ== -->
+<pre><code>[1] FALSE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0FyZSB0aGVyZSBhbnkgaW5zdGFuY2VzIG9mIGFuIEVNUFRZIFNUUklOR1MgaW5zdGVhZCBvZiBhIGdlbmUgc3ltYm9sP1xuYW55KGRmJEdlbmUuc3ltYm9sID09IFwiXCIpICMgVFJVRVxuYGBgIn0= -->
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co">#Are there any instances of an EMPTY STRINGS instead of a gene symbol?</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">any</span>(df<span class="op">$</span>Gene.symbol <span class="op">==</span><span class="st"> &quot;&quot;</span>) <span class="co"># TRUE</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFRSVUVcbiJ9 -->
+<pre><code>[1] TRUE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtKGRmJEdlbmUuc3ltYm9sID09IFwiXCIpICMgIDE1OTY1XG5gYGAifQ== -->
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">sum</span>(df<span class="op">$</span>Gene.symbol <span class="op">==</span><span class="st"> &quot;&quot;</span>) <span class="co">#  15965</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDE1OTY1XG4ifQ== -->
+<pre><code>[1] 15965</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBBcmUgdGhlcmUgYW55IGluc3RhbmNlcyBvZiBOQSB2YWx1ZXMgaW5zdGVhZCBvZiBnZW5lIHN5bWJvbHM/XG5hbnkoaXMubmEoZGYkR2VuZS5zeW1ib2wpKSAjIEZBTFNFXG5gYGAifQ== -->
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># Are there any instances of NA values instead of gene symbols?</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw">any</span>(<span class="kw">is.na</span>(df<span class="op">$</span>Gene.symbol)) <span class="co"># FALSE</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG4ifQ== -->
+<pre><code>[1] FALSE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBUYWtlIGEgbG9vayBhdCBzb21lIG9mIHRoZSBwcm9iZXMgd2l0aCBtaXNzaW5nIGdlbmUgc3ltYm9sczsgaWUgaW5zdGFuY2VzIG9mIGVtcHR5IHN0cmluZ3NcbmRmICU+JVxuICBmaWx0ZXIoZGYkR2VuZS5zeW1ib2wgPT0gXCJcIikgJT4lXG4gIGhlYWQgJT4lXG4gIHByaW50KC4sIHJvdy5uYW1lcyA9IEYpXG5gYGAifQ== -->
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># Take a look at some of the probes with missing gene symbols; ie instances of empty strings</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(df<span class="op">$</span>Gene.symbol <span class="op">==</span><span class="st"> &quot;&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="st">  </span>head <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="st">  </span><span class="kw">print</span>(., <span class="dt">row.names =</span> F)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6OCwibnJvdyI6Nn0sInJkZiI6IlVrUllNZ3BZQ2dBQUFBSUFBd1VEQUFJREFBQUFCQUlBQUFBQkFBUUFDUUFBQUFGNEFBQURFd0FBQUFnQUFBQVFBQUFBQmdBRUFBa0FBQUFNU1V4TlRsOHlNak0xT0RVeEFBUUFDUUFBQUF4SlRFMU9YekU0TURjeU9UZ0FCQUFKQUFBQURFbE1UVTVmTVRreE1Ea3dPQUFFQUFrQUFBQU1TVXhOVGw4eE9ETTRNekV3QUFRQUNRQUFBQXhKVEUxT1h6RTJPRE0yTmpRQUJBQUpBQUFBREVsTVRVNWZNVFk1T0RRd05BQUFBQTRBQUFBR0l5Rld2SGpwb3lFbHMvak5pK1o0YUNYN25rN0d2UXNGSmhMaTE4QmZZOFVuY1VUUDBZMjdWeWVGeWFqa2dKUFhBQUFBRGdBQUFBWWljNExNTk1va0tDVWFjSytFeXVHdEpXVHZCQmVVWXhzbGZmSGdqanV0K3liamF5UVJEeWQwSnZsVG93NmZ2M0FBQUFBT0FBQUFCc0JLc1Z3TlJ4Qmd3RWVVVmhKYlRGZkFSMEdEMy9Qdy9zQkhKc2tNVGV3Y3dFV203b2pmTnpQQVJZL1lDVUR4WWdBQUFBNEFBQUFHUUhQQWpGNnpFNzVBY2V1cWJ6OVMvRUJ4dUJqblY1S09RSEduVlFod0VRcEFjSy9HcCsrZHNrQndvSGZPMlJhSEFBQUFEZ0FBQUFiQUN3bzljS1BYQ3NBQ285Y0tQWENrd0FJOWNLUFhDajNBQWlqMXdvOWNLYi85UjY0VWV1Rkl2L2V1RkhyaFI2NEFBQUFRQUFBQUJnQUVBQWtBQUFBQUFBUUFDUUFBQUFBQUJBQUpBQUFBQUFBRUFBa0FBQUFBQUFRQUNRQUFBQUFBQkFBSkFBQUFBQUFBQUJBQUFBQUdBQVFBQ1FBQUFBQUFCQUFKQUFBQUFBQUVBQWtBQUFBQUFBUUFDUUFBQUFBQUJBQUpBQUFBQUFBRUFBa0FBQUFBQUFBRUFnQUFBQUVBQkFBSkFBQUFCVzVoYldWekFBQUFFQUFBQUFnQUJBQUpBQUFBQWtsRUFBUUFDUUFBQUFsaFpHb3VVQzVXWVd3QUJBQUpBQUFBQjFBdVZtRnNkV1VBQkFBSkFBQUFBWFFBQkFBSkFBQUFBVUlBQkFBSkFBQUFCV3h2WjBaREFBUUFDUUFBQUF0SFpXNWxMbk41YldKdmJBQUVBQWtBQUFBS1IyVnVaUzUwYVhSc1pRQUFCQUlBQUFBQkFBUUFDUUFBQUFseWIzY3VibUZ0WlhNQUFBQU5BQUFBQW9BQUFBQUFBQUFHQUFBRUFnQUFBQUVBQkFBSkFBQUFCV05zWVhOekFBQUFFQUFBQUFFQUJBQUpBQUFBQ21SaGRHRXVabkpoYldVQUFBRCtBQUFFQWdBQUFBRUFCQUFKQUFBQUIyOXdkR2x2Ym5NQUFBSVRBQUFBQndBQUFCQUFBQUFCQUFRQUNRQUFBQUZ5QUFBQUNnQUFBQUVBQUFBQkFBQUFEZ0FBQUFGQUpBQUFBQUFBQUFBQUFCQUFBQUFCQUFRQUNRQUFBQTkxYm01aGJXVmtMV05vZFc1ckxUTUFBQUFLQUFBQUFRQUFBQUVBQUFBTkFBQUFBUUFBQUFZQUFBQU5BQUFBQVFBQUFBZ0FBQVFDQUFBQy93QUFBQkFBQUFBSEFBUUFDUUFBQUFabGJtZHBibVVBQkFBSkFBQUFCR1YyWVd3QUJBQUpBQUFBQ21acFp5NW9aV2xuYUhRQUJBQUpBQUFBQld4aFltVnNBQVFBQ1FBQUFBNXliM2R1WVcxbGN5NXdjbWx1ZEFBRUFBa0FBQUFLY205M2N5NTBiM1JoYkFBRUFBa0FBQUFLWTI5c2N5NTBiM1JoYkFBQUFQNEFBQUQrIn0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["ID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["adj.P.Val"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["P.Value"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["t"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["B"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["logFC"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Gene.symbol"],"name":[7],"type":["chr"],"align":["left"]},{"label":["Gene.title"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"ILMN_2235851","2":"1.82e-139","3":"1.00e-142","4":"-53.38562","5":"316.0343","6":"-3.38","7":"","8":"","_rn_":"1"},{"1":"ILMN_1807298","2":"4.61e-127","3":"5.96e-130","4":"-47.15888","5":"286.7291","6":"-2.33","7":"","8":"","_rn_":"2"},{"1":"ILMN_1910908","2":"1.02e-125","3":"1.51e-128","4":"-46.51184","5":"283.5061","6":"-2.28","7":"","8":"","_rn_":"3"},{"1":"ILMN_1838310","2":"2.79e-125","3":"4.32e-128","4":"-46.30301","5":"282.4583","6":"-2.27","7":"","8":"","_rn_":"4"},{"1":"ILMN_1683664","2":"1.07e-118","3":"2.35e-121","4":"-43.30415","5":"266.9860","6":"-1.83","7":"","8":"","_rn_":"5"},{"1":"ILMN_1698404","2":"2.70e-118","3":"6.13e-121","4":"-43.12378","5":"266.0292","6":"-1.48","7":"","8":"","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[8]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3072,17 +3150,71 @@ function myFunction(id) {
 <h2>Remove the probes that do not have a proper gene symbols</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYyIDwtIGZpbHRlcihkZiwgIShkZiRHZW5lLnN5bWJvbCA9PVwiXCIpKVxubnJvdyhkZikgIyA0NzIzMVxuYGBgIn0= -->
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">df2 &lt;-<span class="st"> </span><span class="kw">filter</span>(df, <span class="op">!</span>(df<span class="op">$</span>Gene.symbol <span class="op">==</span><span class="st">&quot;&quot;</span>))</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw">nrow</span>(df) <span class="co"># 47231</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDQ3MjMxXG4ifQ== -->
+<pre><code>[1] 47231</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubnJvdyhkZjIpICMgMzEyNjZcbmBgYCJ9 -->
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">nrow</span>(df2) <span class="co"># 31266</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDMxMjY2XG4ifQ== -->
+<pre><code>[1] 31266</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBwcm9wb3J0aW9uIG9mIHRob3NlIHdpdGggbWlzc2luZyBzeW1ib2xzXG5wYyA8LSBzdW0oZGYkR2VuZS5zeW1ib2wgPT0gXCJcIikvIGxlbmd0aChkZiRHZW5lLnN5bWJvbCkgKiAxMDBcbnBjIDwtIHJvdW5kKHBjLCBkaWdpdHMgPSAxKVxucGFzdGUwKHBjLCBcIiVcIikgIyBcIjMzLjglXCJcbmBgYCJ9 -->
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co"># proportion of those with missing symbols</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">pc &lt;-<span class="st"> </span><span class="kw">sum</span>(df<span class="op">$</span>Gene.symbol <span class="op">==</span><span class="st"> &quot;&quot;</span>)<span class="op">/</span><span class="st"> </span><span class="kw">length</span>(df<span class="op">$</span>Gene.symbol) <span class="op">*</span><span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3">pc &lt;-<span class="st"> </span><span class="kw">round</span>(pc, <span class="dt">digits =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="kw">paste0</span>(pc, <span class="st">&quot;%&quot;</span>) <span class="co"># &quot;33.8%&quot;</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMzMuOCVcIlxuIn0= -->
+<pre><code>[1] &quot;33.8%&quot;</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="are-any-genes-are-duplicated" class="section level2">
-<h2>Are any genes are duplicated?</h2>
+<div id="are-any-genes-duplicated" class="section level2">
+<h2>Are any genes duplicated?</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW55KGR1cGxpY2F0ZWQoZGYyJEdlbmUuc3ltYm9sKSkgICMgVFJVRVxuYGBgIn0= -->
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">any</span>(<span class="kw">duplicated</span>(df2<span class="op">$</span>Gene.symbol))  <span class="co"># TRUE</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFRSVUVcbiJ9 -->
+<pre><code>[1] TRUE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3ltYi51bmlxIDwtIHVuaXF1ZShkZjIkR2VuZS5zeW1ib2wpIFxuIyBOdW1iZXIgb2YgdW5pcXVlIGdlbmUgc3ltYm9sc1xubGVuZ3RoKHN5bWIudW5pcSkgIyAgMjA3NjJcbmBgYCJ9 -->
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">symb.uniq &lt;-<span class="st"> </span><span class="kw">unique</span>(df2<span class="op">$</span>Gene.symbol) </a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="co"># Number of unique gene symbols</span></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="kw">length</span>(symb.uniq) <span class="co">#  20762</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDIwNzYyXG4ifQ== -->
+<pre><code>[1] 20762</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBOdW1iZXIgb2YgZHVwbGljYXRlZCBnZW5lIHN5bWJvbHNcbnN1bShkdXBsaWNhdGVkKGRmMiRHZW5lLnN5bWJvbCkpICMgMTA1MDRcbmBgYCJ9 -->
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co"># Number of duplicated gene symbols</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">sum</span>(<span class="kw">duplicated</span>(df2<span class="op">$</span>Gene.symbol)) <span class="co"># 10504</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEwNTA0XG4ifQ== -->
+<pre><code>[1] 10504</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI3N1bSgyMDc2MiwxMDUwNCkgIyAzMTI2NlxuYGBgIn0= -->
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="co">#sum(20762,10504) # 31266</span></a></code></pre></div>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYzIDwtIHN1YnNldChkZjIpICU+JSBcbiAgZHBseXI6OnNlbGVjdChHZW5lLnN5bWJvbCwgYWRqLlAuVmFsLCBQLlZhbHVlLCBsb2dGQylcbm5yb3coZGYzKSAjIDMxMjY2XG5gYGAifQ== -->
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">df3 &lt;-<span class="st"> </span><span class="kw">subset</span>(df2) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Gene.symbol, adj.P.Val, P.Value, logFC)</a>
+<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="kw">nrow</span>(df3) <span class="co"># 31266</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDMxMjY2XG4ifQ== -->
+<pre><code>[1] 31266</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3090,12 +3222,49 @@ function myFunction(id) {
 <h1>Up-regulated probes</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJvYmVzLnVwIDwtIGRmMyAlPiVcbiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiVcbiAgZmlsdGVyKGxvZ0ZDID49IDEpIFxubnJvdyhwcm9iZXMudXApICM3NjhcbmBgYCJ9 -->
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">probes.up &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb35-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb35-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1</span>) </a>
+<a class="sourceLine" id="cb35-4" data-line-number="4"><span class="kw">nrow</span>(probes.up) <span class="co">#768</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDc2OFxuIn0= -->
+<pre><code>[1] 768</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="up-regulated-probes-associated-with-unique-gene-symbols" class="section level2">
 <h2>Up-regulated probes associated with unique gene symbols</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5nZW5lcy51cCA8LSBkZjMgJT4lXG4gIGZpbHRlcihhZGouUC5WYWwgPD0gMC4wMSkgJT4lXG4gIGZpbHRlcihsb2dGQyA+PSAxKSAlPiVcbiAgZGlzdGluY3QoR2VuZS5zeW1ib2wpIFxuICBucm93KGdlbmVzLnVwKSAjICA2NTVcbmBgYCJ9 -->
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb37-2" data-line-number="2">genes.up &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb37-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb37-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb37-5" data-line-number="5"><span class="st">  </span><span class="kw">distinct</span>(Gene.symbol) </a>
+<a class="sourceLine" id="cb37-6" data-line-number="6">  <span class="kw">nrow</span>(genes.up) <span class="co">#  655</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDY2NVxuIn0= -->
+<pre><code>[1] 665</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbiAgYW55KGR1cGxpY2F0ZWQoZ2VuZXMudXAkR2VuZS5zeW1ib2wpKSAjIEZBTFNFXG5gYGAifQ== -->
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">  </a>
+<a class="sourceLine" id="cb39-2" data-line-number="2">  <span class="kw">any</span>(<span class="kw">duplicated</span>(genes.up<span class="op">$</span>Gene.symbol)) <span class="co"># FALSE</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG4ifQ== -->
+<pre><code>[1] FALSE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBnZW5lcy51cC51bmlxPC0gc29ydChnZW5lcy51cCRHZW5lLnN5bWJvbClcbiAgaGVhZChnZW5lcy51cC51bmlxKVxuYGBgIn0= -->
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">  genes.up.uniq&lt;-<span class="st"> </span><span class="kw">sort</span>(genes.up<span class="op">$</span>Gene.symbol)</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2">  <span class="kw">head</span>(genes.up.uniq)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiQUJBVFwiICBcIkFCQ0EyXCIgXCJBQkNBNlwiIFwiQUJDQjRcIiBcIkFCQ0I5XCIgXCJBQkNHMVwiXG4ifQ== -->
+<pre><code>[1] &quot;ABAT&quot;  &quot;ABCA2&quot; &quot;ABCA6&quot; &quot;ABCB4&quot; &quot;ABCB9&quot; &quot;ABCG1&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbmBgYCJ9 -->
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">  </a></code></pre></div>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3103,6 +3272,20 @@ function myFunction(id) {
 <h2>Save File</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3V0LmZpbGUudXAgPC0gcGFzdGUwKFwiZGF0YS5vdXQvXCIsIHRoaXMuc2NyaXB0LCBcIi5nZW5lcy51cC51bmlxLnR4dFwiKVxub3V0LmZpbGUudXBcbmBgYCJ9 -->
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">out.file.up &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;data.out/&quot;</span>, this.script, <span class="st">&quot;.genes.up.uniq.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb44-2" data-line-number="2">out.file.up</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiZGF0YS5vdXQvR1NFMzQxNTEuYW5hbHlzaXMucm1kLmdlbmVzLnVwLnVuaXEudHh0XCJcbiJ9 -->
+<pre><code>[1] &quot;data.out/GSE34151.analysis.rmd.genes.up.uniq.txt&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0KGdlbmVzLnVwLnVuaXEsIGZpbGUgPSBvdXQuZmlsZS51cCwgc2VwID0gXCJcXG5cIilcbmNhdChcIkZpbGUgc2F2ZWQ6XCIsIG91dC5maWxlLnVwKVxuYGBgIn0= -->
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="kw">cat</span>(genes.up.uniq, <span class="dt">file =</span> out.file.up, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb46-2" data-line-number="2"><span class="kw">cat</span>(<span class="st">&quot;File saved:&quot;</span>, out.file.up)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRmlsZSBzYXZlZDogZGF0YS5vdXQvR1NFMzQxNTEuYW5hbHlzaXMucm1kLmdlbmVzLnVwLnVuaXEudHh0XG4ifQ== -->
+<pre><code>File saved: data.out/GSE34151.analysis.rmd.genes.up.uniq.txt</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3110,6 +3293,15 @@ function myFunction(id) {
 <h2>Down-regulated probes</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJvYmVzLmRvd24gPC0gZGYzICU+JVxuICBmaWx0ZXIoYWRqLlAuVmFsIDw9IDAuMDEpICU+JVxuICBmaWx0ZXIobG9nRkMgPD0gLTEpIFxubnJvdyhwcm9iZXMuZG93bikgIyAgOTEzXG5gYGAifQ== -->
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">probes.down &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb48-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb48-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span><span class="dv">-1</span>) </a>
+<a class="sourceLine" id="cb48-4" data-line-number="4"><span class="kw">nrow</span>(probes.down) <span class="co">#  913</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDkxM1xuIn0= -->
+<pre><code>[1] 913</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3117,6 +3309,35 @@ function myFunction(id) {
 <h2>Down-regulated probes associated with unique gene symbols</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5nZW5lcy5kb3duIDwtIGRmMyAlPiVcbiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiVcbiAgZmlsdGVyKGxvZ0ZDIDw9IC0xKSAlPiVcbiAgZGlzdGluY3QoR2VuZS5zeW1ib2wpIFxuICBucm93KGdlbmVzLmRvd24pICMgIFxuYGBgIn0= -->
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb50-2" data-line-number="2">genes.down &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb50-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb50-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span><span class="dv">-1</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb50-5" data-line-number="5"><span class="st">  </span><span class="kw">distinct</span>(Gene.symbol) </a>
+<a class="sourceLine" id="cb50-6" data-line-number="6">  <span class="kw">nrow</span>(genes.down) <span class="co">#  </span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDc0MVxuIn0= -->
+<pre><code>[1] 741</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbiAgYW55KGR1cGxpY2F0ZWQoZ2VuZXMuZG93biRHZW5lLnN5bWJvbCkpICMgRkFMU0VcbmBgYCJ9 -->
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">  </a>
+<a class="sourceLine" id="cb52-2" data-line-number="2">  <span class="kw">any</span>(<span class="kw">duplicated</span>(genes.down<span class="op">$</span>Gene.symbol)) <span class="co"># FALSE</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG4ifQ== -->
+<pre><code>[1] FALSE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbiAgZ2VuZXMuZG93bi51bmlxPC0gc29ydChnZW5lcy5kb3duJEdlbmUuc3ltYm9sKVxuICBoZWFkKGdlbmVzLmRvd24udW5pcSlcbmBgYCJ9 -->
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">  </a>
+<a class="sourceLine" id="cb54-2" data-line-number="2">  genes.down.uniq&lt;-<span class="st"> </span><span class="kw">sort</span>(genes.down<span class="op">$</span>Gene.symbol)</a>
+<a class="sourceLine" id="cb54-3" data-line-number="3">  <span class="kw">head</span>(genes.down.uniq)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiQUJIRDE3Q1wiIFwiQUJUQjJcIiAgIFwiQUNBVDJcIiAgIFwiQUNPVDlcIiAgIFwiQUNTTDFcIiAgIFwiQUNWUkwxXCIgXG4ifQ== -->
+<pre><code>[1] &quot;ABHD17C&quot; &quot;ABTB2&quot;   &quot;ACAT2&quot;   &quot;ACOT9&quot;   &quot;ACSL1&quot;   &quot;ACVRL1&quot; </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbmBgYCJ9 -->
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">  </a></code></pre></div>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3124,6 +3345,20 @@ function myFunction(id) {
 <h2>Save file</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3V0LmZpbGUuZG93biA8LSBwYXN0ZTAoXCJkYXRhLm91dC9cIiwgdGhpcy5zY3JpcHQsIFwiLmdlbmVzLmRvd24udW5pcS50eHRcIilcbm91dC5maWxlLmRvd25cbmBgYCJ9 -->
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">out.file.down &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;data.out/&quot;</span>, this.script, <span class="st">&quot;.genes.down.uniq.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb57-2" data-line-number="2">out.file.down</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiZGF0YS5vdXQvR1NFMzQxNTEuYW5hbHlzaXMucm1kLmdlbmVzLmRvd24udW5pcS50eHRcIlxuIn0= -->
+<pre><code>[1] &quot;data.out/GSE34151.analysis.rmd.genes.down.uniq.txt&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0KGdlbmVzLmRvd24udW5pcSwgZmlsZSA9IG91dC5maWxlLmRvd24sIHNlcCA9IFwiXFxuXCIpXG5jYXQoXCJGaWxlIHNhdmVkOlwiLCBvdXQuZmlsZS5kb3duKVxuYGBgIn0= -->
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">cat</span>(genes.down.uniq, <span class="dt">file =</span> out.file.down, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb59-2" data-line-number="2"><span class="kw">cat</span>(<span class="st">&quot;File saved:&quot;</span>, out.file.down)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRmlsZSBzYXZlZDogZGF0YS5vdXQvR1NFMzQxNTEuYW5hbHlzaXMucm1kLmdlbmVzLmRvd24udW5pcS50eHRcbiJ9 -->
+<pre><code>File saved: data.out/GSE34151.analysis.rmd.genes.down.uniq.txt</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3131,6 +3366,45 @@ function myFunction(id) {
 <h2>Regulated genes as a function of parameters</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDcmVhdGUgZW1wdHkgbWF0cmljZXNcbnAudmFsdWUuY3V0b2ZmcyA8LSBjKDAuMDAxLCAwLjAwNSwgMC4wMSwgMC4wNSlcbmZjLmN1dG9mZnMudXAgPC0gYygwLjUsIDEsIDEuNSwgMilcbnBhcmFtZXRlci50YWJsZS51cCA8LSBtYXRyaXgocmVwKE5BLCAobGVuZ3RoKHAudmFsdWUuY3V0b2ZmcykgKiBsZW5ndGgoZmMuY3V0b2Zmcy51cCkpKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5jb2wgPSBsZW5ndGgoZmMuY3V0b2Zmcy51cCksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkaW1uYW1lcyA9IGxpc3QoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFzLmNoYXJhY3RlcihwLnZhbHVlLmN1dG9mZnMpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhcy5jaGFyYWN0ZXIoZmMuY3V0b2Zmcy51cCkpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICApXG5wYXJhbWV0ZXIudGFibGUudXBcbmBgYCJ9 -->
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="co"># Create empty matrices</span></a>
+<a class="sourceLine" id="cb61-2" data-line-number="2">p.value.cutoffs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.001</span>, <span class="fl">0.005</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>)</a>
+<a class="sourceLine" id="cb61-3" data-line-number="3">fc.cutoffs.up &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb61-4" data-line-number="4">parameter.table.up &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="ot">NA</span>, (<span class="kw">length</span>(p.value.cutoffs) <span class="op">*</span><span class="st"> </span><span class="kw">length</span>(fc.cutoffs.up))),</a>
+<a class="sourceLine" id="cb61-5" data-line-number="5">                                 <span class="dt">ncol =</span> <span class="kw">length</span>(fc.cutoffs.up),</a>
+<a class="sourceLine" id="cb61-6" data-line-number="6">                                 <span class="dt">dimnames =</span> <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb61-7" data-line-number="7">                                <span class="kw">as.character</span>(p.value.cutoffs),</a>
+<a class="sourceLine" id="cb61-8" data-line-number="8">                                <span class="kw">as.character</span>(fc.cutoffs.up)),</a>
+<a class="sourceLine" id="cb61-9" data-line-number="9">                                )</a>
+<a class="sourceLine" id="cb61-10" data-line-number="10">parameter.table.up</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgMC41ICAxIDEuNSAgMlxuMC4wMDEgIE5BIE5BICBOQSBOQVxuMC4wMDUgIE5BIE5BICBOQSBOQVxuMC4wMSAgIE5BIE5BICBOQSBOQVxuMC4wNSAgIE5BIE5BICBOQSBOQVxuIn0= -->
+<pre><code>      0.5  1 1.5  2
+0.001  NA NA  NA NA
+0.005  NA NA  NA NA
+0.01   NA NA  NA NA
+0.05   NA NA  NA NA</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmMuY3V0b2Zmcy5kb3duIDwtIGZjLmN1dG9mZnMudXAqLTFcbmZjLmN1dG9mZnMuZG93blxuYGBgIn0= -->
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">fc.cutoffs.down &lt;-<span class="st"> </span>fc.cutoffs.up<span class="op">*-</span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb63-2" data-line-number="2">fc.cutoffs.down</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIC0wLjUgLTEuMCAtMS41IC0yLjBcbiJ9 -->
+<pre><code>[1] -0.5 -1.0 -1.5 -2.0</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGFyYW1ldGVyLnRhYmxlLmRvd248LSBwYXJhbWV0ZXIudGFibGUudXAgJT4lXG4gIHNldF9jb2xuYW1lcyhmYy5jdXRvZmZzLmRvd24pXG5cbnBhcmFtZXRlci50YWJsZS5kb3duXG5gYGAifQ== -->
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">parameter.table.down&lt;-<span class="st"> </span>parameter.table.up <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb65-2" data-line-number="2"><span class="st">  </span><span class="kw">set_colnames</span>(fc.cutoffs.down)</a>
+<a class="sourceLine" id="cb65-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb65-4" data-line-number="4">parameter.table.down</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgLTAuNSAtMSAtMS41IC0yXG4wLjAwMSAgIE5BIE5BICAgTkEgTkFcbjAuMDA1ICAgTkEgTkEgICBOQSBOQVxuMC4wMSAgICBOQSBOQSAgIE5BIE5BXG4wLjA1ICAgIE5BIE5BICAgTkEgTkFcbiJ9 -->
+<pre><code>      -0.5 -1 -1.5 -2
+0.001   NA NA   NA NA
+0.005   NA NA   NA NA
+0.01    NA NA   NA NA
+0.05    NA NA   NA NA</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3138,6 +3412,25 @@ function myFunction(id) {
 <h2>Up-regulated genes as a function of parameters</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yIChpIGluIHNlcV9hbG9uZyhmYy5jdXRvZmZzLnVwKSkge1xuICBmb3IgKGogaW4gc2VxX2Fsb25nKHAudmFsdWUuY3V0b2ZmcykpIHtcbiAgICBwYXJhbWV0ZXIudGFibGUudXBbaSxqXSA8LSBkZjMgJT4lXG4gICAgICBmaWx0ZXIoYWRqLlAuVmFsIDw9IHAudmFsdWUuY3V0b2Zmc1tpXSkgJT4lXG4gICAgICBmaWx0ZXIobG9nRkMgPj0gZmMuY3V0b2Zmcy51cFtqXSkgJT4lXG4gICAgICBkaXN0aW5jdChHZW5lLnN5bWJvbCkgJT4lXG4gICAgICBucm93XG4gIH1cbn1cbnBhcmFtZXRlci50YWJsZS51cFxuYGBgIn0= -->
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(fc.cutoffs.up)) {</a>
+<a class="sourceLine" id="cb67-2" data-line-number="2">  <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(p.value.cutoffs)) {</a>
+<a class="sourceLine" id="cb67-3" data-line-number="3">    parameter.table.up[i,j] &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb67-4" data-line-number="4"><span class="st">      </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span>p.value.cutoffs[i]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb67-5" data-line-number="5"><span class="st">      </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span>fc.cutoffs.up[j]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb67-6" data-line-number="6"><span class="st">      </span><span class="kw">distinct</span>(Gene.symbol) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb67-7" data-line-number="7"><span class="st">      </span>nrow</a>
+<a class="sourceLine" id="cb67-8" data-line-number="8">  }</a>
+<a class="sourceLine" id="cb67-9" data-line-number="9">}</a>
+<a class="sourceLine" id="cb67-10" data-line-number="10">parameter.table.up</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgIDAuNSAgIDEgMS41ICAyXG4wLjAwMSAyMTgxIDY2NSAyMTYgNjRcbjAuMDA1IDIxODEgNjY1IDIxNiA2NFxuMC4wMSAgMjE4MSA2NjUgMjE2IDY0XG4wLjA1ICAyMTgzIDY2NSAyMTYgNjRcbiJ9 -->
+<pre><code>       0.5   1 1.5  2
+0.001 2181 665 216 64
+0.005 2181 665 216 64
+0.01  2181 665 216 64
+0.05  2183 665 216 64</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3145,13 +3438,33 @@ function myFunction(id) {
 <h2>Down-regulated genes a function of parameters</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yIChpIGluIHNlcV9hbG9uZyhmYy5jdXRvZmZzLmRvd24pKSB7XG4gIGZvciAoaiBpbiBzZXFfYWxvbmcocC52YWx1ZS5jdXRvZmZzKSkge1xuICAgIHBhcmFtZXRlci50YWJsZS5kb3duW2ksal0gPC0gZGYzICU+JVxuICAgICAgZmlsdGVyKGFkai5QLlZhbCA8PSBwLnZhbHVlLmN1dG9mZnNbaV0pICU+JVxuICAgICAgZmlsdGVyKGxvZ0ZDIDw9IGZjLmN1dG9mZnMuZG93bltqXSkgJT4lXG4gICAgICBkaXN0aW5jdChHZW5lLnN5bWJvbCkgJT4lXG4gICAgICBucm93XG4gIH1cbiAgXG59XG5wYXJhbWV0ZXIudGFibGUuZG93blxuYGBgIn0= -->
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(fc.cutoffs.down)) {</a>
+<a class="sourceLine" id="cb69-2" data-line-number="2">  <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(p.value.cutoffs)) {</a>
+<a class="sourceLine" id="cb69-3" data-line-number="3">    parameter.table.down[i,j] &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb69-4" data-line-number="4"><span class="st">      </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span>p.value.cutoffs[i]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb69-5" data-line-number="5"><span class="st">      </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span>fc.cutoffs.down[j]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb69-6" data-line-number="6"><span class="st">      </span><span class="kw">distinct</span>(Gene.symbol) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb69-7" data-line-number="7"><span class="st">      </span>nrow</a>
+<a class="sourceLine" id="cb69-8" data-line-number="8">  }</a>
+<a class="sourceLine" id="cb69-9" data-line-number="9">  </a>
+<a class="sourceLine" id="cb69-10" data-line-number="10">}</a>
+<a class="sourceLine" id="cb69-11" data-line-number="11">parameter.table.down</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgLTAuNSAgLTEgLTEuNSAgLTJcbjAuMDAxIDE2NzcgNzQxICAzOTcgMjMzXG4wLjAwNSAxNjc3IDc0MSAgMzk3IDIzM1xuMC4wMSAgMTY3NyA3NDEgIDM5NyAyMzNcbjAuMDUgIDE2NzcgNzQxICAzOTcgMjMzXG4ifQ== -->
+<pre><code>      -0.5  -1 -1.5  -2
+0.001 1677 741  397 233
+0.005 1677 741  397 233
+0.01  1677 741  397 233
+0.05  1677 741  397 233</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiR1NFMzQxNTEuYW5hbHlzaXMiCmF1dGhvcjogIkRpYW5hLmtpc2FreWUiCmRhdGU6ICJgciBTeXMuRGF0ZSgpYCIKb3V0cHV0OgogIGh0bWxfbm90ZWJvb2s6CiAgICB0b2M6IHllcwogICAgdG9jX2RlcHRoOiAzCiAgICB0b2NfZmxvYXQ6IHllcwogICAgaGlnaGxpZ2h0OiB0YW5nbwogICAgbnVtYmVyX3NlY3Rpb25zOiBubwogICAgZmlnX2NhcHRpb246IHllcwogICAgdGhlbWU6IHNhbmRzdG9uZQogICAgY29kZV9mb2xkaW5nOiBoaWRlCi0tLQoKCjxzdHlsZT4KaDEge2JhY2tncm91bmQ6IGRhcmtibHVlO2NvbG9yOiB3aGl0ZTtwYWRkaW5nLWxlZnQ6IDdweDt9CmgyIHtjb2xvcjogZGFya2JsdWU7fQouY29kZS1mb2xkaW5nLWJ0biB7ZGlzcGxheTogbm9uZTt9Cjwvc3R5bGU+CiAgCjxzY3JpcHQ+CiAgZnVuY3Rpb24gc2hvd19zcGFuKGlkKSB7CiAgICB2YXIgeCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKGlkKTsKICAgIGlmICh4LnN0eWxlLmRpc3BsYXkgPT09ICdub25lJykgewogICAgICB4LnN0eWxlLmRpc3BsYXkgPSAnaW5saW5lJzsKICAgIH0gZWxzZSB7CiAgICAgIHguc3R5bGUuZGlzcGxheSA9ICdub25lJzsKICAgIH0KICB9CmZ1bmN0aW9uIG15RnVuY3Rpb24oaWQpIHsKICB2YXIgeCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKGlkKTsKICBpZiAoeC5zdHlsZS5kaXNwbGF5ID09PSAnbm9uZScpIHsKICAgIHguc3R5bGUuZGlzcGxheSA9ICdibG9jayc7CiAgfSBlbHNlIHsKICAgIHguc3R5bGUuZGlzcGxheSA9ICdub25lJzsKICB9Cn0KPC9zY3JpcHQ+ICAKCgpgYGB7ciBjbGVhbnVwLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFLCBlcnJvcj1GQUxTRX0KIyBDSEVDSyBSIFZFUlNJT04KIHN0b3BpZm5vdChSLnZlcnNpb24uc3RyaW5nID09ICJSIHZlcnNpb24gMy41LjMgKDIwMTktMDMtMTEpIikKCiMgQ0xFQU5VUAojIENsZWFyIGFsbCB2YXJpYWJsZXM6CnJtKGxpc3Q9bHMoYWxsPVRSVUUpKQoKIyBVbmxvYWQgY3VycmVudCBwYWNrYWdlczoKIGlmICghaXMubnVsbChuYW1lcyh1dGlsczo6c2Vzc2lvbkluZm8oKVtbIm90aGVyUGtncyJdXSkpKSBwYWNtYW46OnBfdW5sb2FkKCJhbGwiKSAKYGBgCgoKYGBge3Igc2V0dXB9CiMgS05JVFIgREVGQVVMVFMKa25pdHI6Om9wdHNfY2h1bmskc2V0KGV2YWwgPSBUUlVFLCBmaWcuaGVpZ2h0ID0gMTApCmBgYAoKCiMjIExvYWQgcGFja2FnZXMKYGBge3IgcGFja2FnZXMsIHJlc3VsdHM9ImhpZGUiLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFLCBlcnJvcj1GQUxTRX0KbGlicmFyeShkcGx5cikKbGlicmFyeShtYWdyaXR0cikKYGBgCgoKYGBge3Igc2V0dXBfc2NyaXB0LCBldmFsPVRSVUUsIHJlc3VsdHM9J2hpZGUnfQojIEdFVCBDVVJSRU5UIFNDUklQVCBOQU1FCih0aGlzLnNjcmlwdCA8LSByc3R1ZGlvYXBpOjpnZXRBY3RpdmVEb2N1bWVudENvbnRleHQoKSAlPiUgLiRwYXRoICU+JSBiYXNlbmFtZSkKZ2V0d2QoKQpsaXN0LmZpbGVzKCkKc3RvcGlmbm90KHRoaXMuc2NyaXB0ICE9ICIiKQpgYGAKCiMjIExvYWQgZGF0YSBmaWxlCmBgYHtyfQpkYXRhLmZpbGUgPC0gImRhdGEuaW4vR1NFMzQxNTEudHh0IgpzdG9waWZub3QoZmlsZS5leGlzdHMoZGF0YS5maWxlKSkKZGYgPC0gcmVhZC50YWJsZShkYXRhLmZpbGUsIGhlYWRlciA9IFQsIHNlcCA9ICJcdCIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGKQpkaW0oZGYpICMgICA0NzIzMSAgICAgOApoZWFkKGRmKQpgYGAKCiMjIFN1bW1hcnkgb2YgdGhlIHZhcmlhYmxlcwpgYGB7cn0Kc2FwcGx5KGRmLCBjbGFzcykgJT4lIGFzLmRhdGEuZnJhbWUKYGBgCgojIyBEbyBhbGwgcHJvYmVzIGhhdmUgYSBwcm9wZXIgZ2VuZSBzeW1ib2w/CmBgYHtyfQoKIyBBcmUgdGhlcmUgYW55IGluc3RhbmNlcyBvZiBhIHNpbmdsZSBzcGFjZSBpbnN0ZWFkIG9mIGEgZ2VuZSBzeW1ib2w/CmFueShkZiRHZW5lLnN5bWJvbCA9PSAiICIpICMgRkFMU0UKCiMgQXJlIHRoZXJlIGFueSBpbnN0YW5jZXMgb2Ygb25lIG9yIG1vcmUgc3BhY2VzIHVzZWQgaW5zdGVhZCBvZiBhIGdlbmUgc3ltYm9sPwphbnkoZ3JlcGwocGF0dGVybiA9ICIgKyIsIGRmJEdlbmUuc3ltYm9sKSkgIyBGQUxTRSAKCiNBcmUgdGhlcmUgYW55IGluc3RhbmNlcyBvZiBhbiBFTVBUWSBTVFJJTkdTIGluc3RlYWQgb2YgYSBnZW5lIHN5bWJvbD8KYW55KGRmJEdlbmUuc3ltYm9sID09ICIiKSAjIFRSVUUKc3VtKGRmJEdlbmUuc3ltYm9sID09ICIiKSAjICAxNTk2NQoKIyBBcmUgdGhlcmUgYW55IGluc3RhbmNlcyBvZiBOQSB2YWx1ZXMgaW5zdGVhZCBvZiBnZW5lIHN5bWJvbHM/CmFueShpcy5uYShkZiRHZW5lLnN5bWJvbCkpICMgRkFMU0UKCiMgVGFrZSBhIGxvb2sgYXQgc29tZSBvZiB0aGUgcHJvYmVzIHdpdGggbWlzc2luZyBnZW5lIHN5bWJvbHM7IGllIGluc3RhbmNlcyBvZiBlbXB0eSBzdHJpbmdzCmRmICU+JQogIGZpbHRlcihkZiRHZW5lLnN5bWJvbCA9PSAiIikgJT4lCiAgaGVhZCAlPiUKICBwcmludCguLCByb3cubmFtZXMgPSBGKQpgYGAKCiMjIFJlbW92ZSB0aGUgcHJvYmVzIHRoYXQgZG8gbm90IGhhdmUgYSBwcm9wZXIgZ2VuZSBzeW1ib2xzCmBgYHtyfQpkZjIgPC0gZmlsdGVyKGRmLCAhKGRmJEdlbmUuc3ltYm9sID09IiIpKQpucm93KGRmKSAjIDQ3MjMxCm5yb3coZGYyKSAjIDMxMjY2CgojIHByb3BvcnRpb24gb2YgdGhvc2Ugd2l0aCBtaXNzaW5nIHN5bWJvbHMKcGMgPC0gc3VtKGRmJEdlbmUuc3ltYm9sID09ICIiKS8gbGVuZ3RoKGRmJEdlbmUuc3ltYm9sKSAqIDEwMApwYyA8LSByb3VuZChwYywgZGlnaXRzID0gMSkKcGFzdGUwKHBjLCAiJSIpICMgIjMzLjglIgoKYGBgCgojIyBBcmUgYW55IGdlbmVzIGFyZSBkdXBsaWNhdGVkPwpgYGB7cn0KYW55KGR1cGxpY2F0ZWQoZGYyJEdlbmUuc3ltYm9sKSkgICMgVFJVRQpzeW1iLnVuaXEgPC0gdW5pcXVlKGRmMiRHZW5lLnN5bWJvbCkgCiMgTnVtYmVyIG9mIHVuaXF1ZSBnZW5lIHN5bWJvbHMKbGVuZ3RoKHN5bWIudW5pcSkgIyAgMjA3NjIKIyBOdW1iZXIgb2YgZHVwbGljYXRlZCBnZW5lIHN5bWJvbHMKc3VtKGR1cGxpY2F0ZWQoZGYyJEdlbmUuc3ltYm9sKSkgIyAxMDUwNAojc3VtKDIwNzYyLDEwNTA0KSAjIDMxMjY2CmBgYAoKCmBgYHtyfQpkZjMgPC0gc3Vic2V0KGRmMikgJT4lIAogIGRwbHlyOjpzZWxlY3QoR2VuZS5zeW1ib2wsIGFkai5QLlZhbCwgUC5WYWx1ZSwgbG9nRkMpCm5yb3coZGYzKSAjIDMxMjY2CmBgYAoKIyBVcC1yZWd1bGF0ZWQgcHJvYmVzIApgYGB7cn0KcHJvYmVzLnVwIDwtIGRmMyAlPiUKICBmaWx0ZXIoYWRqLlAuVmFsIDw9IDAuMDEpICU+JQogIGZpbHRlcihsb2dGQyA+PSAxKSAKbnJvdyhwcm9iZXMudXApICM3NjgKYGBgCgojIyBVcC1yZWd1bGF0ZWQgcHJvYmVzIGFzc29jaWF0ZWQgd2l0aCB1bmlxdWUgZ2VuZSBzeW1ib2xzCmBgYHtyfQoKZ2VuZXMudXAgPC0gZGYzICU+JQogIGZpbHRlcihhZGouUC5WYWwgPD0gMC4wMSkgJT4lCiAgZmlsdGVyKGxvZ0ZDID49IDEpICU+JQogIGRpc3RpbmN0KEdlbmUuc3ltYm9sKSAKICBucm93KGdlbmVzLnVwKSAjICA2NTUKICAKICBhbnkoZHVwbGljYXRlZChnZW5lcy51cCRHZW5lLnN5bWJvbCkpICMgRkFMU0UKICBnZW5lcy51cC51bmlxPC0gc29ydChnZW5lcy51cCRHZW5lLnN5bWJvbCkKICBoZWFkKGdlbmVzLnVwLnVuaXEpCiAgCmBgYAojIyBTYXZlIEZpbGUKYGBge3J9Cm91dC5maWxlLnVwIDwtIHBhc3RlMCgiZGF0YS5vdXQvIiwgdGhpcy5zY3JpcHQsICIuZ2VuZXMudXAudW5pcS50eHQiKQpvdXQuZmlsZS51cApjYXQoZ2VuZXMudXAudW5pcSwgZmlsZSA9IG91dC5maWxlLnVwLCBzZXAgPSAiXG4iKQpjYXQoIkZpbGUgc2F2ZWQ6Iiwgb3V0LmZpbGUudXApCmBgYAoKIyMgRG93bi1yZWd1bGF0ZWQgcHJvYmVzIApgYGB7cn0KcHJvYmVzLmRvd24gPC0gZGYzICU+JQogIGZpbHRlcihhZGouUC5WYWwgPD0gMC4wMSkgJT4lCiAgZmlsdGVyKGxvZ0ZDIDw9IC0xKSAKbnJvdyhwcm9iZXMuZG93bikgIyAgOTEzCmBgYAoKIyMgRG93bi1yZWd1bGF0ZWQgcHJvYmVzIGFzc29jaWF0ZWQgd2l0aCB1bmlxdWUgZ2VuZSBzeW1ib2xzCmBgYHtyfQoKZ2VuZXMuZG93biA8LSBkZjMgJT4lCiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiUKICBmaWx0ZXIobG9nRkMgPD0gLTEpICU+JQogIGRpc3RpbmN0KEdlbmUuc3ltYm9sKSAKICBucm93KGdlbmVzLmRvd24pICMgIAogIAogIGFueShkdXBsaWNhdGVkKGdlbmVzLmRvd24kR2VuZS5zeW1ib2wpKSAjIEZBTFNFCiAgCiAgZ2VuZXMuZG93bi51bmlxPC0gc29ydChnZW5lcy5kb3duJEdlbmUuc3ltYm9sKQogIGhlYWQoZ2VuZXMuZG93bi51bmlxKQogIApgYGAKCiMjIFNhdmUgZmlsZQpgYGB7cn0Kb3V0LmZpbGUuZG93biA8LSBwYXN0ZTAoImRhdGEub3V0LyIsIHRoaXMuc2NyaXB0LCAiLmdlbmVzLmRvd24udW5pcS50eHQiKQpvdXQuZmlsZS5kb3duCmNhdChnZW5lcy5kb3duLnVuaXEsIGZpbGUgPSBvdXQuZmlsZS5kb3duLCBzZXAgPSAiXG4iKQpjYXQoIkZpbGUgc2F2ZWQ6Iiwgb3V0LmZpbGUuZG93bikKCmBgYAoKIyMgUmVndWxhdGVkIGdlbmVzIGFzIGEgZnVuY3Rpb24gb2YgcGFyYW1ldGVycwpgYGB7cn0KIyBDcmVhdGUgZW1wdHkgbWF0cmljZXMKcC52YWx1ZS5jdXRvZmZzIDwtIGMoMC4wMDEsIDAuMDA1LCAwLjAxLCAwLjA1KQpmYy5jdXRvZmZzLnVwIDwtIGMoMC41LCAxLCAxLjUsIDIpCnBhcmFtZXRlci50YWJsZS51cCA8LSBtYXRyaXgocmVwKE5BLCAobGVuZ3RoKHAudmFsdWUuY3V0b2ZmcykgKiBsZW5ndGgoZmMuY3V0b2Zmcy51cCkpKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmNvbCA9IGxlbmd0aChmYy5jdXRvZmZzLnVwKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGltbmFtZXMgPSBsaXN0KAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFzLmNoYXJhY3RlcihwLnZhbHVlLmN1dG9mZnMpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFzLmNoYXJhY3RlcihmYy5jdXRvZmZzLnVwKSksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKQpwYXJhbWV0ZXIudGFibGUudXAKCmZjLmN1dG9mZnMuZG93biA8LSBmYy5jdXRvZmZzLnVwKi0xCmZjLmN1dG9mZnMuZG93bgpwYXJhbWV0ZXIudGFibGUuZG93bjwtIHBhcmFtZXRlci50YWJsZS51cCAlPiUKICBzZXRfY29sbmFtZXMoZmMuY3V0b2Zmcy5kb3duKQoKcGFyYW1ldGVyLnRhYmxlLmRvd24KYGBgCgojIyBVcC1yZWd1bGF0ZWQgZ2VuZXMgYXMgYSBmdW5jdGlvbiBvZiBwYXJhbWV0ZXJzCmBgYHtyfQpmb3IgKGkgaW4gc2VxX2Fsb25nKGZjLmN1dG9mZnMudXApKSB7CiAgZm9yIChqIGluIHNlcV9hbG9uZyhwLnZhbHVlLmN1dG9mZnMpKSB7CiAgICBwYXJhbWV0ZXIudGFibGUudXBbaSxqXSA8LSBkZjMgJT4lCiAgICAgIGZpbHRlcihhZGouUC5WYWwgPD0gcC52YWx1ZS5jdXRvZmZzW2ldKSAlPiUKICAgICAgZmlsdGVyKGxvZ0ZDID49IGZjLmN1dG9mZnMudXBbal0pICU+JQogICAgICBkaXN0aW5jdChHZW5lLnN5bWJvbCkgJT4lCiAgICAgIG5yb3cKICB9Cn0KcGFyYW1ldGVyLnRhYmxlLnVwCgpgYGAKCiMjIERvd24tcmVndWxhdGVkIGdlbmVzIGEgZnVuY3Rpb24gb2YgcGFyYW1ldGVycwpgYGB7cn0KZm9yIChpIGluIHNlcV9hbG9uZyhmYy5jdXRvZmZzLmRvd24pKSB7CiAgZm9yIChqIGluIHNlcV9hbG9uZyhwLnZhbHVlLmN1dG9mZnMpKSB7CiAgICBwYXJhbWV0ZXIudGFibGUuZG93bltpLGpdIDwtIGRmMyAlPiUKICAgICAgZmlsdGVyKGFkai5QLlZhbCA8PSBwLnZhbHVlLmN1dG9mZnNbaV0pICU+JQogICAgICBmaWx0ZXIobG9nRkMgPD0gZmMuY3V0b2Zmcy5kb3duW2pdKSAlPiUKICAgICAgZGlzdGluY3QoR2VuZS5zeW1ib2wpICU+JQogICAgICBucm93CiAgfQogIAp9CnBhcmFtZXRlci50YWJsZS5kb3duCmBgYAoKCgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiR1NFMzQxNTEuYW5hbHlzaXMiCmF1dGhvcjogIkRpYW5hLmtpc2FreWUiCmRhdGU6ICJgciBTeXMuRGF0ZSgpYCIKb3V0cHV0OgogIGh0bWxfbm90ZWJvb2s6CiAgICB0b2M6IHllcwogICAgdG9jX2RlcHRoOiAzCiAgICB0b2NfZmxvYXQ6IHllcwogICAgaGlnaGxpZ2h0OiB0YW5nbwogICAgbnVtYmVyX3NlY3Rpb25zOiBubwogICAgZmlnX2NhcHRpb246IHllcwogICAgdGhlbWU6IHNhbmRzdG9uZQogICAgY29kZV9mb2xkaW5nOiBoaWRlCi0tLQoKCjxzdHlsZT4KaDEge2JhY2tncm91bmQ6IGRhcmtibHVlO2NvbG9yOiB3aGl0ZTtwYWRkaW5nLWxlZnQ6IDdweDt9CmgyIHtjb2xvcjogZGFya2JsdWU7fQouY29kZS1mb2xkaW5nLWJ0biB7ZGlzcGxheTogbm9uZTt9Cjwvc3R5bGU+CiAgCjxzY3JpcHQ+CiAgZnVuY3Rpb24gc2hvd19zcGFuKGlkKSB7CiAgICB2YXIgeCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKGlkKTsKICAgIGlmICh4LnN0eWxlLmRpc3BsYXkgPT09ICdub25lJykgewogICAgICB4LnN0eWxlLmRpc3BsYXkgPSAnaW5saW5lJzsKICAgIH0gZWxzZSB7CiAgICAgIHguc3R5bGUuZGlzcGxheSA9ICdub25lJzsKICAgIH0KICB9CmZ1bmN0aW9uIG15RnVuY3Rpb24oaWQpIHsKICB2YXIgeCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKGlkKTsKICBpZiAoeC5zdHlsZS5kaXNwbGF5ID09PSAnbm9uZScpIHsKICAgIHguc3R5bGUuZGlzcGxheSA9ICdibG9jayc7CiAgfSBlbHNlIHsKICAgIHguc3R5bGUuZGlzcGxheSA9ICdub25lJzsKICB9Cn0KPC9zY3JpcHQ+ICAKCgpgYGB7ciBjbGVhbnVwLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFLCBlcnJvcj1GQUxTRX0KIyBDSEVDSyBSIFZFUlNJT04KIHN0b3BpZm5vdChSLnZlcnNpb24uc3RyaW5nID09ICJSIHZlcnNpb24gMy41LjMgKDIwMTktMDMtMTEpIikKCiMgQ0xFQU5VUAojIENsZWFyIGFsbCB2YXJpYWJsZXM6CnJtKGxpc3Q9bHMoYWxsPVRSVUUpKQoKIyBVbmxvYWQgY3VycmVudCBwYWNrYWdlczoKIGlmICghaXMubnVsbChuYW1lcyh1dGlsczo6c2Vzc2lvbkluZm8oKVtbIm90aGVyUGtncyJdXSkpKSBwYWNtYW46OnBfdW5sb2FkKCJhbGwiKSAKYGBgCgoKYGBge3Igc2V0dXB9CiMgS05JVFIgREVGQVVMVFMKa25pdHI6Om9wdHNfY2h1bmskc2V0KGV2YWwgPSBUUlVFLCBmaWcuaGVpZ2h0ID0gMTApCmBgYAoKCiMjIExvYWQgcGFja2FnZXMKYGBge3IgcGFja2FnZXMsIHJlc3VsdHM9ImhpZGUiLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFLCBlcnJvcj1GQUxTRX0KbGlicmFyeShkcGx5cikKbGlicmFyeShtYWdyaXR0cikKYGBgCgoKYGBge3Igc2V0dXBfc2NyaXB0LCBldmFsPVRSVUUsIHJlc3VsdHM9J2hpZGUnfQojIEdFVCBDVVJSRU5UIFNDUklQVCBOQU1FCih0aGlzLnNjcmlwdCA8LSByc3R1ZGlvYXBpOjpnZXRBY3RpdmVEb2N1bWVudENvbnRleHQoKSAlPiUgLiRwYXRoICU+JSBiYXNlbmFtZSkKZ2V0d2QoKQpsaXN0LmZpbGVzKCkKc3RvcGlmbm90KHRoaXMuc2NyaXB0ICE9ICIiKQpgYGAKCiMjIExvYWQgZGF0YSBmaWxlCmBgYHtyfQpkYXRhLmZpbGUgPC0gImRhdGEuaW4vR1NFMzQxNTEudHh0IgpzdG9waWZub3QoZmlsZS5leGlzdHMoZGF0YS5maWxlKSkKZGYgPC0gcmVhZC50YWJsZShkYXRhLmZpbGUsIGhlYWRlciA9IFQsIHNlcCA9ICJcdCIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGKQpkaW0oZGYpICMgICA0NzIzMSAgICAgOApoZWFkKGRmKQpgYGAKCiMjIFN1bW1hcnkgb2YgdGhlIHZhcmlhYmxlcwpgYGB7cn0Kc2FwcGx5KGRmLCBjbGFzcykgJT4lIGFzLmRhdGEuZnJhbWUKYGBgCgojIyBEbyBhbGwgcHJvYmVzIGhhdmUgYSBwcm9wZXIgZ2VuZSBzeW1ib2w/CmBgYHtyfQoKIyBBcmUgdGhlcmUgYW55IGluc3RhbmNlcyBvZiBhIHNpbmdsZSBzcGFjZSBpbnN0ZWFkIG9mIGEgZ2VuZSBzeW1ib2w/CmFueShkZiRHZW5lLnN5bWJvbCA9PSAiICIpICMgRkFMU0UKCiMgQXJlIHRoZXJlIGFueSBpbnN0YW5jZXMgb2Ygb25lIG9yIG1vcmUgc3BhY2VzIHVzZWQgaW5zdGVhZCBvZiBhIGdlbmUgc3ltYm9sPwphbnkoZ3JlcGwocGF0dGVybiA9ICIgKyIsIGRmJEdlbmUuc3ltYm9sKSkgIyBGQUxTRSAKCiNBcmUgdGhlcmUgYW55IGluc3RhbmNlcyBvZiBhbiBFTVBUWSBTVFJJTkdTIGluc3RlYWQgb2YgYSBnZW5lIHN5bWJvbD8KYW55KGRmJEdlbmUuc3ltYm9sID09ICIiKSAjIFRSVUUKc3VtKGRmJEdlbmUuc3ltYm9sID09ICIiKSAjICAxNTk2NQoKIyBBcmUgdGhlcmUgYW55IGluc3RhbmNlcyBvZiBOQSB2YWx1ZXMgaW5zdGVhZCBvZiBnZW5lIHN5bWJvbHM/CmFueShpcy5uYShkZiRHZW5lLnN5bWJvbCkpICMgRkFMU0UKCiMgVGFrZSBhIGxvb2sgYXQgc29tZSBvZiB0aGUgcHJvYmVzIHdpdGggbWlzc2luZyBnZW5lIHN5bWJvbHM7IGllIGluc3RhbmNlcyBvZiBlbXB0eSBzdHJpbmdzCmRmICU+JQogIGZpbHRlcihkZiRHZW5lLnN5bWJvbCA9PSAiIikgJT4lCiAgaGVhZCAlPiUKICBwcmludCguLCByb3cubmFtZXMgPSBGKQpgYGAKCiMjIFJlbW92ZSB0aGUgcHJvYmVzIHRoYXQgZG8gbm90IGhhdmUgYSBwcm9wZXIgZ2VuZSBzeW1ib2xzCmBgYHtyfQpkZjIgPC0gZmlsdGVyKGRmLCAhKGRmJEdlbmUuc3ltYm9sID09IiIpKQpucm93KGRmKSAjIDQ3MjMxCm5yb3coZGYyKSAjIDMxMjY2CgojIHByb3BvcnRpb24gb2YgdGhvc2Ugd2l0aCBtaXNzaW5nIHN5bWJvbHMKcGMgPC0gc3VtKGRmJEdlbmUuc3ltYm9sID09ICIiKS8gbGVuZ3RoKGRmJEdlbmUuc3ltYm9sKSAqIDEwMApwYyA8LSByb3VuZChwYywgZGlnaXRzID0gMSkKcGFzdGUwKHBjLCAiJSIpICMgIjMzLjglIgoKYGBgCgojIyBBcmUgYW55IGdlbmVzIGR1cGxpY2F0ZWQ/CmBgYHtyfQphbnkoZHVwbGljYXRlZChkZjIkR2VuZS5zeW1ib2wpKSAgIyBUUlVFCnN5bWIudW5pcSA8LSB1bmlxdWUoZGYyJEdlbmUuc3ltYm9sKSAKIyBOdW1iZXIgb2YgdW5pcXVlIGdlbmUgc3ltYm9scwpsZW5ndGgoc3ltYi51bmlxKSAjICAyMDc2MgojIE51bWJlciBvZiBkdXBsaWNhdGVkIGdlbmUgc3ltYm9scwpzdW0oZHVwbGljYXRlZChkZjIkR2VuZS5zeW1ib2wpKSAjIDEwNTA0CiNzdW0oMjA3NjIsMTA1MDQpICMgMzEyNjYKYGBgCgoKYGBge3J9CmRmMyA8LSBzdWJzZXQoZGYyKSAlPiUgCiAgZHBseXI6OnNlbGVjdChHZW5lLnN5bWJvbCwgYWRqLlAuVmFsLCBQLlZhbHVlLCBsb2dGQykKbnJvdyhkZjMpICMgMzEyNjYKYGBgCgojIFVwLXJlZ3VsYXRlZCBwcm9iZXMgCmBgYHtyfQpwcm9iZXMudXAgPC0gZGYzICU+JQogIGZpbHRlcihhZGouUC5WYWwgPD0gMC4wMSkgJT4lCiAgZmlsdGVyKGxvZ0ZDID49IDEpIApucm93KHByb2Jlcy51cCkgIzc2OApgYGAKCiMjIFVwLXJlZ3VsYXRlZCBwcm9iZXMgYXNzb2NpYXRlZCB3aXRoIHVuaXF1ZSBnZW5lIHN5bWJvbHMKYGBge3J9CgpnZW5lcy51cCA8LSBkZjMgJT4lCiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiUKICBmaWx0ZXIobG9nRkMgPj0gMSkgJT4lCiAgZGlzdGluY3QoR2VuZS5zeW1ib2wpIAogIG5yb3coZ2VuZXMudXApICMgIDY1NQogIAogIGFueShkdXBsaWNhdGVkKGdlbmVzLnVwJEdlbmUuc3ltYm9sKSkgIyBGQUxTRQogIGdlbmVzLnVwLnVuaXE8LSBzb3J0KGdlbmVzLnVwJEdlbmUuc3ltYm9sKQogIGhlYWQoZ2VuZXMudXAudW5pcSkKICAKYGBgCiMjIFNhdmUgRmlsZQpgYGB7cn0Kb3V0LmZpbGUudXAgPC0gcGFzdGUwKCJkYXRhLm91dC8iLCB0aGlzLnNjcmlwdCwgIi5nZW5lcy51cC51bmlxLnR4dCIpCm91dC5maWxlLnVwCmNhdChnZW5lcy51cC51bmlxLCBmaWxlID0gb3V0LmZpbGUudXAsIHNlcCA9ICJcbiIpCmNhdCgiRmlsZSBzYXZlZDoiLCBvdXQuZmlsZS51cCkKYGBgCgojIyBEb3duLXJlZ3VsYXRlZCBwcm9iZXMgCmBgYHtyfQpwcm9iZXMuZG93biA8LSBkZjMgJT4lCiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiUKICBmaWx0ZXIobG9nRkMgPD0gLTEpIApucm93KHByb2Jlcy5kb3duKSAjICA5MTMKYGBgCgojIyBEb3duLXJlZ3VsYXRlZCBwcm9iZXMgYXNzb2NpYXRlZCB3aXRoIHVuaXF1ZSBnZW5lIHN5bWJvbHMKYGBge3J9CgpnZW5lcy5kb3duIDwtIGRmMyAlPiUKICBmaWx0ZXIoYWRqLlAuVmFsIDw9IDAuMDEpICU+JQogIGZpbHRlcihsb2dGQyA8PSAtMSkgJT4lCiAgZGlzdGluY3QoR2VuZS5zeW1ib2wpIAogIG5yb3coZ2VuZXMuZG93bikgIyAgCiAgCiAgYW55KGR1cGxpY2F0ZWQoZ2VuZXMuZG93biRHZW5lLnN5bWJvbCkpICMgRkFMU0UKICAKICBnZW5lcy5kb3duLnVuaXE8LSBzb3J0KGdlbmVzLmRvd24kR2VuZS5zeW1ib2wpCiAgaGVhZChnZW5lcy5kb3duLnVuaXEpCiAgCmBgYAoKIyMgU2F2ZSBmaWxlCmBgYHtyfQpvdXQuZmlsZS5kb3duIDwtIHBhc3RlMCgiZGF0YS5vdXQvIiwgdGhpcy5zY3JpcHQsICIuZ2VuZXMuZG93bi51bmlxLnR4dCIpCm91dC5maWxlLmRvd24KY2F0KGdlbmVzLmRvd24udW5pcSwgZmlsZSA9IG91dC5maWxlLmRvd24sIHNlcCA9ICJcbiIpCmNhdCgiRmlsZSBzYXZlZDoiLCBvdXQuZmlsZS5kb3duKQoKYGBgCgojIyBSZWd1bGF0ZWQgZ2VuZXMgYXMgYSBmdW5jdGlvbiBvZiBwYXJhbWV0ZXJzCmBgYHtyfQojIENyZWF0ZSBlbXB0eSBtYXRyaWNlcwpwLnZhbHVlLmN1dG9mZnMgPC0gYygwLjAwMSwgMC4wMDUsIDAuMDEsIDAuMDUpCmZjLmN1dG9mZnMudXAgPC0gYygwLjUsIDEsIDEuNSwgMikKcGFyYW1ldGVyLnRhYmxlLnVwIDwtIG1hdHJpeChyZXAoTkEsIChsZW5ndGgocC52YWx1ZS5jdXRvZmZzKSAqIGxlbmd0aChmYy5jdXRvZmZzLnVwKSkpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuY29sID0gbGVuZ3RoKGZjLmN1dG9mZnMudXApLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkaW1uYW1lcyA9IGxpc3QoCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYXMuY2hhcmFjdGVyKHAudmFsdWUuY3V0b2ZmcyksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYXMuY2hhcmFjdGVyKGZjLmN1dG9mZnMudXApKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICApCnBhcmFtZXRlci50YWJsZS51cAoKZmMuY3V0b2Zmcy5kb3duIDwtIGZjLmN1dG9mZnMudXAqLTEKZmMuY3V0b2Zmcy5kb3duCnBhcmFtZXRlci50YWJsZS5kb3duPC0gcGFyYW1ldGVyLnRhYmxlLnVwICU+JQogIHNldF9jb2xuYW1lcyhmYy5jdXRvZmZzLmRvd24pCgpwYXJhbWV0ZXIudGFibGUuZG93bgpgYGAKCiMjIFVwLXJlZ3VsYXRlZCBnZW5lcyBhcyBhIGZ1bmN0aW9uIG9mIHBhcmFtZXRlcnMKYGBge3J9CmZvciAoaSBpbiBzZXFfYWxvbmcoZmMuY3V0b2Zmcy51cCkpIHsKICBmb3IgKGogaW4gc2VxX2Fsb25nKHAudmFsdWUuY3V0b2ZmcykpIHsKICAgIHBhcmFtZXRlci50YWJsZS51cFtpLGpdIDwtIGRmMyAlPiUKICAgICAgZmlsdGVyKGFkai5QLlZhbCA8PSBwLnZhbHVlLmN1dG9mZnNbaV0pICU+JQogICAgICBmaWx0ZXIobG9nRkMgPj0gZmMuY3V0b2Zmcy51cFtqXSkgJT4lCiAgICAgIGRpc3RpbmN0KEdlbmUuc3ltYm9sKSAlPiUKICAgICAgbnJvdwogIH0KfQpwYXJhbWV0ZXIudGFibGUudXAKCmBgYAoKIyMgRG93bi1yZWd1bGF0ZWQgZ2VuZXMgYSBmdW5jdGlvbiBvZiBwYXJhbWV0ZXJzCmBgYHtyfQpmb3IgKGkgaW4gc2VxX2Fsb25nKGZjLmN1dG9mZnMuZG93bikpIHsKICBmb3IgKGogaW4gc2VxX2Fsb25nKHAudmFsdWUuY3V0b2ZmcykpIHsKICAgIHBhcmFtZXRlci50YWJsZS5kb3duW2ksal0gPC0gZGYzICU+JQogICAgICBmaWx0ZXIoYWRqLlAuVmFsIDw9IHAudmFsdWUuY3V0b2Zmc1tpXSkgJT4lCiAgICAgIGZpbHRlcihsb2dGQyA8PSBmYy5jdXRvZmZzLmRvd25bal0pICU+JQogICAgICBkaXN0aW5jdChHZW5lLnN5bWJvbCkgJT4lCiAgICAgIG5yb3cKICB9CiAgCn0KcGFyYW1ldGVyLnRhYmxlLmRvd24KYGBgCgoKCgo=</div>
 
 
 </div>
