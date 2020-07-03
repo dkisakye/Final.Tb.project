@@ -1,0 +1,335 @@
+---
+title: "GSE29731: Add gene symbols to Geo2r output"
+author: "A. Nohturfft"
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    df_print: paged
+    toc: yes
+    highlight: tango
+    number_sections: no
+    fig_caption: yes
+    theme: sandstone
+    code_folding: hide
+    toc_depth: 3
+    toc_float: yes
+---
+  
+<style>
+h1 {background: darkblue;color: white;padding-left: 7px;}
+h2 {color: darkblue;}
+.code-folding-btn {display: none;}
+</style>
+  
+<script>
+  function show_span(id) {
+    var x = document.getElementById(id);
+    if (x.style.display === 'none') {
+      x.style.display = 'inline';
+    } else {
+      x.style.display = 'none';
+    }
+  }
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.style.display === 'none') {
+    x.style.display = 'block';
+  } else {
+    x.style.display = 'none';
+  }
+}
+</script>
+  
+```{r include=FALSE}
+# About <style> chunk above:
+# * provides custom formatting for level-1 and level-2 headers
+# * hides the 'code' buttons next to every code chunk in the html output; leaves only one 'code' button at the top of the html notebook.
+
+# About the <script> chunk at the top and bottom of the file:
+# * allows to insert <div>'s whose content visbility is toggled with a button.
+# * I use this to show/hide te output of sessionInfo() at the end of the script (see below)
+```
+
+
+```{r include=FALSE}
+# RMARKDOWN HELP
+# Rmarkdown:
+# https://bookdown.org/yihui/rmarkdown/
+
+# Chunk options:
+# https://yihui.name/knitr/options
+```
+
+```{r cleanup, warning=FALSE, message=FALSE, error=FALSE}
+# CHECK R VERSION
+# stopifnot(R.version.string == "R version 3.4.3 (2017-11-30)")
+
+# CLEANUP
+# Clear all variables:
+rm(list=ls(all=TRUE))
+
+# Unload current packages:
+# if (!is.null(names(utils::sessionInfo()[["otherPkgs"]]))) pacman::p_unload("all")
+```
+
+```{r setup}
+# KNITR DEFAULTS
+knitr::opts_chunk$set(eval = TRUE, fig.height = 10)
+```
+
+```{r packages, results="hide", warning=FALSE, message=FALSE, error=FALSE}
+# LOAD PACKAGES:
+library(magrittr)
+library(dplyr)
+library(tidyr)
+library(biomaRt)
+library(AnnotationDbi) 
+# BiocManager::install("org.Mm.eg.db")
+library(org.Mm.eg.db)
+library(scales)
+```
+
+```{r setup_script, eval=TRUE, results='hide'}
+# GET CURRENT SCRIPT NAME
+(this.script <- rstudioapi::getActiveDocumentContext() %>% .$path %>% basename)
+getwd()
+list.files()
+stopifnot(this.script != "")
+```
+
+Load data file
+```{r}
+data.file <- "GSE29731.txt"
+stopifnot(file.exists(data.file))
+df <- read.table(file = data.file, header = T, sep = "\t", stringsAsFactors = F)
+# dim(df) # 57355     9
+# cat(names(df), sep="\n")
+# ID
+# adj.P.Val
+# P.Value
+# t
+# B
+# logFC
+# GB_ACC
+# SEQUENCE
+# SPOT_ID
+head(df)
+```
+
+Do all probes have a proper gene accession number?
+```{r results="asis"}
+# 
+cat("Are there any instances of a single space instead of a GB accesion? <b>",
+    any(grepl(" +", df$GB_ACC)),
+    "</b><br>\n<br>\n", sep="") # FALSE
+
+cat("Are there any instances of EMPTY STRINGS instead of a GB accession? <b>",
+    any(df$GB_ACC ==""),
+    "</b><br>\n<br>\n", sep="") # FALSE
+```
+
+Removing probes that don't have a proper gene bank accession id ...  
+```{r results="asis"}
+df2 <- filter(df, GB_ACC !="") # 
+cat("Original number of data rows:",  comma(nrow(df)), "<br>\n<br>\n")
+cat("Number of data rows after filter:", comma(nrow(df2)))
+```
+
+
+
+```{r results="asis"}
+cat("Are any Genbank accession IDs duplicated? <b>",
+    any(duplicated(df2$GB_ACC)),
+    "</b><br>\n<br>\n", sep="") # TRUE
+
+cat("How many Genbank accession ID duplicates? <b>",
+    comma(sum(duplicated(df2$GB_ACC))),
+    "</b><br>\n<br>\n", sep="") # 46,369
+
+gb.acc.unique <- unique(df2$GB_ACC) # leaving only probes with a unique gene bank accession id
+
+cat("Number of unique Genbank accession IDs? <b>",
+    comma(length(gb.acc.unique)),
+    "</b>", sep="") # 25,631
+```
+
+
+## Mapping to gene symbols: Biomart  
+Load Biomart data and generate a table that maps Genbank accession IDs to gene symbols.  
+```{r}
+head(sort(unique(df2$GB_ACC)))
+```
+
+```{r messsage=FALSE}
+# head(df2$GB_ACC)
+# mart = useMart('ensembl')
+# ds <- listDatasets(mart)
+# grep("musculus", ds$dataset, ignore.case=T, value=T)
+ensembl = useMart(biomart = "ENSEMBL_MART_ENSEMBL", dataset = "mmusculus_gene_ensembl" )
+# mouse.attr <- listAttributes(ensembl)
+# names(mouse.attr) # "name"        "description" "page"
+# grep("refseq", mouse.attr$name, ignore.case = T, value=T)
+# grep("symbol", mouse.attr$name, ignore.case = T, value=T)
+Mapped.ids <- getBM(attributes = c("refseq_mrna","mgi_symbol"),
+        filters = "refseq_mrna",
+        values = sort(unique(df2$GB_ACC)),
+        mart = ensembl)
+# dim(Mapped.ids) # 17804     2
+# sum(complete.cases(Mapped.ids)) # 17804
+# sapply(Mapped.ids, class)
+print(head(Mapped.ids), row.names = F)
+```
+
+```{r results="asis"}
+cat("Number of unique Genbank IDs in GEO2R data file: <b>",
+    comma(length(unique(df2$GB_ACC))),
+    "</b><br>\n<br>\n", sep="")
+# 30,679
+
+cat("Number of unique Genbank IDs in Biomart table: <b>",
+    comma(length(unique(Mapped.ids$refseq_mrna))),
+    "</b><br>\n<br>\n", sep="")
+# 19,794
+
+cat("Are all of the Genbank IDs in the GEO2R data file represented in the biomart table? <b>",
+    all(df$GB_ACC %in% Mapped.ids$refseq_mrna),
+    "</b><br>\n<br>\n", sep="")
+# FALSE
+
+percent(sum(gb.acc.unique %in% Mapped.ids$refseq_mrna) / length(gb.acc.unique)) %>% 
+  cat("How many Genbanks IDs from the GEO2R file could be mapped with Biomart? <b>",
+    comma(sum(df$GB_ACC %in% Mapped.ids$refseq_mrna)),
+    " (", ., ")",
+    "</b><br>\n", sep="")
+# 24,685 (64.5%)
+```
+
+```{r}
+gb.ids.not.mapped <- sort(unique(setdiff(df2$GB_ACC, Mapped.ids$refseq_mrna)))
+cat("Number of Genbank IDs that could not be mapped with Biomart: <b>",
+    comma(length(gb.ids.not.mapped)),
+    "</b><br>\n", sep="")
+```
+
+
+Some genbank IDs that could not be mapped:
+```{r}
+cat(head(gb.ids.not.mapped), sep=", ")
+```
+
+```{r}
+cat(tail(gb.ids.not.mapped), sep=", ")
+```
+
+## Mapping to gene symbols: Bioconductor genome annotations  
+```{r message=FALSE}
+AnnotationDbi::keytypes(org.Mm.eg.db)
+Mapped.ids.2 <- AnnotationDbi::select(org.Mm.eg.db,
+                       keys = unique(df2$GB_ACC),
+                       columns = c("REFSEQ","SYMBOL"),
+                       keytype = "REFSEQ") 
+Mapped.ids.3 <- Mapped.ids.2 %>%
+  filter( !is.na(SYMBOL))
+# dim(Mapped.ids.3) # 2976    2
+# all(df2$GB_ACC %in% Mapped.ids.3$REFSEQ) # FALSE
+# length(unique(df2$GB_ACC)) # 25,631
+sum(unique(df2$GB_ACC) %in% Mapped.ids.3$REFSEQ) # 18,700
+head(Mapped.ids.3)
+```
+
+Combine the Biomart and Bioconductor mapping tables with `rbind`:  
+```{r}
+# When combining two data frames with rbind, the column names must be the same:
+# names(Mapped.ids) # "refseq_mrna" "hgnc_symbol"
+# names(Mapped.ids.3) # "REFSEQ" "SYMBOL"
+names(Mapped.ids) <- names(Mapped.ids.3)
+mapped.ids.all <- rbind(Mapped.ids, Mapped.ids.3) %>% 
+  dplyr::distinct()
+head(mapped.ids.all)
+```
+
+```{r}
+percent(sum(gb.acc.unique %in% mapped.ids.all$REFSEQ) / length(gb.acc.unique)) %>% 
+  cat("How many Genbanks IDs from the GEO2R file could be mapped now? <b>",
+    comma(sum(df2$GB_ACC %in% mapped.ids.all$REFSEQ)),
+    " (", ., ")",
+    "</b><br>\n", sep="")
+```
+
+Join GEO2R data and mapping table to add gene symbols:  
+```{r}
+df3 <- merge(x=df2, y=mapped.ids.all, by.x="GB_ACC", by.y="REFSEQ", all.x=F, all.y=F) %>% 
+  dplyr::rename(Gene.symbol = SYMBOL) %>% 
+  dplyr::select(ID, adj.P.Val, P.Value, t, B, logFC, Gene.symbol)
+nrow(df)  # 72,000
+nrow(df2) # 72,000
+nrow(df3) # 56,868
+```
+
+## Map mouse symbols to human gene symbols  
+### Load mouse/human symbol mapping data
+```{r}
+hum.ms.map.file <- "../../mouse_human_symbols_2018_03_05b.txt"
+stopifnot(file.exists(hum.ms.map.file))
+ms.hu.map.df <- read.table(file=hum.ms.map.file, sep="\t", header=T,comment.char = "#",
+                           stringsAsFactors = F)
+head(ms.hu.map.df)
+```
+
+### Merge/map  
+```{r}
+all(df3$Gene.symbol %in% ms.hu.map.df$mouse) # FALSE
+comma(nrow(df3)) # 56,868
+sum(df3$Gene.symbol %in% ms.hu.map.df$mouse) # 49933
+chunk.match <- subset(df3, Gene.symbol %in% ms.hu.map.df$mouse)
+chunk.no.match <- subset(df3, !Gene.symbol %in% ms.hu.map.df$mouse) %>% 
+  dplyr::mutate(Gene.symbol = toupper(Gene.symbol))
+chunk.match.merge <- merge(x=chunk.match, y=ms.hu.map.df,
+                           by.x="Gene.symbol", by.y="mouse",
+                           all.x=T, all.y=F) %>% 
+  dplyr::select(-Gene.symbol) %>% 
+  dplyr::rename(Gene.symbol = human)
+head(chunk.match.merge)
+```
+
+```{r}
+df4 <- rbind(chunk.no.match, chunk.match.merge) %>% 
+  dplyr::arrange(Gene.symbol)
+dim(df3) # 56,868     7
+dim(df4) # 64,737     7
+```
+
+
+## Save results:  
+```{r}
+out.file <- "GSE29731_Geo2r_symbols.txt"
+cat("#", this.script, "\n", file=out.file, append=F)
+cat("#", Sys.time(), "\n", file=out.file, append=T)
+cat("# Input file:", data.file, "\n", file=out.file, append=T)
+cat("# Author: A. Nohturfft", "\n", file=out.file, append=T)
+write.table(df4, file=out.file, row.names = F, col.names = T, sep="\t", append=T)
+cat("Saved:", out.file)
+```
+
+
+## Session info  
+<button class="button" onclick="myFunction('DIV_5')">Show/hide session info</button>
+<div id="DIV_5" class="div_default_hide">
+
+```{r print_date_and_time}
+Sys.time()
+```
+
+```{r print_session_info}
+# sessionInfo()
+devtools::session_info()
+```
+</div>
+  
+<script>
+  var divsToHide = document.getElementsByClassName("div_default_hide");
+for(var i = 0; i < divsToHide.length; i++)
+{
+  divsToHide[i].style.display = 'none';
+}
+</script>
