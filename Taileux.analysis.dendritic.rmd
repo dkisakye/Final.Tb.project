@@ -102,7 +102,7 @@ any(df$SYMBOL == "") # NA, therefore,possibility of NA values for absent gene sy
 
 any(is.na(df$SYMBOL)) # TRUE, verifying that some gene symbols are missing.
 sum(is.na(df$SYMBOL)) #  1205
-# Looking at some of the probes with missing gene symbols
+# Take a look at some of the probes with missing gene symbols
 df %>%
   filter(is.na(df$SYMBOL)) %>%
   head %>%
