@@ -3176,8 +3176,8 @@ function myFunction(id) {
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="are-any-genes-duplicated" class="section level2">
-<h2>Are any genes duplicated?</h2>
+<div id="are-any-gene-symbols-duplicated" class="section level2">
+<h2>Are any Gene symbols duplicated?</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW55KGR1cGxpY2F0ZWQoZGYyJFNZTUJPTCkpICAjIFRSVUVcbmBgYCJ9 -->
@@ -3220,6 +3220,16 @@ function myFunction(id) {
 <h2>Up-regulated probes</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJvYmVzLnVwIDwtIGRmMyAlPiVcbiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiVcbiAgZmlsdGVyKGxvZ0ZDID49IDEpICU+JVxuICBucm93XG5wcm9iZXMudXBcbmBgYCJ9 -->
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">probes.up &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-4" data-line-number="4"><span class="st">  </span>nrow</a>
+<a class="sourceLine" id="cb34-5" data-line-number="5">probes.up</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDg4OFxuIn0= -->
+<pre><code>[1] 888</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3228,31 +3238,31 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2VuZXMudXAgPC0gZGYzICU+JVxuICBmaWx0ZXIoYWRqLlAuVmFsIDw9IDAuMDEpICU+JVxuICBmaWx0ZXIobG9nRkMgPj0gMSkgJT4lXG4gIGRpc3RpbmN0KFNZTUJPTClcbiAgbnJvdyhnZW5lcy51cCkgIyA2NDZcbmBgYCJ9 -->
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">genes.up &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb34-4" data-line-number="4"><span class="st">  </span><span class="kw">distinct</span>(SYMBOL)</a>
-<a class="sourceLine" id="cb34-5" data-line-number="5">  <span class="kw">nrow</span>(genes.up) <span class="co"># 646</span></a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">genes.up &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb36-4" data-line-number="4"><span class="st">  </span><span class="kw">distinct</span>(SYMBOL)</a>
+<a class="sourceLine" id="cb36-5" data-line-number="5">  <span class="kw">nrow</span>(genes.up) <span class="co"># 646</span></a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDY0NlxuIn0= -->
 <pre><code>[1] 646</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbiAgYW55KGR1cGxpY2F0ZWQoZ2VuZXMudXAkU1lNQk9MKSkgI0ZBTFNFXG5gYGAifQ== -->
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">  </a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">  <span class="kw">any</span>(<span class="kw">duplicated</span>(genes.up<span class="op">$</span>SYMBOL)) <span class="co">#FALSE</span></a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">  </a>
+<a class="sourceLine" id="cb38-2" data-line-number="2">  <span class="kw">any</span>(<span class="kw">duplicated</span>(genes.up<span class="op">$</span>SYMBOL)) <span class="co">#FALSE</span></a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG4ifQ== -->
 <pre><code>[1] FALSE</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBnZW5lcy51cC51bmlxIDwtIHNvcnQoZ2VuZXMudXAkU1lNQk9MKVxuICBoZWFkKGdlbmVzLnVwLnVuaXEpXG5gYGAifQ== -->
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">  genes.up.uniq &lt;-<span class="st"> </span><span class="kw">sort</span>(genes.up<span class="op">$</span>SYMBOL)</a>
-<a class="sourceLine" id="cb38-2" data-line-number="2">  <span class="kw">head</span>(genes.up.uniq)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">  genes.up.uniq &lt;-<span class="st"> </span><span class="kw">sort</span>(genes.up<span class="op">$</span>SYMBOL)</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">  <span class="kw">head</span>(genes.up.uniq)</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiQUJDQTVcIiAgXCJBQlRCMlwiICBcIkFDS1IzXCIgIFwiQUNPVDlcIiAgXCJBQ1ZSMUJcIiBcIkFEQU04XCIgXG4ifQ== -->
 <pre><code>[1] &quot;ABCA5&quot;  &quot;ABTB2&quot;  &quot;ACKR3&quot;  &quot;ACOT9&quot;  &quot;ACVR1B&quot; &quot;ADAM8&quot; </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbmBgYCJ9 -->
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">  </a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">  </a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3262,15 +3272,15 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3V0LmZpbGUudXAgPC0gcGFzdGUwKFwiZGF0YS5vdXQvXCIsIHRoaXMuc2NyaXB0LCBcIi5nZW5lcy51cC51bmlxLnR4dFwiKVxub3V0LmZpbGUudXBcbmBgYCJ9 -->
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">out.file.up &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;data.out/&quot;</span>, this.script, <span class="st">&quot;.genes.up.uniq.txt&quot;</span>)</a>
-<a class="sourceLine" id="cb41-2" data-line-number="2">out.file.up</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">out.file.up &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;data.out/&quot;</span>, this.script, <span class="st">&quot;.genes.up.uniq.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb43-2" data-line-number="2">out.file.up</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiZGF0YS5vdXQvVGFpbGV1eC5hbmFseXNpcy5kZW5kcml0aWMucm1kLmdlbmVzLnVwLnVuaXEudHh0XCJcbiJ9 -->
 <pre><code>[1] &quot;data.out/Taileux.analysis.dendritic.rmd.genes.up.uniq.txt&quot;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0KGdlbmVzLnVwLnVuaXEsIGZpbGUgPSBvdXQuZmlsZS51cCwgc2VwID0gXCJcXG5cIilcbmNhdChcIkZpbGUgc2F2ZWQ6XCIsIG91dC5maWxlLnVwKVxuYGBgIn0= -->
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">cat</span>(genes.up.uniq, <span class="dt">file =</span> out.file.up, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb43-2" data-line-number="2"><span class="kw">cat</span>(<span class="st">&quot;File saved:&quot;</span>, out.file.up)</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">cat</span>(genes.up.uniq, <span class="dt">file =</span> out.file.up, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="kw">cat</span>(<span class="st">&quot;File saved:&quot;</span>, out.file.up)</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiRmlsZSBzYXZlZDogZGF0YS5vdXQvVGFpbGV1eC5hbmFseXNpcy5kZW5kcml0aWMucm1kLmdlbmVzLnVwLnVuaXEudHh0XG4ifQ== -->
 <pre><code>File saved: data.out/Taileux.analysis.dendritic.rmd.genes.up.uniq.txt</code></pre>
@@ -3283,10 +3293,10 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJvYmVzLmRvd24gPC0gZGYzICU+JVxuICBmaWx0ZXIoYWRqLlAuVmFsIDw9IDAuMDEpICU+JVxuICBmaWx0ZXIobG9nRkMgPD0gLTEpIFxubnJvdyhwcm9iZXMuZG93bikgIyAxMDAyXG5gYGAifQ== -->
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">probes.down &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span><span class="dv">-1</span>) </a>
-<a class="sourceLine" id="cb45-4" data-line-number="4"><span class="kw">nrow</span>(probes.down) <span class="co"># 1002</span></a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">probes.down &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb47-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb47-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span><span class="dv">-1</span>) </a>
+<a class="sourceLine" id="cb47-4" data-line-number="4"><span class="kw">nrow</span>(probes.down) <span class="co"># 1002</span></a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEwMDJcbiJ9 -->
 <pre><code>[1] 1002</code></pre>
@@ -3299,27 +3309,27 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5nZW5lcy5kb3duIDwtIGRmMyAlPiVcbiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiVcbiAgZmlsdGVyKGxvZ0ZDIDw9IC0xKSAlPiVcbiAgZGlzdGluY3QoU1lNQk9MKVxuICBucm93KGdlbmVzLmRvd24pICMgNzkyXG5gYGAifQ== -->
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb47-2" data-line-number="2">genes.down &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb47-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb47-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span><span class="dv">-1</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb47-5" data-line-number="5"><span class="st">  </span><span class="kw">distinct</span>(SYMBOL)</a>
-<a class="sourceLine" id="cb47-6" data-line-number="6">  <span class="kw">nrow</span>(genes.down) <span class="co"># 792</span></a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">genes.down &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb49-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb49-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span><span class="dv">-1</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb49-5" data-line-number="5"><span class="st">  </span><span class="kw">distinct</span>(SYMBOL)</a>
+<a class="sourceLine" id="cb49-6" data-line-number="6">  <span class="kw">nrow</span>(genes.down) <span class="co"># 792</span></a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDc5MlxuIn0= -->
 <pre><code>[1] 792</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbiAgYW55KGR1cGxpY2F0ZWQoZ2VuZXMuZG93biRTWU1CT0wpKSAjRkFMU0VcbmBgYCJ9 -->
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">  </a>
-<a class="sourceLine" id="cb49-2" data-line-number="2">  <span class="kw">any</span>(<span class="kw">duplicated</span>(genes.down<span class="op">$</span>SYMBOL)) <span class="co">#FALSE</span></a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">  </a>
+<a class="sourceLine" id="cb51-2" data-line-number="2">  <span class="kw">any</span>(<span class="kw">duplicated</span>(genes.down<span class="op">$</span>SYMBOL)) <span class="co">#FALSE</span></a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG4ifQ== -->
 <pre><code>[1] FALSE</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbiAgZ2VuZXMuZG93bi51bmlxPC0gc29ydChnZW5lcy5kb3duJFNZTUJPTClcbiAgaGVhZChnZW5lcy5kb3duKVxuYGBgIn0= -->
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">  </a>
-<a class="sourceLine" id="cb51-2" data-line-number="2">  genes.down.uniq&lt;-<span class="st"> </span><span class="kw">sort</span>(genes.down<span class="op">$</span>SYMBOL)</a>
-<a class="sourceLine" id="cb51-3" data-line-number="3">  <span class="kw">head</span>(genes.down)</a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">  </a>
+<a class="sourceLine" id="cb53-2" data-line-number="2">  genes.down.uniq&lt;-<span class="st"> </span><span class="kw">sort</span>(genes.down<span class="op">$</span>SYMBOL)</a>
+<a class="sourceLine" id="cb53-3" data-line-number="3">  <span class="kw">head</span>(genes.down)</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MSwibnJvdyI6Nn0sInJkZiI6IlVrUllNZ3BZQ2dBQUFBSUFBd1VEQUFJREFBQUFCQUlBQUFBQkFBUUFDUUFBQUFGNEFBQURFd0FBQUFFQUFBQVFBQUFBQmdBRUFBa0FBQUFFVlVKQk53QUVBQWtBQUFBSFRVbFNOVEU1TXdBRUFBa0FBQUFFVWxSRFFnQUVBQWtBQUFBRVRVeEZRd0FFQUFrQUFBQUdWRTFGVFRVNUFBUUFDUUFBQUFkVFRFTXlOVUUxQUFBRUFnQUFBQUVBQkFBSkFBQUFCVzVoYldWekFBQUFFQUFBQUFFQUJBQUpBQUFBQmxOWlRVSlBUQUFBQkFJQUFBQUJBQVFBQ1FBQUFBbHliM2N1Ym1GdFpYTUFBQUFOQUFBQUFvQUFBQUFBQUFBR0FBQUVBZ0FBQUFFQUJBQUpBQUFBQldOc1lYTnpBQUFBRUFBQUFBRUFCQUFKQUFBQUNtUmhkR0V1Wm5KaGJXVUFBQUQrQUFBRUFnQUFBQUVBQkFBSkFBQUFCMjl3ZEdsdmJuTUFBQUlUQUFBQUJ3QUFBQkFBQUFBQkFBUUFDUUFBQUFGeUFBQUFDZ0FBQUFFQUFBQUJBQUFBRGdBQUFBRkFKQUFBQUFBQUFBQUFBQkFBQUFBQkFBUUFDUUFBQUE5MWJtNWhiV1ZrTFdOb2RXNXJMVFFBQUFBS0FBQUFBUUFBQUFFQUFBQU5BQUFBQVFBQUFBWUFBQUFOQUFBQUFRQUFBQUVBQUFRQ0FBQUMvd0FBQUJBQUFBQUhBQVFBQ1FBQUFBWmxibWRwYm1VQUJBQUpBQUFBQkdWMllXd0FCQUFKQUFBQUNtWnBaeTVvWldsbmFIUUFCQUFKQUFBQUJXeGhZbVZzQUFRQUNRQUFBQTV5YjNkdVlXMWxjeTV3Y21sdWRBQUVBQWtBQUFBS2NtOTNjeTUwYjNSaGJBQUVBQWtBQUFBS1kyOXNjeTUwYjNSaGJBQUFBUDRBQUFEKyJ9 -->
 <div data-pagedtable="false">
@@ -3336,16 +3346,16 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5vdXQuZmlsZS5kb3duIDwtIHBhc3RlMChcImRhdGEub3V0L1wiLCB0aGlzLnNjcmlwdCwgXCIuZ2VuZXMuZG93bi51bmlxLnR4dFwiKVxub3V0LmZpbGUuZG93blxuYGBgIn0= -->
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb52-2" data-line-number="2">out.file.down &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;data.out/&quot;</span>, this.script, <span class="st">&quot;.genes.down.uniq.txt&quot;</span>)</a>
-<a class="sourceLine" id="cb52-3" data-line-number="3">out.file.down</a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb54-2" data-line-number="2">out.file.down &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;data.out/&quot;</span>, this.script, <span class="st">&quot;.genes.down.uniq.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb54-3" data-line-number="3">out.file.down</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiZGF0YS5vdXQvVGFpbGV1eC5hbmFseXNpcy5kZW5kcml0aWMucm1kLmdlbmVzLmRvd24udW5pcS50eHRcIlxuIn0= -->
 <pre><code>[1] &quot;data.out/Taileux.analysis.dendritic.rmd.genes.down.uniq.txt&quot;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0KGdlbmVzLmRvd24udW5pcSwgZmlsZSA9IG91dC5maWxlLmRvd24sIHNlcCA9IFwiXFxuXCIpXG5jYXQoXCJGaWxlIHNhdmVkOlwiLCBvdXQuZmlsZS5kb3duKVxuYGBgIn0= -->
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">cat</span>(genes.down.uniq, <span class="dt">file =</span> out.file.down, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb54-2" data-line-number="2"><span class="kw">cat</span>(<span class="st">&quot;File saved:&quot;</span>, out.file.down)</a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">cat</span>(genes.down.uniq, <span class="dt">file =</span> out.file.down, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb56-2" data-line-number="2"><span class="kw">cat</span>(<span class="st">&quot;File saved:&quot;</span>, out.file.down)</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiRmlsZSBzYXZlZDogZGF0YS5vdXQvVGFpbGV1eC5hbmFseXNpcy5kZW5kcml0aWMucm1kLmdlbmVzLmRvd24udW5pcS50eHRcbiJ9 -->
 <pre><code>File saved: data.out/Taileux.analysis.dendritic.rmd.genes.down.uniq.txt</code></pre>
@@ -3358,16 +3368,16 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDcmVhdGUgZW1wdHkgbWF0cmljZXNcbnAudmFsdWUuY3V0b2ZmcyA8LSBjKDAuMDAxLCAwLjAwNSwgMC4wMSwgMC4wNSlcbmZjLmN1dG9mZnMudXAgPC0gYygwLjUsIDEsIDEuNSwgMilcbnBhcmFtZXRlci50YWJsZS51cCA8LSBtYXRyaXgocmVwKE5BLCAobGVuZ3RoKHAudmFsdWUuY3V0b2ZmcykgKiBsZW5ndGgoZmMuY3V0b2Zmcy51cCkpKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5jb2wgPSBsZW5ndGgoZmMuY3V0b2Zmcy51cCksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkaW1uYW1lcyA9IGxpc3QoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFzLmNoYXJhY3RlcihwLnZhbHVlLmN1dG9mZnMpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhcy5jaGFyYWN0ZXIoZmMuY3V0b2Zmcy51cCkpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICApXG5wYXJhbWV0ZXIudGFibGUudXBcbmBgYCJ9 -->
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="co"># Create empty matrices</span></a>
-<a class="sourceLine" id="cb56-2" data-line-number="2">p.value.cutoffs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.001</span>, <span class="fl">0.005</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>)</a>
-<a class="sourceLine" id="cb56-3" data-line-number="3">fc.cutoffs.up &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb56-4" data-line-number="4">parameter.table.up &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="ot">NA</span>, (<span class="kw">length</span>(p.value.cutoffs) <span class="op">*</span><span class="st"> </span><span class="kw">length</span>(fc.cutoffs.up))),</a>
-<a class="sourceLine" id="cb56-5" data-line-number="5">                                 <span class="dt">ncol =</span> <span class="kw">length</span>(fc.cutoffs.up),</a>
-<a class="sourceLine" id="cb56-6" data-line-number="6">                                 <span class="dt">dimnames =</span> <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb56-7" data-line-number="7">                                <span class="kw">as.character</span>(p.value.cutoffs),</a>
-<a class="sourceLine" id="cb56-8" data-line-number="8">                                <span class="kw">as.character</span>(fc.cutoffs.up)),</a>
-<a class="sourceLine" id="cb56-9" data-line-number="9">                                )</a>
-<a class="sourceLine" id="cb56-10" data-line-number="10">parameter.table.up</a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="co"># Create empty matrices</span></a>
+<a class="sourceLine" id="cb58-2" data-line-number="2">p.value.cutoffs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.001</span>, <span class="fl">0.005</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>)</a>
+<a class="sourceLine" id="cb58-3" data-line-number="3">fc.cutoffs.up &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb58-4" data-line-number="4">parameter.table.up &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="ot">NA</span>, (<span class="kw">length</span>(p.value.cutoffs) <span class="op">*</span><span class="st"> </span><span class="kw">length</span>(fc.cutoffs.up))),</a>
+<a class="sourceLine" id="cb58-5" data-line-number="5">                                 <span class="dt">ncol =</span> <span class="kw">length</span>(fc.cutoffs.up),</a>
+<a class="sourceLine" id="cb58-6" data-line-number="6">                                 <span class="dt">dimnames =</span> <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb58-7" data-line-number="7">                                <span class="kw">as.character</span>(p.value.cutoffs),</a>
+<a class="sourceLine" id="cb58-8" data-line-number="8">                                <span class="kw">as.character</span>(fc.cutoffs.up)),</a>
+<a class="sourceLine" id="cb58-9" data-line-number="9">                                )</a>
+<a class="sourceLine" id="cb58-10" data-line-number="10">parameter.table.up</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgMC41ICAxIDEuNSAgMlxuMC4wMDEgIE5BIE5BICBOQSBOQVxuMC4wMDUgIE5BIE5BICBOQSBOQVxuMC4wMSAgIE5BIE5BICBOQSBOQVxuMC4wNSAgIE5BIE5BICBOQSBOQVxuIn0= -->
 <pre><code>      0.5  1 1.5  2
@@ -3377,17 +3387,17 @@ function myFunction(id) {
 0.05   NA NA  NA NA</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmMuY3V0b2Zmcy5kb3duIDwtIGZjLmN1dG9mZnMudXAqLTFcbmZjLmN1dG9mZnMuZG93blxuYGBgIn0= -->
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">fc.cutoffs.down &lt;-<span class="st"> </span>fc.cutoffs.up<span class="op">*-</span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb58-2" data-line-number="2">fc.cutoffs.down</a></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">fc.cutoffs.down &lt;-<span class="st"> </span>fc.cutoffs.up<span class="op">*-</span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb60-2" data-line-number="2">fc.cutoffs.down</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIC0wLjUgLTEuMCAtMS41IC0yLjBcbiJ9 -->
 <pre><code>[1] -0.5 -1.0 -1.5 -2.0</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGFyYW1ldGVyLnRhYmxlLmRvd24gPC0gcGFyYW1ldGVyLnRhYmxlLnVwICU+JVxuICBzZXRfY29sbmFtZXMoZmMuY3V0b2Zmcy5kb3duKVxuXG5wYXJhbWV0ZXIudGFibGUuZG93blxuYGBgIn0= -->
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">parameter.table.down &lt;-<span class="st"> </span>parameter.table.up <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb60-2" data-line-number="2"><span class="st">  </span><span class="kw">set_colnames</span>(fc.cutoffs.down)</a>
-<a class="sourceLine" id="cb60-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb60-4" data-line-number="4">parameter.table.down</a></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">parameter.table.down &lt;-<span class="st"> </span>parameter.table.up <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb62-2" data-line-number="2"><span class="st">  </span><span class="kw">set_colnames</span>(fc.cutoffs.down)</a>
+<a class="sourceLine" id="cb62-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb62-4" data-line-number="4">parameter.table.down</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgLTAuNSAtMSAtMS41IC0yXG4wLjAwMSAgIE5BIE5BICAgTkEgTkFcbjAuMDA1ICAgTkEgTkEgICBOQSBOQVxuMC4wMSAgICBOQSBOQSAgIE5BIE5BXG4wLjA1ICAgIE5BIE5BICAgTkEgTkFcbiJ9 -->
 <pre><code>      -0.5 -1 -1.5 -2
@@ -3404,17 +3414,17 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yIChpIGluIHNlcV9hbG9uZyhmYy5jdXRvZmZzLnVwKSkge1xuICBmb3IgKGogaW4gc2VxX2Fsb25nKHAudmFsdWUuY3V0b2ZmcykpIHtcbiAgICBwYXJhbWV0ZXIudGFibGUudXBbaSxqXSA8LSBkZjMgJT4lXG4gICAgICBmaWx0ZXIoYWRqLlAuVmFsIDw9IHAudmFsdWUuY3V0b2Zmc1tpXSkgJT4lXG4gICAgICBmaWx0ZXIobG9nRkMgPj0gZmMuY3V0b2Zmcy51cFtqXSkgJT4lXG4gICAgICBkaXN0aW5jdChTWU1CT0wpICU+JVxuICAgICAgbnJvd1xuICB9XG59XG5cbnBhcmFtZXRlci50YWJsZS51cFxuYGBgIn0= -->
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(fc.cutoffs.up)) {</a>
-<a class="sourceLine" id="cb62-2" data-line-number="2">  <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(p.value.cutoffs)) {</a>
-<a class="sourceLine" id="cb62-3" data-line-number="3">    parameter.table.up[i,j] &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb62-4" data-line-number="4"><span class="st">      </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span>p.value.cutoffs[i]) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb62-5" data-line-number="5"><span class="st">      </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span>fc.cutoffs.up[j]) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb62-6" data-line-number="6"><span class="st">      </span><span class="kw">distinct</span>(SYMBOL) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb62-7" data-line-number="7"><span class="st">      </span>nrow</a>
-<a class="sourceLine" id="cb62-8" data-line-number="8">  }</a>
-<a class="sourceLine" id="cb62-9" data-line-number="9">}</a>
-<a class="sourceLine" id="cb62-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb62-11" data-line-number="11">parameter.table.up</a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(fc.cutoffs.up)) {</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2">  <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(p.value.cutoffs)) {</a>
+<a class="sourceLine" id="cb64-3" data-line-number="3">    parameter.table.up[i,j] &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb64-4" data-line-number="4"><span class="st">      </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span>p.value.cutoffs[i]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb64-5" data-line-number="5"><span class="st">      </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span>fc.cutoffs.up[j]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb64-6" data-line-number="6"><span class="st">      </span><span class="kw">distinct</span>(SYMBOL) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb64-7" data-line-number="7"><span class="st">      </span>nrow</a>
+<a class="sourceLine" id="cb64-8" data-line-number="8">  }</a>
+<a class="sourceLine" id="cb64-9" data-line-number="9">}</a>
+<a class="sourceLine" id="cb64-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb64-11" data-line-number="11">parameter.table.up</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgIDAuNSAgIDEgMS41ICAgMlxuMC4wMDEgIDQ1MiA0MDkgMzEyIDIzM1xuMC4wMDUgIDY3MiA1NjYgNDAyIDI4M1xuMC4wMSAgIDc5NyA2NDYgNDQ3IDMwNVxuMC4wNSAgMTE0MCA4MTUgNTI5IDM0NlxuIn0= -->
 <pre><code>       0.5   1 1.5   2
@@ -3431,19 +3441,19 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5mb3IgKGkgaW4gc2VxX2Fsb25nKGZjLmN1dG9mZnMuZG93bikpIHtcbiAgZm9yIChqIGluIHNlcV9hbG9uZyhwLnZhbHVlLmN1dG9mZnMpKSB7XG4gICAgcGFyYW1ldGVyLnRhYmxlLmRvd25baSxqXSA8LSBkZjMgJT4lXG4gICAgICBmaWx0ZXIoYWRqLlAuVmFsIDw9IHAudmFsdWUuY3V0b2Zmc1tpXSkgJT4lXG4gICAgICBmaWx0ZXIobG9nRkMgPD0gZmMuY3V0b2Zmcy5kb3duW2pdKSAlPiVcbiAgICAgIGRpc3RpbmN0KFNZTUJPTCkgJT4lXG4gICAgICBucm93XG4gIH1cbiAgXG59XG5cbnBhcmFtZXRlci50YWJsZS5kb3duXG5gYGAifQ== -->
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb64-2" data-line-number="2"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(fc.cutoffs.down)) {</a>
-<a class="sourceLine" id="cb64-3" data-line-number="3">  <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(p.value.cutoffs)) {</a>
-<a class="sourceLine" id="cb64-4" data-line-number="4">    parameter.table.down[i,j] &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-5" data-line-number="5"><span class="st">      </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span>p.value.cutoffs[i]) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-6" data-line-number="6"><span class="st">      </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span>fc.cutoffs.down[j]) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-7" data-line-number="7"><span class="st">      </span><span class="kw">distinct</span>(SYMBOL) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-8" data-line-number="8"><span class="st">      </span>nrow</a>
-<a class="sourceLine" id="cb64-9" data-line-number="9">  }</a>
-<a class="sourceLine" id="cb64-10" data-line-number="10">  </a>
-<a class="sourceLine" id="cb64-11" data-line-number="11">}</a>
-<a class="sourceLine" id="cb64-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb64-13" data-line-number="13">parameter.table.down</a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb66-2" data-line-number="2"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(fc.cutoffs.down)) {</a>
+<a class="sourceLine" id="cb66-3" data-line-number="3">  <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(p.value.cutoffs)) {</a>
+<a class="sourceLine" id="cb66-4" data-line-number="4">    parameter.table.down[i,j] &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb66-5" data-line-number="5"><span class="st">      </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span>p.value.cutoffs[i]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb66-6" data-line-number="6"><span class="st">      </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span>fc.cutoffs.down[j]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb66-7" data-line-number="7"><span class="st">      </span><span class="kw">distinct</span>(SYMBOL) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb66-8" data-line-number="8"><span class="st">      </span>nrow</a>
+<a class="sourceLine" id="cb66-9" data-line-number="9">  }</a>
+<a class="sourceLine" id="cb66-10" data-line-number="10">  </a>
+<a class="sourceLine" id="cb66-11" data-line-number="11">}</a>
+<a class="sourceLine" id="cb66-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb66-13" data-line-number="13">parameter.table.down</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgLTAuNSAgLTEgLTEuNSAgLTJcbjAuMDAxICA1ODIgNDk3ICAzNjkgMjcwXG4wLjAwNSAgOTEwIDcwMyAgNDc3IDMxNVxuMC4wMSAgMTA1NCA3OTIgIDUyMSAzMzNcbjAuMDUgIDE0ODggOTY2ICA1NzkgMzY1XG4ifQ== -->
 <pre><code>      -0.5  -1 -1.5  -2
@@ -3457,7 +3467,7 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRGF0YSBhbmFseXNpcyBtYXJrZG93biBkb2N1bWVudCBmb3IgVGFpbGV1eCBldCBhbC4gKERlbmRyaWRpdGljIGNlbGxzKS4iCmF1dGhvcjogJzk0MDEnCmRhdGU6ICIwNC8wNi8yMDIwIgpvdXRwdXQ6CiAgaHRtbF9ub3RlYm9vazoKICAgIHRvYzogeWVzCiAgICB0b2NfZGVwdGg6IDMKICAgIHRvY19mbG9hdDogeWVzCiAgICBoaWdobGlnaHQ6IHRhbmdvCiAgICBudW1iZXJfc2VjdGlvbnM6IG5vCiAgICBmaWdfY2FwdGlvbjogeWVzCiAgICB0aGVtZTogc2FuZHN0b25lCiAgICBjb2RlX2ZvbGRpbmc6IGhpZGUKLS0tCgogIAo8c3R5bGU+CmgxIHtiYWNrZ3JvdW5kOiBkYXJrYmx1ZTtjb2xvcjogd2hpdGU7cGFkZGluZy1sZWZ0OiA3cHg7fQpoMiB7Y29sb3I6IGRhcmtibHVlO30KLmNvZGUtZm9sZGluZy1idG4ge2Rpc3BsYXk6IG5vbmU7fQo8L3N0eWxlPgogIAo8c2NyaXB0PgogIGZ1bmN0aW9uIHNob3dfc3BhbihpZCkgewogICAgdmFyIHggPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChpZCk7CiAgICBpZiAoeC5zdHlsZS5kaXNwbGF5ID09PSAnbm9uZScpIHsKICAgICAgeC5zdHlsZS5kaXNwbGF5ID0gJ2lubGluZSc7CiAgICB9IGVsc2UgewogICAgICB4LnN0eWxlLmRpc3BsYXkgPSAnbm9uZSc7CiAgICB9CiAgfQpmdW5jdGlvbiBteUZ1bmN0aW9uKGlkKSB7CiAgdmFyIHggPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChpZCk7CiAgaWYgKHguc3R5bGUuZGlzcGxheSA9PT0gJ25vbmUnKSB7CiAgICB4LnN0eWxlLmRpc3BsYXkgPSAnYmxvY2snOwogIH0gZWxzZSB7CiAgICB4LnN0eWxlLmRpc3BsYXkgPSAnbm9uZSc7CiAgfQp9Cjwvc2NyaXB0PgoKYGBge3IgY2xlYW51cCwgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRSwgZXJyb3I9RkFMU0V9CiMgQ0hFQ0sgUiBWRVJTSU9OCiBzdG9waWZub3QoUi52ZXJzaW9uLnN0cmluZyA9PSAiUiB2ZXJzaW9uIDMuNS4zICgyMDE5LTAzLTExKSIpCgojIENMRUFOVVAKIyBDbGVhciBhbGwgdmFyaWFibGVzOgpybShsaXN0PWxzKGFsbD1UUlVFKSkKCiMgVW5sb2FkIGN1cnJlbnQgcGFja2FnZXM6CmlmICghaXMubnVsbChuYW1lcyh1dGlsczo6c2Vzc2lvbkluZm8oKVtbIm90aGVyUGtncyJdXSkpKSBwYWNtYW46OnBfdW5sb2FkKCJhbGwiKSAKYGBgCgpgYGB7ciBzZXR1cH0KIyBLTklUUiBERUZBVUxUUwprbml0cjo6b3B0c19jaHVuayRzZXQoZXZhbCA9IFRSVUUsIGZpZy5oZWlnaHQgPSAxMCkKYGBgCgojIyBMb2FkIHBhY2thZ2VzCmBgYHtyIHBhY2thZ2VzLCByZXN1bHRzPSJoaWRlIiwgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRSwgZXJyb3I9RkFMU0V9CmxpYnJhcnkobWFncml0dHIpCmxpYnJhcnkoZHBseXIpCmxpYnJhcnkocnN0dWRpb2FwaSkKYGBgCgoKYGBge3Igc2V0dXBfc2NyaXB0LCBldmFsPVRSVUUsIHJlc3VsdHM9J2hpZGUnfQoKIyBHRVQgQ1VSUkVOVCBTQ1JJUFQgTkFNRQoodGhpcy5zY3JpcHQgPC0gcnN0dWRpb2FwaTo6Z2V0QWN0aXZlRG9jdW1lbnRDb250ZXh0KCkgJT4lIC4kcGF0aCAlPiUgYmFzZW5hbWUpCmdldHdkKCkKbGlzdC5maWxlcygpCnN0b3BpZm5vdCh0aGlzLnNjcmlwdCAhPSAiIikKYGBgCgojIyBMb2FkIGRhdGEgZmlsZQpgYGB7cn0KZGF0YS5maWxlIDwtICJkYXRhLmluLzAyX3RhaWxsZXV4XzE4aHJzX2EuUm1kLnR0LkRDLjIwMjBfMDVfMjIudHh0IgpzdG9waWZub3QoZmlsZS5leGlzdHMoZGF0YS5maWxlKSkKZGYgPC0gcmVhZC50YWJsZShkYXRhLmZpbGUsIGhlYWRlciA9IFQsIHNlcCA9ICJcdCIsIHF1b3RlID0gIiIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGKQojIGRmIDwtIHJlYWQuZGVsaW0oZmlsZSA9IGRhdGEuZmlsZSwgc3RyaW5nc0FzRmFjdG9ycyA9IEYgKQpkaW0oZGYpICMgMjQ1MDEgICAgIDkgICAKaGVhZChkZikKYGBgCgojIyBTdW1tYXJ5IG9mIHRoZSB2YXJpYWJsZXMKYGBge3J9CnNhcHBseShkZiwgY2xhc3MpICU+JSBhcy5kYXRhLmZyYW1lCmBgYAoKIyMgRG8gYWxsIHByb2JlcyBoYXZlIGEgcHJvcGVyIGdlbmUgc3ltYm9sPwpgYGB7cn0KCiMgQXJlIHRoZXJlIGFueSBpbnN0YW5jZXMgb2YgYSBzaW5nbGUgc3BhY2UgaW5zdGVhZCBvZiBhIGdlbmUgc3ltYm9sPwphbnkoZGYkU1lNQk9MID09ICIgIikjIE5BLHRoZXJlZm9yZSwgcG9zc2liaWxpdHkgb2YgTkEgdmFsdWVzIGZvciBhYnNlbnQgZ2VuZSBzeW1ib2xzCgojIEFyZSB0aGVyZSBhbnkgaW5zdGFuY2VzIG9mIG9uZSBvciBtb3JlIHNwYWNlcyB1c2VkIGluc3RlYWQgb2YgYSBnZW5lIHN5bWJvbD8KYW55KGdyZXBsKHBhdHRlcm4gPSAiICsiLCBkZiRTWU1CT0wpKSAjIEZBTFNFIAoKI0FyZSB0aGVyZSBhbnkgaW5zdGFuY2VzIG9mIGFuIEVNUFRZIFNUUklOR1MgaW5zdGVhZCBvZiBhIGdlbmUgc3ltYm9sPwphbnkoZGYkU1lNQk9MID09ICIiKSAjIE5BLCB0aGVyZWZvcmUscG9zc2liaWxpdHkgb2YgTkEgdmFsdWVzIGZvciBhYnNlbnQgZ2VuZSBzeW1ib2xzIAoKYW55KGlzLm5hKGRmJFNZTUJPTCkpICMgVFJVRSwgdmVyaWZ5aW5nIHRoYXQgc29tZSBnZW5lIHN5bWJvbHMgYXJlIG1pc3NpbmcuCnN1bShpcy5uYShkZiRTWU1CT0wpKSAjICAxMjA1CiMgVGFrZSBhIGxvb2sgYXQgc29tZSBvZiB0aGUgcHJvYmVzIHdpdGggbWlzc2luZyBnZW5lIHN5bWJvbHMKZGYgJT4lCiAgZmlsdGVyKGlzLm5hKGRmJFNZTUJPTCkpICU+JQogIGhlYWQgJT4lCiAgcHJpbnQoLiwgcm93Lm5hbWVzID0gRikKYGBgCgojIyBSZW1vdmUgdGhlIHByb2JlcyB0aGF0IGRvIG5vdCBoYXZlIHByb3BlciBnZW5lIHN5bWJvbHMKYGBge3J9CmRmMiA8LSBmaWx0ZXIoZGYsICFpcy5uYShkZiRTWU1CT0wpKQpucm93KGRmKSAjIDI0NTAxCm5yb3coZGYyKSAjIDIzMjk2CgojIHByb3BvcnRpb24gb2YgdGhvc2Ugd2l0aCBtaXNzaW5nIHN5bWJvbHMKcGMgPC0gc3VtKGlzLm5hKGRmJFNZTUJPTCkpLyBsZW5ndGgoZGYkU1lNQk9MKSAqIDEwMApwYyA8LSByb3VuZChwYywgZGlnaXRzID0gMSkKcGFzdGUwKHBjLCAiJSIpICMgIjQuOSAlIgoKYGBgCgojIyBBcmUgYW55IGdlbmVzIGR1cGxpY2F0ZWQ/CmBgYHtyfQphbnkoZHVwbGljYXRlZChkZjIkU1lNQk9MKSkgICMgVFJVRQpzeW1iLnVuaXEgPC0gdW5pcXVlKGRmMiRTWU1CT0wgKSAKIyBOdW1iZXIgb2YgdW5pcXVlIGdlbmUgc3ltYm9scwpsZW5ndGgoc3ltYi51bmlxKSAjIDEzNzY4IAojIE51bWJlciBvZiBkdXBsaWNhdGVkIGdlbmUgc3ltYm9scwpzdW0oZHVwbGljYXRlZChkZjIkU1lNQk9MKSkgIyA5NTI4CgpgYGAKCmBgYHtyfQpkZjMgPC0gc3Vic2V0KGRmMikgJT4lIAogIGRwbHlyOjpzZWxlY3QoU1lNQk9MLCBhZGouUC5WYWwsIFAuVmFsdWUsIGxvZ0ZDKQpucm93KGRmMykgIyAyMzI5NgoKYGBgCgojIyBVcC1yZWd1bGF0ZWQgcHJvYmVzIApgYGB7cn0KcHJvYmVzLnVwIDwtIGRmMyAlPiUKICBmaWx0ZXIoYWRqLlAuVmFsIDw9IDAuMDEpICU+JQogIGZpbHRlcihsb2dGQyA+PSAxKSAlPiUKICBucm93CnByb2Jlcy51cCAjIDg4OApgYGAKCiMjIFVwLXJlZ3VsYXRlZCBwcm9iZXMgYXNzb2NpYXRlZCB3aXRoIHVuaXF1ZSBnZW5lIHN5bWJvbHMKYGBge3J9CmdlbmVzLnVwIDwtIGRmMyAlPiUKICBmaWx0ZXIoYWRqLlAuVmFsIDw9IDAuMDEpICU+JQogIGZpbHRlcihsb2dGQyA+PSAxKSAlPiUKICBkaXN0aW5jdChTWU1CT0wpCiAgbnJvdyhnZW5lcy51cCkgIyA2NDYKICAKICBhbnkoZHVwbGljYXRlZChnZW5lcy51cCRTWU1CT0wpKSAjRkFMU0UKICBnZW5lcy51cC51bmlxIDwtIHNvcnQoZ2VuZXMudXAkU1lNQk9MKQogIGhlYWQoZ2VuZXMudXAudW5pcSkKICAKYGBgCgojIyBTYXZlIGZpbGUKYGBge3J9Cm91dC5maWxlLnVwIDwtIHBhc3RlMCgiZGF0YS5vdXQvIiwgdGhpcy5zY3JpcHQsICIuZ2VuZXMudXAudW5pcS50eHQiKQpvdXQuZmlsZS51cApjYXQoZ2VuZXMudXAudW5pcSwgZmlsZSA9IG91dC5maWxlLnVwLCBzZXAgPSAiXG4iKQpjYXQoIkZpbGUgc2F2ZWQ6Iiwgb3V0LmZpbGUudXApCgpgYGAKCiMjIERvd24tcmVndWxhdGVkIHByb2JlcyAKYGBge3J9CnByb2Jlcy5kb3duIDwtIGRmMyAlPiUKICBmaWx0ZXIoYWRqLlAuVmFsIDw9IDAuMDEpICU+JQogIGZpbHRlcihsb2dGQyA8PSAtMSkgCm5yb3cocHJvYmVzLmRvd24pICMgMTAwMgpgYGAKCgojIyBEb3duLXJlZ3VsYXRlZCBwcm9iZXMgYXNzb2NpYXRlZCB3aXRoIHVuaXF1ZSBnZW5lIHN5bWJvbHMKYGBge3J9CgpnZW5lcy5kb3duIDwtIGRmMyAlPiUKICBmaWx0ZXIoYWRqLlAuVmFsIDw9IDAuMDEpICU+JQogIGZpbHRlcihsb2dGQyA8PSAtMSkgJT4lCiAgZGlzdGluY3QoU1lNQk9MKQogIG5yb3coZ2VuZXMuZG93bikgIyA3OTIKICAKICBhbnkoZHVwbGljYXRlZChnZW5lcy5kb3duJFNZTUJPTCkpICNGQUxTRQogIAogIGdlbmVzLmRvd24udW5pcTwtIHNvcnQoZ2VuZXMuZG93biRTWU1CT0wpCiAgaGVhZChnZW5lcy5kb3duKQpgYGAKCiMjIFNhdmUgZmlsZQpgYGB7cn0KCm91dC5maWxlLmRvd24gPC0gcGFzdGUwKCJkYXRhLm91dC8iLCB0aGlzLnNjcmlwdCwgIi5nZW5lcy5kb3duLnVuaXEudHh0IikKb3V0LmZpbGUuZG93bgpjYXQoZ2VuZXMuZG93bi51bmlxLCBmaWxlID0gb3V0LmZpbGUuZG93biwgc2VwID0gIlxuIikKY2F0KCJGaWxlIHNhdmVkOiIsIG91dC5maWxlLmRvd24pCgpgYGAKCiMjIFJlZ3VsYXRlZCBnZW5lcyBhcyBhIGZ1bmN0aW9uIG9mIHBhcmFtZXRlcnMKYGBge3J9CiMgQ3JlYXRlIGVtcHR5IG1hdHJpY2VzCnAudmFsdWUuY3V0b2ZmcyA8LSBjKDAuMDAxLCAwLjAwNSwgMC4wMSwgMC4wNSkKZmMuY3V0b2Zmcy51cCA8LSBjKDAuNSwgMSwgMS41LCAyKQpwYXJhbWV0ZXIudGFibGUudXAgPC0gbWF0cml4KHJlcChOQSwgKGxlbmd0aChwLnZhbHVlLmN1dG9mZnMpICogbGVuZ3RoKGZjLmN1dG9mZnMudXApKSksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5jb2wgPSBsZW5ndGgoZmMuY3V0b2Zmcy51cCksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRpbW5hbWVzID0gbGlzdCgKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhcy5jaGFyYWN0ZXIocC52YWx1ZS5jdXRvZmZzKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhcy5jaGFyYWN0ZXIoZmMuY3V0b2Zmcy51cCkpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICkKcGFyYW1ldGVyLnRhYmxlLnVwCgpmYy5jdXRvZmZzLmRvd24gPC0gZmMuY3V0b2Zmcy51cCotMQpmYy5jdXRvZmZzLmRvd24KcGFyYW1ldGVyLnRhYmxlLmRvd24gPC0gcGFyYW1ldGVyLnRhYmxlLnVwICU+JQogIHNldF9jb2xuYW1lcyhmYy5jdXRvZmZzLmRvd24pCgpwYXJhbWV0ZXIudGFibGUuZG93bgpgYGAKCiMjIFVwLXJlZ3VsYXRlZCBnZW5lcyBhcyBhIGZ1bmN0aW9uIG9mIHBhcmFtZXRlcnMKYGBge3J9CmZvciAoaSBpbiBzZXFfYWxvbmcoZmMuY3V0b2Zmcy51cCkpIHsKICBmb3IgKGogaW4gc2VxX2Fsb25nKHAudmFsdWUuY3V0b2ZmcykpIHsKICAgIHBhcmFtZXRlci50YWJsZS51cFtpLGpdIDwtIGRmMyAlPiUKICAgICAgZmlsdGVyKGFkai5QLlZhbCA8PSBwLnZhbHVlLmN1dG9mZnNbaV0pICU+JQogICAgICBmaWx0ZXIobG9nRkMgPj0gZmMuY3V0b2Zmcy51cFtqXSkgJT4lCiAgICAgIGRpc3RpbmN0KFNZTUJPTCkgJT4lCiAgICAgIG5yb3cKICB9Cn0KCnBhcmFtZXRlci50YWJsZS51cApgYGAKCiMjIERvd24tcmVndWxhdGVkIGdlbmVzIGEgZnVuY3Rpb24gb2YgcGFyYW1ldGVycwpgYGB7cn0KCmZvciAoaSBpbiBzZXFfYWxvbmcoZmMuY3V0b2Zmcy5kb3duKSkgewogIGZvciAoaiBpbiBzZXFfYWxvbmcocC52YWx1ZS5jdXRvZmZzKSkgewogICAgcGFyYW1ldGVyLnRhYmxlLmRvd25baSxqXSA8LSBkZjMgJT4lCiAgICAgIGZpbHRlcihhZGouUC5WYWwgPD0gcC52YWx1ZS5jdXRvZmZzW2ldKSAlPiUKICAgICAgZmlsdGVyKGxvZ0ZDIDw9IGZjLmN1dG9mZnMuZG93bltqXSkgJT4lCiAgICAgIGRpc3RpbmN0KFNZTUJPTCkgJT4lCiAgICAgIG5yb3cKICB9CiAgCn0KCnBhcmFtZXRlci50YWJsZS5kb3duCgpgYGAKCgoKCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRGF0YSBhbmFseXNpcyBtYXJrZG93biBkb2N1bWVudCBmb3IgVGFpbGV1eCBldCBhbC4gKERlbmRyaWRpdGljIGNlbGxzKS4iCmF1dGhvcjogJzk0MDEnCmRhdGU6ICIwNC8wNi8yMDIwIgpvdXRwdXQ6CiAgaHRtbF9ub3RlYm9vazoKICAgIHRvYzogeWVzCiAgICB0b2NfZGVwdGg6IDMKICAgIHRvY19mbG9hdDogeWVzCiAgICBoaWdobGlnaHQ6IHRhbmdvCiAgICBudW1iZXJfc2VjdGlvbnM6IG5vCiAgICBmaWdfY2FwdGlvbjogeWVzCiAgICB0aGVtZTogc2FuZHN0b25lCiAgICBjb2RlX2ZvbGRpbmc6IGhpZGUKLS0tCgogIAo8c3R5bGU+CmgxIHtiYWNrZ3JvdW5kOiBkYXJrYmx1ZTtjb2xvcjogd2hpdGU7cGFkZGluZy1sZWZ0OiA3cHg7fQpoMiB7Y29sb3I6IGRhcmtibHVlO30KLmNvZGUtZm9sZGluZy1idG4ge2Rpc3BsYXk6IG5vbmU7fQo8L3N0eWxlPgogIAo8c2NyaXB0PgogIGZ1bmN0aW9uIHNob3dfc3BhbihpZCkgewogICAgdmFyIHggPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChpZCk7CiAgICBpZiAoeC5zdHlsZS5kaXNwbGF5ID09PSAnbm9uZScpIHsKICAgICAgeC5zdHlsZS5kaXNwbGF5ID0gJ2lubGluZSc7CiAgICB9IGVsc2UgewogICAgICB4LnN0eWxlLmRpc3BsYXkgPSAnbm9uZSc7CiAgICB9CiAgfQpmdW5jdGlvbiBteUZ1bmN0aW9uKGlkKSB7CiAgdmFyIHggPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChpZCk7CiAgaWYgKHguc3R5bGUuZGlzcGxheSA9PT0gJ25vbmUnKSB7CiAgICB4LnN0eWxlLmRpc3BsYXkgPSAnYmxvY2snOwogIH0gZWxzZSB7CiAgICB4LnN0eWxlLmRpc3BsYXkgPSAnbm9uZSc7CiAgfQp9Cjwvc2NyaXB0PgoKYGBge3IgY2xlYW51cCwgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRSwgZXJyb3I9RkFMU0V9CiMgQ0hFQ0sgUiBWRVJTSU9OCiBzdG9waWZub3QoUi52ZXJzaW9uLnN0cmluZyA9PSAiUiB2ZXJzaW9uIDMuNS4zICgyMDE5LTAzLTExKSIpCgojIENMRUFOVVAKIyBDbGVhciBhbGwgdmFyaWFibGVzOgpybShsaXN0PWxzKGFsbD1UUlVFKSkKCiMgVW5sb2FkIGN1cnJlbnQgcGFja2FnZXM6CmlmICghaXMubnVsbChuYW1lcyh1dGlsczo6c2Vzc2lvbkluZm8oKVtbIm90aGVyUGtncyJdXSkpKSBwYWNtYW46OnBfdW5sb2FkKCJhbGwiKSAKYGBgCgpgYGB7ciBzZXR1cH0KIyBLTklUUiBERUZBVUxUUwprbml0cjo6b3B0c19jaHVuayRzZXQoZXZhbCA9IFRSVUUsIGZpZy5oZWlnaHQgPSAxMCkKYGBgCgojIyBMb2FkIHBhY2thZ2VzCmBgYHtyIHBhY2thZ2VzLCByZXN1bHRzPSJoaWRlIiwgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRSwgZXJyb3I9RkFMU0V9CmxpYnJhcnkobWFncml0dHIpCmxpYnJhcnkoZHBseXIpCmxpYnJhcnkocnN0dWRpb2FwaSkKYGBgCgoKYGBge3Igc2V0dXBfc2NyaXB0LCBldmFsPVRSVUUsIHJlc3VsdHM9J2hpZGUnfQoKIyBHRVQgQ1VSUkVOVCBTQ1JJUFQgTkFNRQoodGhpcy5zY3JpcHQgPC0gcnN0dWRpb2FwaTo6Z2V0QWN0aXZlRG9jdW1lbnRDb250ZXh0KCkgJT4lIC4kcGF0aCAlPiUgYmFzZW5hbWUpCmdldHdkKCkKbGlzdC5maWxlcygpCnN0b3BpZm5vdCh0aGlzLnNjcmlwdCAhPSAiIikKYGBgCgojIyBMb2FkIGRhdGEgZmlsZQpgYGB7cn0KZGF0YS5maWxlIDwtICJkYXRhLmluLzAyX3RhaWxsZXV4XzE4aHJzX2EuUm1kLnR0LkRDLjIwMjBfMDVfMjIudHh0IgpzdG9waWZub3QoZmlsZS5leGlzdHMoZGF0YS5maWxlKSkKZGYgPC0gcmVhZC50YWJsZShkYXRhLmZpbGUsIGhlYWRlciA9IFQsIHNlcCA9ICJcdCIsIHF1b3RlID0gIiIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGKQojIGRmIDwtIHJlYWQuZGVsaW0oZmlsZSA9IGRhdGEuZmlsZSwgc3RyaW5nc0FzRmFjdG9ycyA9IEYgKQpkaW0oZGYpICMgMjQ1MDEgICAgIDkgICAKaGVhZChkZikKYGBgCgojIyBTdW1tYXJ5IG9mIHRoZSB2YXJpYWJsZXMKYGBge3J9CnNhcHBseShkZiwgY2xhc3MpICU+JSBhcy5kYXRhLmZyYW1lCmBgYAoKIyMgRG8gYWxsIHByb2JlcyBoYXZlIGEgcHJvcGVyIGdlbmUgc3ltYm9sPwpgYGB7cn0KCiMgQXJlIHRoZXJlIGFueSBpbnN0YW5jZXMgb2YgYSBzaW5nbGUgc3BhY2UgaW5zdGVhZCBvZiBhIGdlbmUgc3ltYm9sPwphbnkoZGYkU1lNQk9MID09ICIgIikjIE5BLHRoZXJlZm9yZSwgcG9zc2liaWxpdHkgb2YgTkEgdmFsdWVzIGZvciBhYnNlbnQgZ2VuZSBzeW1ib2xzCgojIEFyZSB0aGVyZSBhbnkgaW5zdGFuY2VzIG9mIG9uZSBvciBtb3JlIHNwYWNlcyB1c2VkIGluc3RlYWQgb2YgYSBnZW5lIHN5bWJvbD8KYW55KGdyZXBsKHBhdHRlcm4gPSAiICsiLCBkZiRTWU1CT0wpKSAjIEZBTFNFIAoKI0FyZSB0aGVyZSBhbnkgaW5zdGFuY2VzIG9mIGFuIEVNUFRZIFNUUklOR1MgaW5zdGVhZCBvZiBhIGdlbmUgc3ltYm9sPwphbnkoZGYkU1lNQk9MID09ICIiKSAjIE5BLCB0aGVyZWZvcmUscG9zc2liaWxpdHkgb2YgTkEgdmFsdWVzIGZvciBhYnNlbnQgZ2VuZSBzeW1ib2xzIAoKYW55KGlzLm5hKGRmJFNZTUJPTCkpICMgVFJVRSwgdmVyaWZ5aW5nIHRoYXQgc29tZSBnZW5lIHN5bWJvbHMgYXJlIG1pc3NpbmcuCnN1bShpcy5uYShkZiRTWU1CT0wpKSAjICAxMjA1CiMgVGFrZSBhIGxvb2sgYXQgc29tZSBvZiB0aGUgcHJvYmVzIHdpdGggbWlzc2luZyBnZW5lIHN5bWJvbHMKZGYgJT4lCiAgZmlsdGVyKGlzLm5hKGRmJFNZTUJPTCkpICU+JQogIGhlYWQgJT4lCiAgcHJpbnQoLiwgcm93Lm5hbWVzID0gRikKYGBgCgojIyBSZW1vdmUgdGhlIHByb2JlcyB0aGF0IGRvIG5vdCBoYXZlIHByb3BlciBnZW5lIHN5bWJvbHMKYGBge3J9CmRmMiA8LSBmaWx0ZXIoZGYsICFpcy5uYShkZiRTWU1CT0wpKQpucm93KGRmKSAjIDI0NTAxCm5yb3coZGYyKSAjIDIzMjk2CgojIHByb3BvcnRpb24gb2YgdGhvc2Ugd2l0aCBtaXNzaW5nIHN5bWJvbHMKcGMgPC0gc3VtKGlzLm5hKGRmJFNZTUJPTCkpLyBsZW5ndGgoZGYkU1lNQk9MKSAqIDEwMApwYyA8LSByb3VuZChwYywgZGlnaXRzID0gMSkKcGFzdGUwKHBjLCAiJSIpICMgIjQuOSAlIgoKYGBgCgojIyBBcmUgYW55IEdlbmUgc3ltYm9scyBkdXBsaWNhdGVkPwpgYGB7cn0KYW55KGR1cGxpY2F0ZWQoZGYyJFNZTUJPTCkpICAjIFRSVUUKc3ltYi51bmlxIDwtIHVuaXF1ZShkZjIkU1lNQk9MICkgCiMgTnVtYmVyIG9mIHVuaXF1ZSBnZW5lIHN5bWJvbHMKbGVuZ3RoKHN5bWIudW5pcSkgIyAxMzc2OCAKIyBOdW1iZXIgb2YgZHVwbGljYXRlZCBnZW5lIHN5bWJvbHMKc3VtKGR1cGxpY2F0ZWQoZGYyJFNZTUJPTCkpICMgOTUyOAoKYGBgCgpgYGB7cn0KZGYzIDwtIHN1YnNldChkZjIpICU+JSAKICBkcGx5cjo6c2VsZWN0KFNZTUJPTCwgYWRqLlAuVmFsLCBQLlZhbHVlLCBsb2dGQykKbnJvdyhkZjMpICMgMjMyOTYKCmBgYAoKIyMgVXAtcmVndWxhdGVkIHByb2JlcyAKYGBge3J9CnByb2Jlcy51cCA8LSBkZjMgJT4lCiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiUKICBmaWx0ZXIobG9nRkMgPj0gMSkgJT4lCiAgbnJvdwpwcm9iZXMudXAgIyA4ODgKYGBgCgojIyBVcC1yZWd1bGF0ZWQgcHJvYmVzIGFzc29jaWF0ZWQgd2l0aCB1bmlxdWUgZ2VuZSBzeW1ib2xzCmBgYHtyfQpnZW5lcy51cCA8LSBkZjMgJT4lCiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiUKICBmaWx0ZXIobG9nRkMgPj0gMSkgJT4lCiAgZGlzdGluY3QoU1lNQk9MKQogIG5yb3coZ2VuZXMudXApICMgNjQ2CiAgCiAgYW55KGR1cGxpY2F0ZWQoZ2VuZXMudXAkU1lNQk9MKSkgI0ZBTFNFCiAgZ2VuZXMudXAudW5pcSA8LSBzb3J0KGdlbmVzLnVwJFNZTUJPTCkKICBoZWFkKGdlbmVzLnVwLnVuaXEpCiAgCmBgYAoKIyMgU2F2ZSBmaWxlCmBgYHtyfQpvdXQuZmlsZS51cCA8LSBwYXN0ZTAoImRhdGEub3V0LyIsIHRoaXMuc2NyaXB0LCAiLmdlbmVzLnVwLnVuaXEudHh0IikKb3V0LmZpbGUudXAKY2F0KGdlbmVzLnVwLnVuaXEsIGZpbGUgPSBvdXQuZmlsZS51cCwgc2VwID0gIlxuIikKY2F0KCJGaWxlIHNhdmVkOiIsIG91dC5maWxlLnVwKQoKYGBgCgojIyBEb3duLXJlZ3VsYXRlZCBwcm9iZXMgCmBgYHtyfQpwcm9iZXMuZG93biA8LSBkZjMgJT4lCiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiUKICBmaWx0ZXIobG9nRkMgPD0gLTEpIApucm93KHByb2Jlcy5kb3duKSAjIDEwMDIKYGBgCgoKIyMgRG93bi1yZWd1bGF0ZWQgcHJvYmVzIGFzc29jaWF0ZWQgd2l0aCB1bmlxdWUgZ2VuZSBzeW1ib2xzCmBgYHtyfQoKZ2VuZXMuZG93biA8LSBkZjMgJT4lCiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiUKICBmaWx0ZXIobG9nRkMgPD0gLTEpICU+JQogIGRpc3RpbmN0KFNZTUJPTCkKICBucm93KGdlbmVzLmRvd24pICMgNzkyCiAgCiAgYW55KGR1cGxpY2F0ZWQoZ2VuZXMuZG93biRTWU1CT0wpKSAjRkFMU0UKICAKICBnZW5lcy5kb3duLnVuaXE8LSBzb3J0KGdlbmVzLmRvd24kU1lNQk9MKQogIGhlYWQoZ2VuZXMuZG93bikKYGBgCgojIyBTYXZlIGZpbGUKYGBge3J9CgpvdXQuZmlsZS5kb3duIDwtIHBhc3RlMCgiZGF0YS5vdXQvIiwgdGhpcy5zY3JpcHQsICIuZ2VuZXMuZG93bi51bmlxLnR4dCIpCm91dC5maWxlLmRvd24KY2F0KGdlbmVzLmRvd24udW5pcSwgZmlsZSA9IG91dC5maWxlLmRvd24sIHNlcCA9ICJcbiIpCmNhdCgiRmlsZSBzYXZlZDoiLCBvdXQuZmlsZS5kb3duKQoKYGBgCgojIyBSZWd1bGF0ZWQgZ2VuZXMgYXMgYSBmdW5jdGlvbiBvZiBwYXJhbWV0ZXJzCmBgYHtyfQojIENyZWF0ZSBlbXB0eSBtYXRyaWNlcwpwLnZhbHVlLmN1dG9mZnMgPC0gYygwLjAwMSwgMC4wMDUsIDAuMDEsIDAuMDUpCmZjLmN1dG9mZnMudXAgPC0gYygwLjUsIDEsIDEuNSwgMikKcGFyYW1ldGVyLnRhYmxlLnVwIDwtIG1hdHJpeChyZXAoTkEsIChsZW5ndGgocC52YWx1ZS5jdXRvZmZzKSAqIGxlbmd0aChmYy5jdXRvZmZzLnVwKSkpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuY29sID0gbGVuZ3RoKGZjLmN1dG9mZnMudXApLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkaW1uYW1lcyA9IGxpc3QoCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYXMuY2hhcmFjdGVyKHAudmFsdWUuY3V0b2ZmcyksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYXMuY2hhcmFjdGVyKGZjLmN1dG9mZnMudXApKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICApCnBhcmFtZXRlci50YWJsZS51cAoKZmMuY3V0b2Zmcy5kb3duIDwtIGZjLmN1dG9mZnMudXAqLTEKZmMuY3V0b2Zmcy5kb3duCnBhcmFtZXRlci50YWJsZS5kb3duIDwtIHBhcmFtZXRlci50YWJsZS51cCAlPiUKICBzZXRfY29sbmFtZXMoZmMuY3V0b2Zmcy5kb3duKQoKcGFyYW1ldGVyLnRhYmxlLmRvd24KYGBgCgojIyBVcC1yZWd1bGF0ZWQgZ2VuZXMgYXMgYSBmdW5jdGlvbiBvZiBwYXJhbWV0ZXJzCmBgYHtyfQpmb3IgKGkgaW4gc2VxX2Fsb25nKGZjLmN1dG9mZnMudXApKSB7CiAgZm9yIChqIGluIHNlcV9hbG9uZyhwLnZhbHVlLmN1dG9mZnMpKSB7CiAgICBwYXJhbWV0ZXIudGFibGUudXBbaSxqXSA8LSBkZjMgJT4lCiAgICAgIGZpbHRlcihhZGouUC5WYWwgPD0gcC52YWx1ZS5jdXRvZmZzW2ldKSAlPiUKICAgICAgZmlsdGVyKGxvZ0ZDID49IGZjLmN1dG9mZnMudXBbal0pICU+JQogICAgICBkaXN0aW5jdChTWU1CT0wpICU+JQogICAgICBucm93CiAgfQp9CgpwYXJhbWV0ZXIudGFibGUudXAKYGBgCgojIyBEb3duLXJlZ3VsYXRlZCBnZW5lcyBhIGZ1bmN0aW9uIG9mIHBhcmFtZXRlcnMKYGBge3J9Cgpmb3IgKGkgaW4gc2VxX2Fsb25nKGZjLmN1dG9mZnMuZG93bikpIHsKICBmb3IgKGogaW4gc2VxX2Fsb25nKHAudmFsdWUuY3V0b2ZmcykpIHsKICAgIHBhcmFtZXRlci50YWJsZS5kb3duW2ksal0gPC0gZGYzICU+JQogICAgICBmaWx0ZXIoYWRqLlAuVmFsIDw9IHAudmFsdWUuY3V0b2Zmc1tpXSkgJT4lCiAgICAgIGZpbHRlcihsb2dGQyA8PSBmYy5jdXRvZmZzLmRvd25bal0pICU+JQogICAgICBkaXN0aW5jdChTWU1CT0wpICU+JQogICAgICBucm93CiAgfQogIAp9CgpwYXJhbWV0ZXIudGFibGUuZG93bgoKYGBgCgoKCgo=</div>
 
 
 </div>
