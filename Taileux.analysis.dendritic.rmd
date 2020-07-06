@@ -61,6 +61,7 @@ knitr::opts_chunk$set(eval = TRUE, fig.height = 10)
 ```{r packages, results="hide", warning=FALSE, message=FALSE, error=FALSE}
 library(magrittr)
 library(dplyr)
+library(rstudioapi)
 ```
 
 
