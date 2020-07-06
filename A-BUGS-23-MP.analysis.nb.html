@@ -3029,10 +3029,23 @@ function myFunction(id) {
 <h2>Load packages</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShtYWdyaXR0cilcbmxpYnJhcnkoZHBseXIpXG5saWJyYXJ5KHJzdHVkaW9hcGkpXG5gYGAifQ== -->
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">library</span>(magrittr)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">library</span>(rstudioapi)</a></code></pre></div>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIEdFVCBDVVJSRU5UIFNDUklQVCBOQU1FXG4odGhpcy5zY3JpcHQgPC0gcnN0dWRpb2FwaTo6Z2V0QWN0aXZlRG9jdW1lbnRDb250ZXh0KCkgJT4lIC4kcGF0aCAlPiUgYmFzZW5hbWUpXG5nZXR3ZCgpXG5saXN0LmZpbGVzKClcbnN0b3BpZm5vdCh0aGlzLnNjcmlwdCAhPSBcIlwiKVxuYGBgIn0= -->
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># GET CURRENT SCRIPT NAME</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">(this.script &lt;-<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">getActiveDocumentContext</span>() <span class="op">%&gt;%</span><span class="st"> </span>.<span class="op">$</span>path <span class="op">%&gt;%</span><span class="st"> </span>basename)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw">getwd</span>()</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw">list.files</span>()</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="kw">stopifnot</span>(this.script <span class="op">!=</span><span class="st"> &quot;&quot;</span>)</a></code></pre></div>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3040,14 +3053,26 @@ function myFunction(id) {
 <h2>Load data file</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YS5maWxlIDwtIFwiZGF0YS5pbi8wMl90YWlsbGV1eF8xOGhyc19hLlJtZC50dC5NUC4yMDIwXzA1XzIyLnR4dFwiXG5zdG9waWZub3QoZmlsZS5leGlzdHMoZGF0YS5maWxlKSlcbmRmIDwtIHJlYWQudGFibGUoZGF0YS5maWxlLCBoZWFkZXIgPSBULCBzZXAgPSBcIlxcdFwiLCBxdW90ZSA9IFwiXCIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGKVxuIyBkZiA8LSByZWFkLmRlbGltKGZpbGUgPSBkYXRhLmZpbGUsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGIClcbmRpbShkZikgIyAyNDUwMSAgICAgOSAgIFxuaGVhZChkZilcbmBgYCJ9 -->
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">data.file &lt;-<span class="st"> &quot;data.in/02_tailleux_18hrs_a.Rmd.tt.MP.2020_05_22.txt&quot;</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">stopifnot</span>(<span class="kw">file.exists</span>(data.file))</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">df &lt;-<span class="st"> </span><span class="kw">read.table</span>(data.file, <span class="dt">header =</span> T, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">quote =</span> <span class="st">&quot;&quot;</span>, <span class="dt">stringsAsFactors =</span> F)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co"># df &lt;- read.delim(file = data.file, stringsAsFactors = F )</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw">dim</span>(df) <span class="co"># 24501     9   </span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw">head</span>(df)</a></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YS5maWxlIDwtIFwiZGF0YS5pbi8wMl90YWlsbGV1eF8xOGhyc19hLlJtZC50dC5NUC4yMDIwXzA1XzIyLnR4dFwiXG5zdG9waWZub3QoZmlsZS5leGlzdHMoZGF0YS5maWxlKSlcbmRmIDwtIHJlYWQudGFibGUoZGF0YS5maWxlLCBoZWFkZXIgPSBULCBzZXAgPSBcIlxcdFwiLCBxdW90ZSA9IFwiXCIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGKVxuIyBkZiA8LSByZWFkLmRlbGltKGZpbGUgPSBkYXRhLmZpbGUsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGIClcbmRpbShkZikgIyAyNDUwMSAgICAgOSAgIFxuYGBgIn0= -->
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">data.file &lt;-<span class="st"> &quot;data.in/02_tailleux_18hrs_a.Rmd.tt.MP.2020_05_22.txt&quot;</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">stopifnot</span>(<span class="kw">file.exists</span>(data.file))</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">df &lt;-<span class="st"> </span><span class="kw">read.table</span>(data.file, <span class="dt">header =</span> T, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">quote =</span> <span class="st">&quot;&quot;</span>, <span class="dt">stringsAsFactors =</span> F)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># df &lt;- read.delim(file = data.file, stringsAsFactors = F )</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="kw">dim</span>(df) <span class="co"># 24501     9   </span></a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDI0NTAxICAgICA5XG4ifQ== -->
+<pre><code>[1] 24501     9</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChkZilcbmBgYCJ9 -->
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">head</span>(df)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6OSwibnJvdyI6Nn0sInJkZiI6IlVrUllNZ3BZQ2dBQUFBSUFBd1VEQUFJREFBQUFCQUlBQUFBQkFBUUFDUUFBQUFGNEFBQURFd0FBQUFrQUFBQVFBQUFBQmdBRUFBa0FBQUFKTVRBd04xOXpYMkYwQUFRQUNRQUFBQWt4TURBM1gzTmZZWFFBQkFBSkFBQUFCekV3TlROZllYUUFCQUFKQUFBQUJqRXhOMTloZEFBRUFBa0FBQUFHTVRJeFgyRjBBQVFBQ1FBQUFBa3hNalUxWDJkZllYUUFBQUFRQUFBQUJnQUVBQWtBQUFBRVJFUlNNUUFFQUFrQUFBQUhUVWxTTkRZME1BQUVBQWtBQUFBRVVrWkRNZ0FFQUFrQUFBQUZTRk5RUVRZQUJBQUpBQUFBQkZCQldEZ0FCQUFKQUFBQUJrZFZRMEV4UVFBQUFCQUFBQUFHQUFRQUNRQUFBQ3RrYVhOamIybGthVzRnWkc5dFlXbHVJSEpsWTJWd2RHOXlJSFI1Y205emFXNWxJR3RwYm1GelpTQXhBQVFBQ1FBQUFBMXRhV055YjFKT1FTQTBOalF3QUFRQUNRQUFBQjV5WlhCc2FXTmhkR2x2YmlCbVlXTjBiM0lnUXlCemRXSjFibWwwSURJQUJBQUpBQUFBTEdobFlYUWdjMmh2WTJzZ2NISnZkR1ZwYmlCbVlXMXBiSGtnUVNBb1NITndOekFwSUcxbGJXSmxjaUEyQUFRQUNRQUFBQXh3WVdseVpXUWdZbTk0SURnQUJBQUpBQUFBSG1kMVlXNTViR0YwWlNCamVXTnNZWE5sSUdGamRHbDJZWFJ2Y2lBeFFRQUFBQTRBQUFBR1Arem81YkZoYkVVLzdPamxzV0ZzUmIvZkxNYk16cEVJUC9LWjJwYmh4YksvY0VIb0tkVGdCRHpBQUFBQUFBQUVBQUFBRGdBQUFBWkFHUUlSTjJzWWMwQVpBaEUzYXhoelFCUEZzQkVaZXZaQUhhNmNhRzZWQ0VBVmNBdUlnUlVsUUFJQUhIdGJzMElBQUFBT0FBQUFCa0FOeVJGZWt2VTFRQTNKRVY2UzlUWEFEazJEUkZTUFNFQVdoNHJnYjhId3Y1OXh2RFFKOWNrOVhRb3pPNFk5WUFBQUFBNEFBQUFHUDEwcXRJSmk4UjgvWFNxMGdtTHhIejlaWnl6N28yVzJQd0hXVzk4QVd5Yy83enBhZjZEMmFqL3YvLy8vLy9TYUFBQUFEZ0FBQUFZL2tHenRqN0RmNnorUWJPMlBzTi9yUDQyT1UwNi9nMUkvU21hN3NUTkhpVC93QUFBQUFBQUFQL0FBQUFBQUFBQUFBQUFPQUFBQUJyLy81SlVhY21pcXYvL2tsUnB5YUtxLy9iRzM0OFJRZWtBQUF0K1ExWi9Wd0IwcEFtSGhHNVBBSFNtRTV5YmRPUUFBQkFJQUFBQUJBQVFBQ1FBQUFBVnVZVzFsY3dBQUFCQUFBQUFKQUFRQUNRQUFBQWRRVWs5Q1JVbEVBQVFBQ1FBQUFBWlRXVTFDVDB3QUJBQUpBQUFBQ0VkRlRrVk9RVTFGQUFRQUNRQUFBQVZzYjJkR1F3QUVBQWtBQUFBSFFYWmxSWGh3Y2dBRUFBa0FBQUFCZEFBRUFBa0FBQUFIVUM1V1lXeDFaUUFFQUFrQUFBQUpZV1JxTGxBdVZtRnNBQVFBQ1FBQUFBRkNBQUFFQWdBQUFBRUFCQUFKQUFBQUNYSnZkeTV1WVcxbGN3QUFBQTBBQUFBQ2dBQUFBQUFBQUFZQUFBUUNBQUFBQVFBRUFBa0FBQUFGWTJ4aGMzTUFBQUFRQUFBQUFRQUVBQWtBQUFBS1pHRjBZUzVtY21GdFpRQUFBUDRBQUFRQ0FBQUFBUUFFQUFrQUFBQUhiM0IwYVc5dWN3QUFBaE1BQUFBSEFBQUFFQUFBQUFFQUJBQUpBQUFBQVhJQUFBQUtBQUFBQVFBQUFBRUFBQUFPQUFBQUFVQWtBQUFBQUFBQUFBQUFFQUFBQUFFQUJBQUpBQUFBRDNWdWJtRnRaV1F0WTJoMWJtc3RNUUFBQUFvQUFBQUJBQUFBQVFBQUFBMEFBQUFCQUFBQUJnQUFBQTBBQUFBQkFBQUFDUUFBQkFJQUFBTC9BQUFBRUFBQUFBY0FCQUFKQUFBQUJtVnVaMmx1WlFBRUFBa0FBQUFFWlhaaGJBQUVBQWtBQUFBS1ptbG5MbWhsYVdkb2RBQUVBQWtBQUFBRmJHRmlaV3dBQkFBSkFBQUFEbkp2ZDI1aGJXVnpMbkJ5YVc1MEFBUUFDUUFBQUFweWIzZHpMblJ2ZEdGc0FBUUFDUUFBQUFwamIyeHpMblJ2ZEdGc0FBQUEvZ0FBQVA0PSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["PROBEID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SYMBOL"],"name":[2],"type":["chr"],"align":["left"]},{"label":["GENENAME"],"name":[3],"type":["chr"],"align":["left"]},{"label":["logFC"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["AveExpr"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["t"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["P.Value"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["adj.P.Val"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["B"],"name":[9],"type":["dbl"],"align":["right"]}],"data":[{"1":"1007_s_at","2":"DDR1","3":"discoidin domain receptor tyrosine kinase 1","4":"9.034298e-01","5":"6.252019","6":"3.723178e+00","7":"1.780201e-03","8":"0.0160405272","9":"-1.993306","_rn_":"1"},{"1":"1007_s_at","2":"MIR4640","3":"microRNA 4640","4":"9.034298e-01","5":"6.252019","6":"3.723178e+00","7":"1.780201e-03","8":"0.0160405272","9":"-1.993306","_rn_":"2"},{"1":"1053_at","2":"RFC2","3":"replication factor C subunit 2","4":"-4.871079e-01","5":"4.943054","6":"-3.787848e+00","7":"1.550478e-03","8":"0.0144316204","9":"-1.855888","_rn_":"3"},{"1":"117_at","2":"HSPA6","3":"heat shock protein family A (Hsp70) member 6","4":"1.162562e+00","5":"7.420519","6":"5.632366e+00","7":"3.402202e-05","8":"0.0008057038","9":"2.001403","_rn_":"4"},{"1":"121_at","2":"PAX8","3":"paired box 8","4":"-3.969104e-03","5":"5.359419","6":"-3.070730e-02","7":"9.758732e-01","8":"1.0000000000","9":"-7.290048","_rn_":"5"},{"1":"1255_g_at","2":"GUCA1A","3":"guanylate cyclase activator 1A","4":"4.440892e-16","5":"2.250054","6":"4.126810e-13","7":"1.000000e+00","8":"1.0000000000","9":"-7.290546","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[9]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3056,8 +3081,15 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2FwcGx5KGRmLCBjbGFzcykgJT4lIGFzLmRhdGEuZnJhbWVcbmBgYCJ9 -->
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">sapply</span>(df, class) <span class="op">%&gt;%</span><span class="st"> </span>as.data.frame</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">sapply</span>(df, class) <span class="op">%&gt;%</span><span class="st"> </span>as.data.frame</a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MSwibnJvdyI6OX0sInJkZiI6IlVrUllNZ3BZQ2dBQUFBSUFBd1VEQUFJREFBQUFCQUlBQUFBQkFBUUFDUUFBQUFGNEFBQURFd0FBQUFFQUFBTU5BQUFBQ1FBQUFBRUFBQUFCQUFBQUFRQUFBQUlBQUFBQ0FBQUFBZ0FBQUFJQUFBQUNBQUFBQWdBQUJBSUFBQUFCQUFRQUNRQUFBQVpzWlhabGJITUFBQUFRQUFBQUFnQUVBQWtBQUFBSlkyaGhjbUZqZEdWeUFBUUFDUUFBQUFkdWRXMWxjbWxqQUFBRUFnQUFBQUVBQkFBSkFBQUFCV05zWVhOekFBQUFFQUFBQUFFQUJBQUpBQUFBQm1aaFkzUnZjZ0FBQVA0QUFBUUNBQUFBQVFBRUFBa0FBQUFGYm1GdFpYTUFBQUFRQUFBQUFRQUVBQWtBQUFBQkxnQUFCQUlBQUFBQkFBUUFDUUFBQUFseWIzY3VibUZ0WlhNQUFBQVFBQUFBQ1FBRUFBa0FBQUFIVUZKUFFrVkpSQUFFQUFrQUFBQUdVMWxOUWs5TUFBUUFDUUFBQUFoSFJVNUZUa0ZOUlFBRUFBa0FBQUFGYkc5blJrTUFCQUFKQUFBQUIwRjJaVVY0Y0hJQUJBQUpBQUFBQVhRQUJBQUpBQUFBQjFBdVZtRnNkV1VBQkFBSkFBQUFDV0ZrYWk1UUxsWmhiQUFFQUFrQUFBQUJRZ0FBQkFJQUFBUC9BQUFBRUFBQUFBRUFCQUFKQUFBQUNtUmhkR0V1Wm5KaGJXVUFBQUQrQUFBRUFnQUFBQUVBQkFBSkFBQUFCMjl3ZEdsdmJuTUFBQUlUQUFBQUJ3QUFBQkFBQUFBQkFBUUFDUUFBQUFGeUFBQUFDZ0FBQUFFQUFBQUJBQUFBRGdBQUFBRkFKQUFBQUFBQUFBQUFBQkFBQUFBQkFBUUFDUUFBQUE5MWJtNWhiV1ZrTFdOb2RXNXJMVElBQUFBS0FBQUFBUUFBQUFFQUFBQU5BQUFBQVFBQUFBa0FBQUFOQUFBQUFRQUFBQUVBQUFRQ0FBQUUvd0FBQUJBQUFBQUhBQVFBQ1FBQUFBWmxibWRwYm1VQUJBQUpBQUFBQkdWMllXd0FCQUFKQUFBQUNtWnBaeTVvWldsbmFIUUFCQUFKQUFBQUJXeGhZbVZzQUFRQUNRQUFBQTV5YjNkdVlXMWxjeTV3Y21sdWRBQUVBQWtBQUFBS2NtOTNjeTUwYjNSaGJBQUVBQWtBQUFBS1kyOXNjeTUwYjNSaGJBQUFBUDRBQUFEKyJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["."],"name":[1],"type":["fctr"],"align":["left"]}],"data":[{"1":"character","_rn_":"PROBEID"},{"1":"character","_rn_":"SYMBOL"},{"1":"character","_rn_":"GENENAME"},{"1":"numeric","_rn_":"logFC"},{"1":"numeric","_rn_":"AveExpr"},{"1":"numeric","_rn_":"t"},{"1":"numeric","_rn_":"P.Value"},{"1":"numeric","_rn_":"adj.P.Val"},{"1":"numeric","_rn_":"B"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[9]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3065,25 +3097,54 @@ function myFunction(id) {
 <h2>Do all probes have a proper gene symbol?</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIEFyZSB0aGVyZSBhbnkgaW5zdGFuY2VzIG9mIGEgc2luZ2xlIHNwYWNlIGluc3RlYWQgb2YgYSBnZW5lIHN5bWJvbD9cbmFueShkZiRTWU1CT0wgPT0gXCIgXCIpIyBOQSx0aGVyZWZvcmUsIHBvc3NpYmlsaXR5IG9mIE5BIHZhbHVlcyBmb3IgYWJzZW50IGdlbmUgc3ltYm9sc1xuXG4jIEFyZSB0aGVyZSBhbnkgaW5zdGFuY2VzIG9mIG9uZSBvciBtb3JlIHNwYWNlcyB1c2VkIGluc3RlYWQgb2YgYSBnZW5lIHN5bWJvbD9cbmFueShncmVwbChwYXR0ZXJuID0gXCIgK1wiLCBkZiRTWU1CT0wpKSAjIEZBTFNFIFxuXG4jQXJlIHRoZXJlIGFueSBpbnN0YW5jZXMgb2YgYW4gRU1QVFkgU1RSSU5HUyBpbnN0ZWFkIG9mIGEgZ2VuZSBzeW1ib2w/XG5hbnkoZGYkU1lNQk9MID09IFwiXCIpICMgTkEsIHRoZXJlZm9yZSxwb3NzaWJpbGl0eSBvZiBOQSB2YWx1ZXMgZm9yIGFic2VudCBnZW5lIHN5bWJvbHMgXG5cbmFueShpcy5uYShkZiRTWU1CT0wpKSAjIFRSVUUsIHZlcmlmeWluZyB0aGF0IHNvbWUgZ2VuZSBzeW1ib2xzIGFyZSBtaXNzaW5nLlxuc3VtKGlzLm5hKGRmJFNZTUJPTCkpICMgIDEyMDVcbiMgVGFrZSBhIGxvb2sgYXQgc29tZSBvZiB0aGUgcHJvYmVzIHdpdGggbWlzc2luZyBnZW5lIHN5bWJvbHNcbmRmICU+JVxuICBmaWx0ZXIoaXMubmEoZGYkU1lNQk9MKSkgJT4lXG4gIGhlYWQgJT4lXG4gIHByaW50KC4sIHJvdy5uYW1lcyA9IEYpXG5gYGAifQ== -->
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># Are there any instances of a single space instead of a gene symbol?</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw">any</span>(df<span class="op">$</span>SYMBOL <span class="op">==</span><span class="st"> &quot; &quot;</span>)<span class="co"># NA,therefore, possibility of NA values for absent gene symbols</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co"># Are there any instances of one or more spaces used instead of a gene symbol?</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="kw">any</span>(<span class="kw">grepl</span>(<span class="dt">pattern =</span> <span class="st">&quot; +&quot;</span>, df<span class="op">$</span>SYMBOL)) <span class="co"># FALSE </span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#Are there any instances of an EMPTY STRINGS instead of a gene symbol?</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="kw">any</span>(df<span class="op">$</span>SYMBOL <span class="op">==</span><span class="st"> &quot;&quot;</span>) <span class="co"># NA, therefore,possibility of NA values for absent gene symbols </span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="kw">any</span>(<span class="kw">is.na</span>(df<span class="op">$</span>SYMBOL)) <span class="co"># TRUE, verifying that some gene symbols are missing.</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="kw">sum</span>(<span class="kw">is.na</span>(df<span class="op">$</span>SYMBOL)) <span class="co">#  1205</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co"># Take a look at some of the probes with missing gene symbols</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14">df <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="st">  </span><span class="kw">filter</span>(<span class="kw">is.na</span>(df<span class="op">$</span>SYMBOL)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="st">  </span>head <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="st">  </span><span class="kw">print</span>(., <span class="dt">row.names =</span> F)</a></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIEFyZSB0aGVyZSBhbnkgaW5zdGFuY2VzIG9mIGEgc2luZ2xlIHNwYWNlIGluc3RlYWQgb2YgYSBnZW5lIHN5bWJvbD9cbmFueShkZiRTWU1CT0wgPT0gXCIgXCIpIyBOQSx0aGVyZWZvcmUsIHBvc3NpYmlsaXR5IG9mIE5BIHZhbHVlcyBmb3IgYWJzZW50IGdlbmUgc3ltYm9sc1xuYGBgIn0= -->
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co"># Are there any instances of a single space instead of a gene symbol?</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw">any</span>(df<span class="op">$</span>SYMBOL <span class="op">==</span><span class="st"> &quot; &quot;</span>)<span class="co"># NA,therefore, possibility of NA values for absent gene symbols</span></a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIE5BXG4ifQ== -->
+<pre><code>[1] NA</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBBcmUgdGhlcmUgYW55IGluc3RhbmNlcyBvZiBvbmUgb3IgbW9yZSBzcGFjZXMgdXNlZCBpbnN0ZWFkIG9mIGEgZ2VuZSBzeW1ib2w/XG5hbnkoZ3JlcGwocGF0dGVybiA9IFwiICtcIiwgZGYkU1lNQk9MKSkgIyBGQUxTRSBcbmBgYCJ9 -->
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># Are there any instances of one or more spaces used instead of a gene symbol?</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">any</span>(<span class="kw">grepl</span>(<span class="dt">pattern =</span> <span class="st">&quot; +&quot;</span>, df<span class="op">$</span>SYMBOL)) <span class="co"># FALSE </span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG4ifQ== -->
+<pre><code>[1] FALSE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0FyZSB0aGVyZSBhbnkgaW5zdGFuY2VzIG9mIGFuIEVNUFRZIFNUUklOR1MgaW5zdGVhZCBvZiBhIGdlbmUgc3ltYm9sP1xuYW55KGRmJFNZTUJPTCA9PSBcIlwiKSAjIE5BLCB0aGVyZWZvcmUscG9zc2liaWxpdHkgb2YgTkEgdmFsdWVzIGZvciBhYnNlbnQgZ2VuZSBzeW1ib2xzIFxuYGBgIn0= -->
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co">#Are there any instances of an EMPTY STRINGS instead of a gene symbol?</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">any</span>(df<span class="op">$</span>SYMBOL <span class="op">==</span><span class="st"> &quot;&quot;</span>) <span class="co"># NA, therefore,possibility of NA values for absent gene symbols </span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIE5BXG4ifQ== -->
+<pre><code>[1] NA</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW55KGlzLm5hKGRmJFNZTUJPTCkpICMgVFJVRSwgdmVyaWZ5aW5nIHRoYXQgc29tZSBnZW5lIHN5bWJvbHMgYXJlIG1pc3NpbmcuXG5gYGAifQ== -->
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">any</span>(<span class="kw">is.na</span>(df<span class="op">$</span>SYMBOL)) <span class="co"># TRUE, verifying that some gene symbols are missing.</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFRSVUVcbiJ9 -->
+<pre><code>[1] TRUE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtKGlzLm5hKGRmJFNZTUJPTCkpICMgIDEyMDVcbmBgYCJ9 -->
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">sum</span>(<span class="kw">is.na</span>(df<span class="op">$</span>SYMBOL)) <span class="co">#  1205</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEyMDVcbiJ9 -->
+<pre><code>[1] 1205</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBUYWtlIGEgbG9vayBhdCBzb21lIG9mIHRoZSBwcm9iZXMgd2l0aCBtaXNzaW5nIGdlbmUgc3ltYm9sc1xuZGYgJT4lXG4gIGZpbHRlcihpcy5uYShkZiRTWU1CT0wpKSAlPiVcbiAgaGVhZCAlPiVcbiAgcHJpbnQoLiwgcm93Lm5hbWVzID0gRilcbmBgYCJ9 -->
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># Take a look at some of the probes with missing gene symbols</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(<span class="kw">is.na</span>(df<span class="op">$</span>SYMBOL)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="st">  </span>head <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="st">  </span><span class="kw">print</span>(., <span class="dt">row.names =</span> F)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6OSwibnJvdyI6Nn0sInJkZiI6IlVrUllNZ3BZQ2dBQUFBSUFBd1VEQUFJREFBQUFCQUlBQUFBQkFBUUFDUUFBQUFGNEFBQURFd0FBQUFrQUFBQVFBQUFBQmdBRUFBa0FBQUFKTWpBeE1qWTFYMkYwQUFRQUNRQUFBQXN5TURNek1qWmZlRjloZEFBRUFBa0FBQUFKTWpBMU9UVTFYMkYwQUFRQUNRQUFBQWt5TURZMU5EaGZZWFFBQkFBSkFBQUFDVEl3TmpZMU9GOWhkQUFFQUFrQUFBQUpNakEyTmpVNVgyRjBBQUFBRUFBQUFBWUFBQUFKLy8vLy93QUFBQW4vLy8vL0FBQUFDZi8vLy84QUFBQUovLy8vL3dBQUFBbi8vLy8vQUFBQUNmLy8vLzhBQUFBUUFBQUFCZ0FBQUFuLy8vLy9BQUFBQ2YvLy8vOEFBQUFKLy8vLy93QUFBQW4vLy8vL0FBQUFDZi8vLy84QUFBQUovLy8vL3dBQUFBNEFBQUFHUDV3akFLOGxYdlUvbEtUQ3ZQNEFlenpBQUFBQUFBQUVQL3ZrM0xBRnZjcy9zQ25LQ2cyTFB6K09Qb2UxMkZNR0FBQUFEZ0FBQUFaQUFoNkdXWmdrQzBBQ0w1eS9CNDB1UUFJQUhIdGJzMEpBRkQ1RVNkMnR3VUFDMTJTRVJNNmVRQUlQTzc4Mm4yb0FBQUFPQUFBQUJqLzRTRGpJazR1dlArdGRHYWhVQ2x3OVhRb3pPNFk5WUVBS1AwZkNEOGxvUC9mc1VoM0tkTXcvOEk5TlNXRTVnd0FBQUE0QUFBQUdQOEwxNmxYQVJwMC8yZWd1QlJvb0hEL3YvLy8vLy9TYVAzSytXRk83SVo0L3c3RUV0aVI2QVQvVU5DZFREUW9KQUFBQURnQUFBQVkvMnY5aDc1akplRC9sT2hEc0VHQnFQL0FBQUFBQUFBQS9vSldjK1N2RUV6L2JoNUhXMFd3alArT243UllXdTdvQUFBQU9BQUFBQnNBWW5IbTdWcmZmd0J1bXVxaE9FakRBSFNtRTV5YmRPY0FIWjgxL0pjMkh3Qmk4a1RFY2lWREFHdmlCVGkyYm9nQUFCQUlBQUFBQkFBUUFDUUFBQUFWdVlXMWxjd0FBQUJBQUFBQUpBQVFBQ1FBQUFBZFFVazlDUlVsRUFBUUFDUUFBQUFaVFdVMUNUMHdBQkFBSkFBQUFDRWRGVGtWT1FVMUZBQVFBQ1FBQUFBVnNiMmRHUXdBRUFBa0FBQUFIUVhabFJYaHdjZ0FFQUFrQUFBQUJkQUFFQUFrQUFBQUhVQzVXWVd4MVpRQUVBQWtBQUFBSllXUnFMbEF1Vm1Gc0FBUUFDUUFBQUFGQ0FBQUVBZ0FBQUFFQUJBQUpBQUFBQ1hKdmR5NXVZVzFsY3dBQUFBMEFBQUFDZ0FBQUFBQUFBQVlBQUFRQ0FBQUFBUUFFQUFrQUFBQUZZMnhoYzNNQUFBQVFBQUFBQVFBRUFBa0FBQUFLWkdGMFlTNW1jbUZ0WlFBQUFQNEFBQVFDQUFBQUFRQUVBQWtBQUFBSGIzQjBhVzl1Y3dBQUFoTUFBQUFIQUFBQUVBQUFBQUVBQkFBSkFBQUFBWElBQUFBS0FBQUFBUUFBQUFFQUFBQU9BQUFBQVVBa0FBQUFBQUFBQUFBQUVBQUFBQUVBQkFBSkFBQUFEM1Z1Ym1GdFpXUXRZMmgxYm1zdE13QUFBQW9BQUFBQkFBQUFBUUFBQUEwQUFBQUJBQUFBQmdBQUFBMEFBQUFCQUFBQUNRQUFCQUlBQUFML0FBQUFFQUFBQUFjQUJBQUpBQUFBQm1WdVoybHVaUUFFQUFrQUFBQUVaWFpoYkFBRUFBa0FBQUFLWm1sbkxtaGxhV2RvZEFBRUFBa0FBQUFGYkdGaVpXd0FCQUFKQUFBQURuSnZkMjVoYldWekxuQnlhVzUwQUFRQUNRQUFBQXB5YjNkekxuUnZkR0ZzQUFRQUNRQUFBQXBqYjJ4ekxuUnZkR0ZzQUFBQS9nQUFBUDQ9In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["PROBEID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SYMBOL"],"name":[2],"type":["chr"],"align":["left"]},{"label":["GENENAME"],"name":[3],"type":["chr"],"align":["left"]},{"label":["logFC"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["AveExpr"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["t"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["P.Value"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["adj.P.Val"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["B"],"name":[9],"type":["dbl"],"align":["right"]}],"data":[{"1":"201265_at","2":"NA","3":"NA","4":"2.747727e-02","5":"2.264905","6":"1.517632e+00","7":"0.148129742","8":"0.42183731","9":"-6.152808","_rn_":"1"},{"1":"203326_x_at","2":"NA","3":"NA","4":"2.015976e-02","5":"2.273248","6":"8.551148e-01","7":"0.404796128","8":"0.66333815","9":"-6.912821","_rn_":"2"},{"1":"205955_at","2":"NA","3":"NA","4":"4.440892e-16","5":"2.250054","6":"4.126810e-13","7":"1.000000000","8":"1.00000000","9":"-7.290546","_rn_":"3"},{"1":"206548_at","2":"NA","3":"NA","4":"1.743375e+00","5":"5.060807","6":"3.280899e+00","7":"0.004576058","8":"0.03239146","9":"-2.925685","_rn_":"4"},{"1":"206658_at","2":"NA","3":"NA","4":"6.313765e-02","5":"2.355172","6":"1.495195e+00","7":"0.153839673","8":"0.43014952","9":"-6.184148","_rn_":"5"},{"1":"206659_at","2":"NA","3":"NA","4":"1.476770e-02","5":"2.257438","6":"1.034986e+00","7":"0.315683204","8":"0.61424879","9":"-6.742681","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[9]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3091,16 +3152,28 @@ function myFunction(id) {
 <h2>Remove the probes that do not have a proper gene symbols</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYyIDwtIGZpbHRlcihkZiwgIWlzLm5hKGRmJFNZTUJPTCkpXG5ucm93KGRmKSAjIDI0NTAxXG5ucm93KGRmMikgIyAyMzI5NlxuXG4jIHByb3BvcnRpb24gb2YgdGhvc2Ugd2l0aCBtaXNzaW5nIHN5bWJvbHNcbnBjIDwtIHN1bShpcy5uYShkZiRTWU1CT0wpKS8gbGVuZ3RoKGRmJFNZTUJPTCkgKiAxMDBcbnBjIDwtIHJvdW5kKHBjLCBkaWdpdHMgPSAxKVxucGFzdGUwKHBjLCBcIiVcIikgIyBcIjQuOSAlXCJcblxuYGBgIn0= -->
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">df2 &lt;-<span class="st"> </span><span class="kw">filter</span>(df, <span class="op">!</span><span class="kw">is.na</span>(df<span class="op">$</span>SYMBOL))</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">nrow</span>(df) <span class="co"># 24501</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw">nrow</span>(df2) <span class="co"># 23296</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co"># proportion of those with missing symbols</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">pc &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">is.na</span>(df<span class="op">$</span>SYMBOL))<span class="op">/</span><span class="st"> </span><span class="kw">length</span>(df<span class="op">$</span>SYMBOL) <span class="op">*</span><span class="st"> </span><span class="dv">100</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">pc &lt;-<span class="st"> </span><span class="kw">round</span>(pc, <span class="dt">digits =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="kw">paste0</span>(pc, <span class="st">&quot;%&quot;</span>) <span class="co"># &quot;4.9 %&quot;</span></a></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYyIDwtIGZpbHRlcihkZiwgIWlzLm5hKGRmJFNZTUJPTCkpXG5ucm93KGRmKSAjIDI0NTAxXG5gYGAifQ== -->
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">df2 &lt;-<span class="st"> </span><span class="kw">filter</span>(df, <span class="op">!</span><span class="kw">is.na</span>(df<span class="op">$</span>SYMBOL))</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw">nrow</span>(df) <span class="co"># 24501</span></a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDI0NTAxXG4ifQ== -->
+<pre><code>[1] 24501</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubnJvdyhkZjIpICMgMjMyOTZcbmBgYCJ9 -->
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">nrow</span>(df2) <span class="co"># 23296</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDIzMjk2XG4ifQ== -->
+<pre><code>[1] 23296</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBwcm9wb3J0aW9uIG9mIHRob3NlIHdpdGggbWlzc2luZyBzeW1ib2xzXG5wYyA8LSBzdW0oaXMubmEoZGYkU1lNQk9MKSkvIGxlbmd0aChkZiRTWU1CT0wpICogMTAwXG5wYyA8LSByb3VuZChwYywgZGlnaXRzID0gMSlcbnBhc3RlMChwYywgXCIlXCIpICMgXCI0LjkgJVwiXG5gYGAifQ== -->
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co"># proportion of those with missing symbols</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">pc &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">is.na</span>(df<span class="op">$</span>SYMBOL))<span class="op">/</span><span class="st"> </span><span class="kw">length</span>(df<span class="op">$</span>SYMBOL) <span class="op">*</span><span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3">pc &lt;-<span class="st"> </span><span class="kw">round</span>(pc, <span class="dt">digits =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="kw">paste0</span>(pc, <span class="st">&quot;%&quot;</span>) <span class="co"># &quot;4.9 %&quot;</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiNC45JVwiXG4ifQ== -->
+<pre><code>[1] &quot;4.9%&quot;</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3108,23 +3181,39 @@ function myFunction(id) {
 <h2>Are any Gene symbols duplicated?</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW55KGR1cGxpY2F0ZWQoZGYyJFNZTUJPTCkpICAjIFRSVUVcbnN5bWIudW5pcSA8LSB1bmlxdWUoZGYyJFNZTUJPTCApIFxuIyBOdW1iZXIgb2YgdW5pcXVlIGdlbmUgc3ltYm9sc1xubGVuZ3RoKHN5bWIudW5pcSkgIyAxMzc2OCBcbiMgTnVtYmVyIG9mIGR1cGxpY2F0ZWQgZ2VuZSBzeW1ib2xzXG5zdW0oZHVwbGljYXRlZChkZjIkU1lNQk9MKSkgIyA5NTI4XG5cbmBgYCJ9 -->
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">any</span>(<span class="kw">duplicated</span>(df2<span class="op">$</span>SYMBOL))  <span class="co"># TRUE</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">symb.uniq &lt;-<span class="st"> </span><span class="kw">unique</span>(df2<span class="op">$</span>SYMBOL ) </a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># Number of unique gene symbols</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw">length</span>(symb.uniq) <span class="co"># 13768 </span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co"># Number of duplicated gene symbols</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw">sum</span>(<span class="kw">duplicated</span>(df2<span class="op">$</span>SYMBOL)) <span class="co"># 9528</span></a></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW55KGR1cGxpY2F0ZWQoZGYyJFNZTUJPTCkpICAjIFRSVUVcbmBgYCJ9 -->
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">any</span>(<span class="kw">duplicated</span>(df2<span class="op">$</span>SYMBOL))  <span class="co"># TRUE</span></a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFRSVUVcbiJ9 -->
+<pre><code>[1] TRUE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3ltYi51bmlxIDwtIHVuaXF1ZShkZjIkU1lNQk9MICkgXG4jIE51bWJlciBvZiB1bmlxdWUgZ2VuZSBzeW1ib2xzXG5sZW5ndGgoc3ltYi51bmlxKSAjIDEzNzY4IFxuYGBgIn0= -->
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">symb.uniq &lt;-<span class="st"> </span><span class="kw">unique</span>(df2<span class="op">$</span>SYMBOL ) </a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="co"># Number of unique gene symbols</span></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="kw">length</span>(symb.uniq) <span class="co"># 13768 </span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEzNzY4XG4ifQ== -->
+<pre><code>[1] 13768</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBOdW1iZXIgb2YgZHVwbGljYXRlZCBnZW5lIHN5bWJvbHNcbnN1bShkdXBsaWNhdGVkKGRmMiRTWU1CT0wpKSAjIDk1MjhcbmBgYCJ9 -->
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co"># Number of duplicated gene symbols</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">sum</span>(<span class="kw">duplicated</span>(df2<span class="op">$</span>SYMBOL)) <span class="co"># 9528</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDk1MjhcbiJ9 -->
+<pre><code>[1] 9528</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYzIDwtIHN1YnNldChkZjIpICU+JSBcbiAgZHBseXI6OnNlbGVjdChTWU1CT0wsIGFkai5QLlZhbCwgUC5WYWx1ZSwgbG9nRkMpXG5ucm93KGRmMykgIzIzMjk2XG5gYGAifQ== -->
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">df3 &lt;-<span class="st"> </span><span class="kw">subset</span>(df2) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(SYMBOL, adj.P.Val, P.Value, logFC)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">nrow</span>(df3) <span class="co">#23296</span></a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">df3 &lt;-<span class="st"> </span><span class="kw">subset</span>(df2) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(SYMBOL, adj.P.Val, P.Value, logFC)</a>
+<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="kw">nrow</span>(df3) <span class="co">#23296</span></a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDIzMjk2XG4ifQ== -->
+<pre><code>[1] 23296</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3133,11 +3222,14 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJvYmVzLnVwIDwtIGRmMyAlPiVcbiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiVcbiAgZmlsdGVyKGxvZ0ZDID49IDEpIFxubnJvdyhwcm9iZXMudXApICMgNzMyXG5gYGAifQ== -->
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">probes.up &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1</span>) </a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw">nrow</span>(probes.up) <span class="co"># 732</span></a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">probes.up &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1</span>) </a>
+<a class="sourceLine" id="cb34-4" data-line-number="4"><span class="kw">nrow</span>(probes.up) <span class="co"># 732</span></a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDczMlxuIn0= -->
+<pre><code>[1] 732</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3145,18 +3237,33 @@ function myFunction(id) {
 <h2>Up-regulated probes associated with unique gene symbols</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2VuZXMudXAgPC0gZGYzICU+JVxuICBmaWx0ZXIoYWRqLlAuVmFsIDw9IDAuMDEpICU+JVxuICBmaWx0ZXIobG9nRkMgPj0gMSkgJT4lXG4gIGRpc3RpbmN0KFNZTUJPTClcbiAgbnJvdyhnZW5lcy51cCkgIyA1MTVcbiAgXG4gIGFueShkdXBsaWNhdGVkKGdlbmVzLnVwKSkgI0ZBTFNFXG4gIFxuICBnZW5lcy51cC51bmlxIDwtIHNvcnQoZ2VuZXMudXAkU1lNQk9MKVxuICBoZWFkKGdlbmVzLnVwLnVuaXEpXG4gIFxuYGBgIn0= -->
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">genes.up &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw">distinct</span>(SYMBOL)</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">  <span class="kw">nrow</span>(genes.up) <span class="co"># 515</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">  </a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">  <span class="kw">any</span>(<span class="kw">duplicated</span>(genes.up)) <span class="co">#FALSE</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8">  </a>
-<a class="sourceLine" id="cb10-9" data-line-number="9">  genes.up.uniq &lt;-<span class="st"> </span><span class="kw">sort</span>(genes.up<span class="op">$</span>SYMBOL)</a>
-<a class="sourceLine" id="cb10-10" data-line-number="10">  <span class="kw">head</span>(genes.up.uniq)</a>
-<a class="sourceLine" id="cb10-11" data-line-number="11">  </a></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2VuZXMudXAgPC0gZGYzICU+JVxuICBmaWx0ZXIoYWRqLlAuVmFsIDw9IDAuMDEpICU+JVxuICBmaWx0ZXIobG9nRkMgPj0gMSkgJT4lXG4gIGRpc3RpbmN0KFNZTUJPTClcbiAgbnJvdyhnZW5lcy51cCkgIyA1MTVcbmBgYCJ9 -->
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">genes.up &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb36-4" data-line-number="4"><span class="st">  </span><span class="kw">distinct</span>(SYMBOL)</a>
+<a class="sourceLine" id="cb36-5" data-line-number="5">  <span class="kw">nrow</span>(genes.up) <span class="co"># 515</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDUxNVxuIn0= -->
+<pre><code>[1] 515</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbiAgYW55KGR1cGxpY2F0ZWQoZ2VuZXMudXApKSAjRkFMU0VcbmBgYCJ9 -->
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">  </a>
+<a class="sourceLine" id="cb38-2" data-line-number="2">  <span class="kw">any</span>(<span class="kw">duplicated</span>(genes.up)) <span class="co">#FALSE</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG4ifQ== -->
+<pre><code>[1] FALSE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbiAgZ2VuZXMudXAudW5pcSA8LSBzb3J0KGdlbmVzLnVwJFNZTUJPTClcbiAgaGVhZChnZW5lcy51cC51bmlxKVxuYGBgIn0= -->
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">  </a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">  genes.up.uniq &lt;-<span class="st"> </span><span class="kw">sort</span>(genes.up<span class="op">$</span>SYMBOL)</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3">  <span class="kw">head</span>(genes.up.uniq)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiQUJDQTFcIiBcIkFCQ0MzXCIgXCJBQkNHMVwiIFwiQUJUQjJcIiBcIkFDS1IzXCIgXCJBQ1NMNFwiXG4ifQ== -->
+<pre><code>[1] &quot;ABCA1&quot; &quot;ABCC3&quot; &quot;ABCG1&quot; &quot;ABTB2&quot; &quot;ACKR3&quot; &quot;ACSL4&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbmBgYCJ9 -->
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">  </a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3165,12 +3272,20 @@ function myFunction(id) {
 <h2>Save file</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3V0LmZpbGUudXAgPC0gcGFzdGUwKFwiZGF0YS5vdXQvXCIsIHRoaXMuc2NyaXB0LCBcIi5nZW5lcy51cC51bmlxLnR4dFwiKVxub3V0LmZpbGUudXBcbmNhdChnZW5lcy51cC51bmlxLCBmaWxlID0gb3V0LmZpbGUudXAsIHNlcCA9IFwiXFxuXCIpXG5jYXQoXCJGaWxlIHNhdmVkOlwiLCBvdXQuZmlsZS51cClcbmBgYCJ9 -->
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">out.file.up &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;data.out/&quot;</span>, this.script, <span class="st">&quot;.genes.up.uniq.txt&quot;</span>)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">out.file.up</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">cat</span>(genes.up.uniq, <span class="dt">file =</span> out.file.up, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw">cat</span>(<span class="st">&quot;File saved:&quot;</span>, out.file.up)</a></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3V0LmZpbGUudXAgPC0gcGFzdGUwKFwiZGF0YS5vdXQvXCIsIHRoaXMuc2NyaXB0LCBcIi5nZW5lcy51cC51bmlxLnR4dFwiKVxub3V0LmZpbGUudXBcbmBgYCJ9 -->
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">out.file.up &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;data.out/&quot;</span>, this.script, <span class="st">&quot;.genes.up.uniq.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb43-2" data-line-number="2">out.file.up</a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiZGF0YS5vdXQvQS1CVUdTLTIzLU1QLmFuYWx5c2lzLnJtZC5nZW5lcy51cC51bmlxLnR4dFwiXG4ifQ== -->
+<pre><code>[1] &quot;data.out/A-BUGS-23-MP.analysis.rmd.genes.up.uniq.txt&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0KGdlbmVzLnVwLnVuaXEsIGZpbGUgPSBvdXQuZmlsZS51cCwgc2VwID0gXCJcXG5cIilcbmNhdChcIkZpbGUgc2F2ZWQ6XCIsIG91dC5maWxlLnVwKVxuYGBgIn0= -->
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">cat</span>(genes.up.uniq, <span class="dt">file =</span> out.file.up, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="kw">cat</span>(<span class="st">&quot;File saved:&quot;</span>, out.file.up)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRmlsZSBzYXZlZDogZGF0YS5vdXQvQS1CVUdTLTIzLU1QLmFuYWx5c2lzLnJtZC5nZW5lcy51cC51bmlxLnR4dFxuIn0= -->
+<pre><code>File saved: data.out/A-BUGS-23-MP.analysis.rmd.genes.up.uniq.txt</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3179,11 +3294,14 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJvYmVzLmRvd24gPC0gZGYzICU+JVxuICBmaWx0ZXIoYWRqLlAuVmFsIDw9IDAuMDEpICU+JVxuICBmaWx0ZXIobG9nRkMgPD0gLTEpIFxubnJvdyhwcm9iZXMuZG93bikgIyA5OTdcbmBgYCJ9 -->
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">probes.down &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span><span class="dv">-1</span>) </a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw">nrow</span>(probes.down) <span class="co"># 997</span></a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">probes.down &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb47-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb47-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span><span class="dv">-1</span>) </a>
+<a class="sourceLine" id="cb47-4" data-line-number="4"><span class="kw">nrow</span>(probes.down) <span class="co"># 997</span></a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDk5N1xuIn0= -->
+<pre><code>[1] 997</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3191,18 +3309,33 @@ function myFunction(id) {
 <h2>Down-regulated probes associated with unique gene symbols</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5nZW5lcy5kb3duIDwtIGRmMyAlPiVcbiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiVcbiAgZmlsdGVyKGxvZ0ZDIDw9IC0xKSAlPiVcbiAgZGlzdGluY3QoU1lNQk9MKVxuICBucm93KGdlbmVzLmRvd24pICMgIDgwMlxuICBcbiAgYW55KGR1cGxpY2F0ZWQoZ2VuZXMuZG93bikpICMgRkFMU0VcbiAgZ2VuZXMuZG93bi51bmlxIDwtIHNvcnQoZ2VuZXMuZG93biRTWU1CT0wpXG4gIGhlYWQoZ2VuZXMuZG93bi51bmlxKVxuICBcbmBgYCJ9 -->
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">genes.down &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span><span class="dv">-1</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span><span class="kw">distinct</span>(SYMBOL)</a>
-<a class="sourceLine" id="cb13-6" data-line-number="6">  <span class="kw">nrow</span>(genes.down) <span class="co">#  802</span></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7">  </a>
-<a class="sourceLine" id="cb13-8" data-line-number="8">  <span class="kw">any</span>(<span class="kw">duplicated</span>(genes.down)) <span class="co"># FALSE</span></a>
-<a class="sourceLine" id="cb13-9" data-line-number="9">  genes.down.uniq &lt;-<span class="st"> </span><span class="kw">sort</span>(genes.down<span class="op">$</span>SYMBOL)</a>
-<a class="sourceLine" id="cb13-10" data-line-number="10">  <span class="kw">head</span>(genes.down.uniq)</a>
-<a class="sourceLine" id="cb13-11" data-line-number="11">  </a></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5nZW5lcy5kb3duIDwtIGRmMyAlPiVcbiAgZmlsdGVyKGFkai5QLlZhbCA8PSAwLjAxKSAlPiVcbiAgZmlsdGVyKGxvZ0ZDIDw9IC0xKSAlPiVcbiAgZGlzdGluY3QoU1lNQk9MKVxuICBucm93KGdlbmVzLmRvd24pICMgIDgwMlxuYGBgIn0= -->
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">genes.down &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb49-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb49-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span><span class="dv">-1</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb49-5" data-line-number="5"><span class="st">  </span><span class="kw">distinct</span>(SYMBOL)</a>
+<a class="sourceLine" id="cb49-6" data-line-number="6">  <span class="kw">nrow</span>(genes.down) <span class="co">#  802</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDgwMlxuIn0= -->
+<pre><code>[1] 802</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbiAgYW55KGR1cGxpY2F0ZWQoZ2VuZXMuZG93bikpICMgRkFMU0VcbmBgYCJ9 -->
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">  </a>
+<a class="sourceLine" id="cb51-2" data-line-number="2">  <span class="kw">any</span>(<span class="kw">duplicated</span>(genes.down)) <span class="co"># FALSE</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG4ifQ== -->
+<pre><code>[1] FALSE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBnZW5lcy5kb3duLnVuaXEgPC0gc29ydChnZW5lcy5kb3duJFNZTUJPTClcbiAgaGVhZChnZW5lcy5kb3duLnVuaXEpXG5gYGAifQ== -->
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">  genes.down.uniq &lt;-<span class="st"> </span><span class="kw">sort</span>(genes.down<span class="op">$</span>SYMBOL)</a>
+<a class="sourceLine" id="cb53-2" data-line-number="2">  <span class="kw">head</span>(genes.down.uniq)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiQUFHQUJcIiBcIkFCQ0YyXCIgXCJBQkhEMlwiIFwiQUJIRDNcIiBcIkFCSEQ2XCIgXCJBQ0FETVwiXG4ifQ== -->
+<pre><code>[1] &quot;AAGAB&quot; &quot;ABCF2&quot; &quot;ABHD2&quot; &quot;ABHD3&quot; &quot;ABHD6&quot; &quot;ACADM&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbmBgYCJ9 -->
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">  </a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3211,13 +3344,21 @@ function myFunction(id) {
 <h2>Save file</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5vdXQuZmlsZS5kb3duIDwtIHBhc3RlMChcImRhdGEub3V0L1wiLCB0aGlzLnNjcmlwdCwgXCIuZ2VuZXMuZG93bi51bmlxLnR4dFwiKVxub3V0LmZpbGUuZG93blxuY2F0KGdlbmVzLmRvd24udW5pcSwgZmlsZSA9IG91dC5maWxlLmRvd24sIHNlcCA9IFwiXFxuXCIpXG5jYXQoXCJGaWxlIHNhdmVkOlwiLCBvdXQuZmlsZS5kb3duKVxuXG5gYGAifQ== -->
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">out.file.down &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;data.out/&quot;</span>, this.script, <span class="st">&quot;.genes.down.uniq.txt&quot;</span>)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">out.file.down</a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="kw">cat</span>(genes.down.uniq, <span class="dt">file =</span> out.file.down, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="kw">cat</span>(<span class="st">&quot;File saved:&quot;</span>, out.file.down)</a></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5vdXQuZmlsZS5kb3duIDwtIHBhc3RlMChcImRhdGEub3V0L1wiLCB0aGlzLnNjcmlwdCwgXCIuZ2VuZXMuZG93bi51bmlxLnR4dFwiKVxub3V0LmZpbGUuZG93blxuYGBgIn0= -->
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb56-2" data-line-number="2">out.file.down &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;data.out/&quot;</span>, this.script, <span class="st">&quot;.genes.down.uniq.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb56-3" data-line-number="3">out.file.down</a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiZGF0YS5vdXQvQS1CVUdTLTIzLU1QLmFuYWx5c2lzLnJtZC5nZW5lcy5kb3duLnVuaXEudHh0XCJcbiJ9 -->
+<pre><code>[1] &quot;data.out/A-BUGS-23-MP.analysis.rmd.genes.down.uniq.txt&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0KGdlbmVzLmRvd24udW5pcSwgZmlsZSA9IG91dC5maWxlLmRvd24sIHNlcCA9IFwiXFxuXCIpXG5jYXQoXCJGaWxlIHNhdmVkOlwiLCBvdXQuZmlsZS5kb3duKVxuYGBgIn0= -->
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">cat</span>(genes.down.uniq, <span class="dt">file =</span> out.file.down, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb58-2" data-line-number="2"><span class="kw">cat</span>(<span class="st">&quot;File saved:&quot;</span>, out.file.down)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRmlsZSBzYXZlZDogZGF0YS5vdXQvQS1CVUdTLTIzLU1QLmFuYWx5c2lzLnJtZC5nZW5lcy5kb3duLnVuaXEudHh0XG4ifQ== -->
+<pre><code>File saved: data.out/A-BUGS-23-MP.analysis.rmd.genes.down.uniq.txt</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3225,25 +3366,45 @@ function myFunction(id) {
 <h2>Regulated genes as a function of parameters</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDcmVhdGUgZW1wdHkgbWF0cmljZXNcbnAudmFsdWUuY3V0b2ZmcyA8LSBjKDAuMDAxLCAwLjAwNSwgMC4wMSwgMC4wNSlcbmZjLmN1dG9mZnMudXAgPC0gYygwLjUsIDEsIDEuNSwgMilcbnBhcmFtZXRlci50YWJsZS51cCA8LSBtYXRyaXgocmVwKE5BLCAobGVuZ3RoKHAudmFsdWUuY3V0b2ZmcykgKiBsZW5ndGgoZmMuY3V0b2Zmcy51cCkpKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5jb2wgPSBsZW5ndGgoZmMuY3V0b2Zmcy51cCksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkaW1uYW1lcyA9IGxpc3QoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFzLmNoYXJhY3RlcihwLnZhbHVlLmN1dG9mZnMpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhcy5jaGFyYWN0ZXIoZmMuY3V0b2Zmcy51cCkpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICApXG5wYXJhbWV0ZXIudGFibGUudXAgXG5cbmZjLmN1dG9mZnMuZG93biA8LSBmYy5jdXRvZmZzLnVwKi0xXG5mYy5jdXRvZmZzLmRvd25cbnBhcmFtZXRlci50YWJsZS5kb3duIDwtIHBhcmFtZXRlci50YWJsZS51cCAlPiVcbiAgc2V0X2NvbG5hbWVzKGZjLmN1dG9mZnMuZG93bilcblxucGFyYW1ldGVyLnRhYmxlLmRvd25cbmBgYCJ9 -->
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># Create empty matrices</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">p.value.cutoffs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.001</span>, <span class="fl">0.005</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>)</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">fc.cutoffs.up &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">parameter.table.up &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="ot">NA</span>, (<span class="kw">length</span>(p.value.cutoffs) <span class="op">*</span><span class="st"> </span><span class="kw">length</span>(fc.cutoffs.up))),</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">                                 <span class="dt">ncol =</span> <span class="kw">length</span>(fc.cutoffs.up),</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">                                 <span class="dt">dimnames =</span> <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb15-7" data-line-number="7">                                <span class="kw">as.character</span>(p.value.cutoffs),</a>
-<a class="sourceLine" id="cb15-8" data-line-number="8">                                <span class="kw">as.character</span>(fc.cutoffs.up)),</a>
-<a class="sourceLine" id="cb15-9" data-line-number="9">                                )</a>
-<a class="sourceLine" id="cb15-10" data-line-number="10">parameter.table.up </a>
-<a class="sourceLine" id="cb15-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb15-12" data-line-number="12">fc.cutoffs.down &lt;-<span class="st"> </span>fc.cutoffs.up<span class="op">*-</span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb15-13" data-line-number="13">fc.cutoffs.down</a>
-<a class="sourceLine" id="cb15-14" data-line-number="14">parameter.table.down &lt;-<span class="st"> </span>parameter.table.up <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="st">  </span><span class="kw">set_colnames</span>(fc.cutoffs.down)</a>
-<a class="sourceLine" id="cb15-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb15-17" data-line-number="17">parameter.table.down</a></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDcmVhdGUgZW1wdHkgbWF0cmljZXNcbnAudmFsdWUuY3V0b2ZmcyA8LSBjKDAuMDAxLCAwLjAwNSwgMC4wMSwgMC4wNSlcbmZjLmN1dG9mZnMudXAgPC0gYygwLjUsIDEsIDEuNSwgMilcbnBhcmFtZXRlci50YWJsZS51cCA8LSBtYXRyaXgocmVwKE5BLCAobGVuZ3RoKHAudmFsdWUuY3V0b2ZmcykgKiBsZW5ndGgoZmMuY3V0b2Zmcy51cCkpKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5jb2wgPSBsZW5ndGgoZmMuY3V0b2Zmcy51cCksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkaW1uYW1lcyA9IGxpc3QoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFzLmNoYXJhY3RlcihwLnZhbHVlLmN1dG9mZnMpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhcy5jaGFyYWN0ZXIoZmMuY3V0b2Zmcy51cCkpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICApXG5wYXJhbWV0ZXIudGFibGUudXAgXG5gYGAifQ== -->
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="co"># Create empty matrices</span></a>
+<a class="sourceLine" id="cb60-2" data-line-number="2">p.value.cutoffs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.001</span>, <span class="fl">0.005</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>)</a>
+<a class="sourceLine" id="cb60-3" data-line-number="3">fc.cutoffs.up &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb60-4" data-line-number="4">parameter.table.up &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="ot">NA</span>, (<span class="kw">length</span>(p.value.cutoffs) <span class="op">*</span><span class="st"> </span><span class="kw">length</span>(fc.cutoffs.up))),</a>
+<a class="sourceLine" id="cb60-5" data-line-number="5">                                 <span class="dt">ncol =</span> <span class="kw">length</span>(fc.cutoffs.up),</a>
+<a class="sourceLine" id="cb60-6" data-line-number="6">                                 <span class="dt">dimnames =</span> <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb60-7" data-line-number="7">                                <span class="kw">as.character</span>(p.value.cutoffs),</a>
+<a class="sourceLine" id="cb60-8" data-line-number="8">                                <span class="kw">as.character</span>(fc.cutoffs.up)),</a>
+<a class="sourceLine" id="cb60-9" data-line-number="9">                                )</a>
+<a class="sourceLine" id="cb60-10" data-line-number="10">parameter.table.up </a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgMC41ICAxIDEuNSAgMlxuMC4wMDEgIE5BIE5BICBOQSBOQVxuMC4wMDUgIE5BIE5BICBOQSBOQVxuMC4wMSAgIE5BIE5BICBOQSBOQVxuMC4wNSAgIE5BIE5BICBOQSBOQVxuIn0= -->
+<pre><code>      0.5  1 1.5  2
+0.001  NA NA  NA NA
+0.005  NA NA  NA NA
+0.01   NA NA  NA NA
+0.05   NA NA  NA NA</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmMuY3V0b2Zmcy5kb3duIDwtIGZjLmN1dG9mZnMudXAqLTFcbmZjLmN1dG9mZnMuZG93blxuYGBgIn0= -->
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">fc.cutoffs.down &lt;-<span class="st"> </span>fc.cutoffs.up<span class="op">*-</span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb62-2" data-line-number="2">fc.cutoffs.down</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIC0wLjUgLTEuMCAtMS41IC0yLjBcbiJ9 -->
+<pre><code>[1] -0.5 -1.0 -1.5 -2.0</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGFyYW1ldGVyLnRhYmxlLmRvd24gPC0gcGFyYW1ldGVyLnRhYmxlLnVwICU+JVxuICBzZXRfY29sbmFtZXMoZmMuY3V0b2Zmcy5kb3duKVxuXG5wYXJhbWV0ZXIudGFibGUuZG93blxuYGBgIn0= -->
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">parameter.table.down &lt;-<span class="st"> </span>parameter.table.up <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb64-2" data-line-number="2"><span class="st">  </span><span class="kw">set_colnames</span>(fc.cutoffs.down)</a>
+<a class="sourceLine" id="cb64-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb64-4" data-line-number="4">parameter.table.down</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgLTAuNSAtMSAtMS41IC0yXG4wLjAwMSAgIE5BIE5BICAgTkEgTkFcbjAuMDA1ICAgTkEgTkEgICBOQSBOQVxuMC4wMSAgICBOQSBOQSAgIE5BIE5BXG4wLjA1ICAgIE5BIE5BICAgTkEgTkFcbiJ9 -->
+<pre><code>      -0.5 -1 -1.5 -2
+0.001   NA NA   NA NA
+0.005   NA NA   NA NA
+0.01    NA NA   NA NA
+0.05    NA NA   NA NA</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3251,18 +3412,25 @@ function myFunction(id) {
 <h2>Up-regulated genes as a function of parameters</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yIChpIGluIHNlcV9hbG9uZyhmYy5jdXRvZmZzLnVwKSkge1xuICBmb3IgKGogaW4gc2VxX2Fsb25nKHAudmFsdWUuY3V0b2ZmcykpIHtcbiAgICBwYXJhbWV0ZXIudGFibGUudXBbaSxqXSA8LSBkZjMgJT4lXG4gICAgICBmaWx0ZXIoYWRqLlAuVmFsIDw9IHAudmFsdWUuY3V0b2Zmc1tpXSkgJT4lXG4gICAgICBmaWx0ZXIobG9nRkMgPj0gZmMuY3V0b2Zmcy51cFtqXSkgJT4lXG4gICAgICBkaXN0aW5jdChTWU1CT0wpICU+JVxuICAgICAgbnJvd1xuICB9XG59XG5wYXJhbWV0ZXIudGFibGUudXBcblxuYGBgIn0= -->
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(fc.cutoffs.up)) {</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">  <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(p.value.cutoffs)) {</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">    parameter.table.up[i,j] &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">      </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span>p.value.cutoffs[i]) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">      </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span>fc.cutoffs.up[j]) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="st">      </span><span class="kw">distinct</span>(SYMBOL) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="st">      </span>nrow</a>
-<a class="sourceLine" id="cb16-8" data-line-number="8">  }</a>
-<a class="sourceLine" id="cb16-9" data-line-number="9">}</a>
-<a class="sourceLine" id="cb16-10" data-line-number="10">parameter.table.up</a></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yIChpIGluIHNlcV9hbG9uZyhmYy5jdXRvZmZzLnVwKSkge1xuICBmb3IgKGogaW4gc2VxX2Fsb25nKHAudmFsdWUuY3V0b2ZmcykpIHtcbiAgICBwYXJhbWV0ZXIudGFibGUudXBbaSxqXSA8LSBkZjMgJT4lXG4gICAgICBmaWx0ZXIoYWRqLlAuVmFsIDw9IHAudmFsdWUuY3V0b2Zmc1tpXSkgJT4lXG4gICAgICBmaWx0ZXIobG9nRkMgPj0gZmMuY3V0b2Zmcy51cFtqXSkgJT4lXG4gICAgICBkaXN0aW5jdChTWU1CT0wpICU+JVxuICAgICAgbnJvd1xuICB9XG59XG5wYXJhbWV0ZXIudGFibGUudXBcbmBgYCJ9 -->
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(fc.cutoffs.up)) {</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2">  <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(p.value.cutoffs)) {</a>
+<a class="sourceLine" id="cb66-3" data-line-number="3">    parameter.table.up[i,j] &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb66-4" data-line-number="4"><span class="st">      </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span>p.value.cutoffs[i]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb66-5" data-line-number="5"><span class="st">      </span><span class="kw">filter</span>(logFC <span class="op">&gt;=</span><span class="st"> </span>fc.cutoffs.up[j]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb66-6" data-line-number="6"><span class="st">      </span><span class="kw">distinct</span>(SYMBOL) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb66-7" data-line-number="7"><span class="st">      </span>nrow</a>
+<a class="sourceLine" id="cb66-8" data-line-number="8">  }</a>
+<a class="sourceLine" id="cb66-9" data-line-number="9">}</a>
+<a class="sourceLine" id="cb66-10" data-line-number="10">parameter.table.up</a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgMC41ICAgMSAxLjUgICAyXG4wLjAwMSAyODkgMjY3IDIxOCAxNjhcbjAuMDA1IDUxMyA0MzkgMzM3IDIyN1xuMC4wMSAgNjI0IDUxNSAzODAgMjU1XG4wLjA1ICA5NzIgNjg5IDQ1MSAyODZcbiJ9 -->
+<pre><code>      0.5   1 1.5   2
+0.001 289 267 218 168
+0.005 513 439 337 227
+0.01  624 515 380 255
+0.05  972 689 451 286</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3270,19 +3438,26 @@ function myFunction(id) {
 <h2>Down-regulated genes a function of parameters</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yIChpIGluIHNlcV9hbG9uZyhmYy5jdXRvZmZzLmRvd24pKSB7XG4gIGZvciAoaiBpbiBzZXFfYWxvbmcocC52YWx1ZS5jdXRvZmZzKSkge1xuICAgIHBhcmFtZXRlci50YWJsZS5kb3duW2ksal0gPC0gZGYzICU+JVxuICAgICAgZmlsdGVyKGFkai5QLlZhbCA8PSBwLnZhbHVlLmN1dG9mZnNbaV0pICU+JVxuICAgICAgZmlsdGVyKGxvZ0ZDIDw9IGZjLmN1dG9mZnMuZG93bltqXSkgJT4lXG4gICAgICAgZGlzdGluY3QoU1lNQk9MKSAlPiVcbiAgICAgIG5yb3dcbiAgfVxuICBcbn1cbnBhcmFtZXRlci50YWJsZS5kb3duXG5cbmBgYCJ9 -->
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(fc.cutoffs.down)) {</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">  <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(p.value.cutoffs)) {</a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">    parameter.table.down[i,j] &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="st">      </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span>p.value.cutoffs[i]) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="st">      </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span>fc.cutoffs.down[j]) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="st">       </span><span class="kw">distinct</span>(SYMBOL) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="st">      </span>nrow</a>
-<a class="sourceLine" id="cb17-8" data-line-number="8">  }</a>
-<a class="sourceLine" id="cb17-9" data-line-number="9">  </a>
-<a class="sourceLine" id="cb17-10" data-line-number="10">}</a>
-<a class="sourceLine" id="cb17-11" data-line-number="11">parameter.table.down</a></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yIChpIGluIHNlcV9hbG9uZyhmYy5jdXRvZmZzLmRvd24pKSB7XG4gIGZvciAoaiBpbiBzZXFfYWxvbmcocC52YWx1ZS5jdXRvZmZzKSkge1xuICAgIHBhcmFtZXRlci50YWJsZS5kb3duW2ksal0gPC0gZGYzICU+JVxuICAgICAgZmlsdGVyKGFkai5QLlZhbCA8PSBwLnZhbHVlLmN1dG9mZnNbaV0pICU+JVxuICAgICAgZmlsdGVyKGxvZ0ZDIDw9IGZjLmN1dG9mZnMuZG93bltqXSkgJT4lXG4gICAgICAgZGlzdGluY3QoU1lNQk9MKSAlPiVcbiAgICAgIG5yb3dcbiAgfVxuICBcbn1cbnBhcmFtZXRlci50YWJsZS5kb3duXG5gYGAifQ== -->
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(fc.cutoffs.down)) {</a>
+<a class="sourceLine" id="cb68-2" data-line-number="2">  <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(p.value.cutoffs)) {</a>
+<a class="sourceLine" id="cb68-3" data-line-number="3">    parameter.table.down[i,j] &lt;-<span class="st"> </span>df3 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb68-4" data-line-number="4"><span class="st">      </span><span class="kw">filter</span>(adj.P.Val <span class="op">&lt;=</span><span class="st"> </span>p.value.cutoffs[i]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb68-5" data-line-number="5"><span class="st">      </span><span class="kw">filter</span>(logFC <span class="op">&lt;=</span><span class="st"> </span>fc.cutoffs.down[j]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb68-6" data-line-number="6"><span class="st">       </span><span class="kw">distinct</span>(SYMBOL) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb68-7" data-line-number="7"><span class="st">      </span>nrow</a>
+<a class="sourceLine" id="cb68-8" data-line-number="8">  }</a>
+<a class="sourceLine" id="cb68-9" data-line-number="9">  </a>
+<a class="sourceLine" id="cb68-10" data-line-number="10">}</a>
+<a class="sourceLine" id="cb68-11" data-line-number="11">parameter.table.down</a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgLTAuNSAgLTEgLTEuNSAgLTJcbjAuMDAxICA1MjQgNDQ3ICAzMDQgMTc2XG4wLjAwNSAgOTExIDY4MyAgNDE2IDIyMVxuMC4wMSAgMTEzMSA4MDIgIDQ1MyAyMzRcbjAuMDUgIDE3MDggOTgzICA1MTcgMjU1XG4ifQ== -->
+<pre><code>      -0.5  -1 -1.5  -2
+0.001  524 447  304 176
+0.005  911 683  416 221
+0.01  1131 802  453 234
+0.05  1708 983  517 255</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
