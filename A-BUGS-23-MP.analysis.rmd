@@ -1,5 +1,5 @@
 ---
-title: "Data analysis markdown document for Taileux et al. (Dendriditic cells)."
+title: "Data analysis markdown document for A-BUGS-23-MP."
 author: '9401'
 date: "04/06/2020"
 output:
@@ -76,7 +76,7 @@ stopifnot(this.script != "")
 
 ## Load data file
 ```{r}
-data.file <- "data.in/02_tailleux_18hrs_a.Rmd.tt.DC.2020_05_22.txt"
+data.file <- "data.in/02_tailleux_18hrs_a.Rmd.tt.MP.2020_05_22.txt"
 stopifnot(file.exists(data.file))
 df <- read.table(data.file, header = T, sep = "\t", quote = "", stringsAsFactors = F)
 # df <- read.delim(file = data.file, stringsAsFactors = F )
@@ -110,7 +110,7 @@ df %>%
   print(., row.names = F)
 ```
 
-## Remove the probes that do not have proper gene symbols
+## Remove the probes that do not have a proper gene symbols
 ```{r}
 df2 <- filter(df, !is.na(df$SYMBOL))
 nrow(df) # 24501
@@ -137,17 +137,15 @@ sum(duplicated(df2$SYMBOL)) # 9528
 ```{r}
 df3 <- subset(df2) %>% 
   dplyr::select(SYMBOL, adj.P.Val, P.Value, logFC)
-nrow(df3) # 23296
-
+nrow(df3) #23296
 ```
 
 ## Up-regulated probes 
 ```{r}
 probes.up <- df3 %>%
   filter(adj.P.Val <= 0.01) %>%
-  filter(logFC >= 1) %>%
-  nrow
-probes.up # 888
+  filter(logFC >= 1) 
+nrow(probes.up) # 732
 ```
 
 ## Up-regulated probes associated with unique gene symbols
@@ -156,9 +154,10 @@ genes.up <- df3 %>%
   filter(adj.P.Val <= 0.01) %>%
   filter(logFC >= 1) %>%
   distinct(SYMBOL)
-  nrow(genes.up) # 646
+  nrow(genes.up) # 515
   
-  any(duplicated(genes.up$SYMBOL)) #FALSE
+  any(duplicated(genes.up)) #FALSE
+  
   genes.up.uniq <- sort(genes.up$SYMBOL)
   head(genes.up.uniq)
   
@@ -170,17 +169,16 @@ out.file.up <- paste0("data.out/", this.script, ".genes.up.uniq.txt")
 out.file.up
 cat(genes.up.uniq, file = out.file.up, sep = "\n")
 cat("File saved:", out.file.up)
-
 ```
+
 
 ## Down-regulated probes 
 ```{r}
 probes.down <- df3 %>%
   filter(adj.P.Val <= 0.01) %>%
   filter(logFC <= -1) 
-nrow(probes.down) # 1002
+nrow(probes.down) # 997
 ```
-
 
 ## Down-regulated probes associated with unique gene symbols
 ```{r}
@@ -189,12 +187,12 @@ genes.down <- df3 %>%
   filter(adj.P.Val <= 0.01) %>%
   filter(logFC <= -1) %>%
   distinct(SYMBOL)
-  nrow(genes.down) # 792
+  nrow(genes.down) #  802
   
-  any(duplicated(genes.down$SYMBOL)) #FALSE
+  any(duplicated(genes.down)) # FALSE
+  genes.down.uniq <- sort(genes.down$SYMBOL)
+  head(genes.down.uniq)
   
-  genes.down.uniq<- sort(genes.down$SYMBOL)
-  head(genes.down)
 ```
 
 ## Save file
@@ -218,7 +216,7 @@ parameter.table.up <- matrix(rep(NA, (length(p.value.cutoffs) * length(fc.cutoff
                                 as.character(p.value.cutoffs),
                                 as.character(fc.cutoffs.up)),
                                 )
-parameter.table.up
+parameter.table.up 
 
 fc.cutoffs.down <- fc.cutoffs.up*-1
 fc.cutoffs.down
@@ -239,28 +237,24 @@ for (i in seq_along(fc.cutoffs.up)) {
       nrow
   }
 }
-
 parameter.table.up
+
 ```
 
 ## Down-regulated genes a function of parameters
 ```{r}
-
 for (i in seq_along(fc.cutoffs.down)) {
   for (j in seq_along(p.value.cutoffs)) {
     parameter.table.down[i,j] <- df3 %>%
       filter(adj.P.Val <= p.value.cutoffs[i]) %>%
       filter(logFC <= fc.cutoffs.down[j]) %>%
-      distinct(SYMBOL) %>%
+       distinct(SYMBOL) %>%
       nrow
   }
   
 }
-
 parameter.table.down
 
 ```
-
-
 
 
