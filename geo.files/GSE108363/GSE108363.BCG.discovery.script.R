@@ -1,5 +1,5 @@
 # Version info: R 3.2.3, Biobase 2.30.0, GEOquery 2.40.0, limma 3.26.8
-# R scripts generated  Fri Jul 3 10:43:57 EDT 2020
+# R scripts generated  Sun Jul 5 23:48:31 EDT 2020
 
 ################################################################
 #   Differential expression analysis with limma
@@ -18,8 +18,8 @@ fvarLabels(gset) <- make.names(fvarLabels(gset))
 
 # group names for all samples
 gsms <- paste0("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-               "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX01XXX",
-               "XXXXXXXX01XXXXXXXXXXX01XXXXXXXXXXX01XXXXXXXXXXXXXX",
+               "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX10XXX",
+               "XXXXXXXX10XXXXXXXXXXX10XXXXXXXXXXX10XXXXXXXXXXXXXX",
                "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
 sml <- c()
 for (i in 1:nchar(gsms)) { sml[i] <- substr(gsms,i,i) }
@@ -67,8 +67,8 @@ gset <- gset[[idx]]
 
 # group names for all samples in a series
 gsms <- paste0("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-               "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX01XXX",
-               "XXXXXXXX01XXXXXXXXXXX01XXXXXXXXXXX01XXXXXXXXXXXXXX",
+               "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX10XXX",
+               "XXXXXXXX10XXXXXXXXXXX10XXXXXXXXXXX10XXXXXXXXXXXXXX",
                "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
 sml <- c()
 for (i in 1:nchar(gsms)) { sml[i] <- substr(gsms,i,i) }
@@ -83,10 +83,10 @@ gset <- gset[ ,sel]
 ex <- exprs(gset)[ , order(sml)]
 sml <- sml[order(sml)]
 fl <- as.factor(sml)
-labels <- c("BCG_uninfected_discovery","BCG_infected_discovery")
+labels <- c("BCG_infected_discovery","BCG_uninfected_discovery")
 
 # set parameters and draw the plot
-palette(c("#f4dfdf","#dfeaf4", "#AABBCC"))
+palette(c("#dfeaf4","#f4dfdf", "#AABBCC"))
 dev.new(width=4+dim(gset)[[2]]/5, height=6)
 par(mar=c(2+round(max(nchar(sampleNames(gset)))/2),4,2,1))
 title <- paste ("GSE108363", '/', annotation(gset), " selected samples", sep ='')
