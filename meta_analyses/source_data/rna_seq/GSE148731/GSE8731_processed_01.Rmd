@@ -1,0 +1,325 @@
+---
+title: "Initial exploration of GSE148731 data"
+author: "A. Nohturfft"
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    df_print: paged
+    toc: yes
+    highlight: tango
+    number_sections: no
+    fig_caption: yes
+    theme: sandstone
+    code_folding: hide
+    toc_depth: 3
+    toc_float: yes
+---
+  
+<style>
+h1 {background: darkblue;color: white;padding-left: 7px;}
+h2 {color: darkblue;}
+.code-folding-btn {display: none;}
+</style>
+  
+<script>
+  function show_span(id) {
+    var x = document.getElementById(id);
+    if (x.style.display === 'none') {
+      x.style.display = 'inline';
+    } else {
+      x.style.display = 'none';
+    }
+  }
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.style.display === 'none') {
+    x.style.display = 'block';
+  } else {
+    x.style.display = 'none';
+  }
+}
+</script>
+
+## Objectives  
+
+1. Analyze processed fold change data for GSE148731 available on GEO (24 hr xlsx files)  
+2. Plot distriubtion of fold changes  
+3. Generate volcano plot  
+4. Save FC and p.values as text file for subsequent meta analysis  
+  
+```{r include=FALSE}
+# About <style> chunk above:
+# * provides custom formatting for level-1 and level-2 headers
+# * hides the 'code' buttons next to every code chunk in the html output; leaves only one 'code' button at the top of the html notebook.
+
+# About the <script> chunk at the top and bottom of the file:
+# * allows to insert <div>'s whose content visbility is toggled with a button.
+# * I use this to show/hide te output of sessionInfo() at the end of the script (see below)
+```
+
+
+```{r include=FALSE}
+# RMARKDOWN HELP
+# Rmarkdown:
+# https://bookdown.org/yihui/rmarkdown/
+
+# Chunk options:
+# https://yihui.name/knitr/options
+```
+
+```{r cleanup, warning=FALSE, message=FALSE, error=FALSE}
+# CHECK R VERSION
+# stopifnot(R.version.string == "R version 3.4.3 (2017-11-30)")
+
+# CLEANUP
+# Clear all variables:
+rm(list=ls(all=TRUE))
+
+# Unload current packages:
+# if (!is.null(names(utils::sessionInfo()[["otherPkgs"]]))) pacman::p_unload("all")
+```
+
+```{r setup}
+# KNITR DEFAULTS
+knitr::opts_chunk$set(eval = TRUE, fig.height = 10)
+```
+
+```{r packages, results="hide", warning=FALSE, message=FALSE, error=FALSE}
+# LOAD PACKAGES:
+if (!requireNamespace("magrittr", quietly = TRUE)) install.packages("magrittr")
+if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr")
+if (!requireNamespace("scales", quietly = TRUE)) install.packages("scales")
+if (!requireNamespace("readxl", quietly = TRUE)) install.packages("readxl")
+if (!requireNamespace("stringr", quietly = TRUE)) install.packages("stringr")
+if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
+library(magrittr)
+library(dplyr)
+library(scales)
+library(readxl)
+library(ggplot2)
+```
+
+```{r setup_script, eval=TRUE, results='hide'}
+# GET CURRENT SCRIPT NAME
+(this.script <- rstudioapi::getActiveDocumentContext() %>% .$path %>% basename)
+getwd()
+list.files()
+stopifnot(this.script != "")
+```
+
+## Data files  
+```{r database_file}
+data.files <- list.files(pattern = "GSE148731.*xlsx", full.names = T)
+stopifnot(all(file.exists(data.files)))
+cat(basename(data.files), sep="\n")
+```
+
+## Load data  
+```{r results="hide"}
+df.list <- lapply(data.files, function(fil) {
+  read_xlsx(path=fil,col_names = T) %>% 
+    extract(,c("gene", "MEAS/CTRL or -CTRL/MEAS (scaled)", "p-value", "p-value (adjusted)")) %>% 
+    set_colnames(c("Gene.symbol", "change", "P.Val", "Adj.P.Val"))
+}) %>% 
+  set_names(stringr::str_extract(basename(data.files), "MF[12]"))
+# names(df.list) # "MF1" "MF2"
+head(df.list[[1]])
+```
+
+```{r}
+sapply(df.list, nrow) # 60450 60450 
+sapply(df.list, function(df) {length(unique(df$Gene.symbol))}) # 58585 58585 
+sapply(df.list, function(df) {min(df$change, na.rm = T)}) # -35.97831 -230.21264
+sapply(df.list, function(df) {max(df$change, na.rm = T)}) # 4315.174 4781.793 
+```
+
+
+```{r}
+df.all <- lapply(seq_along(df.list), function(i) {
+  x <- df.list[[i]] %>% 
+    mutate(Dataset=names(df.list[i])) %>% 
+    select(Dataset, everything())
+}) %>% 
+  do.call(rbind, .)
+dim(df.all) # 120900      5
+```
+
+```{r}
+sum(df.list$MF1$change == 0, na.rm = T) # 20352
+df.mf1 <- df.list$MF1 %>% 
+  select(Gene.symbol, change) %>% 
+  arrange(desc(change)) %>% 
+  filter(complete.cases(.)) %>% 
+  mutate(change=log(change)) %>% 
+  mutate(num = seq_along(change))
+# head(df.mf1)
+plot(x=df.mf1$num, y=df.mf1$change)
+df.mf2 <- df.list$MF2 %>% 
+  select(Gene.symbol, change) %>% 
+  arrange(change)
+gg1 <- ggplot(data=df.mf1, aes(x=Gene.symbol, y=log(change))) +
+  geom_point(size=1, color='blue') +
+  # geom_point(data=df.mf2, aes(x=Gene.symbol, y=change))
+  xlab(NULL)
+gg1
+```
+
+
+```{r}
+archs4.info <- h5read(archs4.db.file, "info")
+as.vector(archs4.info) %>% as.matrix
+# author        "Alexander Lachmann"                                   
+# contact       "alexander.lachmann@mssm.edu"                          
+# creation-date "2020-02-06"                                           
+# lab           "Ma'ayan Lab - Icahn School of Medicine at Mount Sinai"
+# version       "8"  
+```
+
+
+## Explore GEO series field  
+```{r results="asis"}
+archs4.series <- h5read(archs4.db.file, "meta/Sample_series_id")
+cat("class(archs4.series):", class(archs4.series), "<br>\n")   # array
+cat("length(archs4.series):", length(archs4.series), "<br>\n") # 238522
+cat("dim(archs4.series):", dim(archs4.series), "<br>\n") # 238522
+cat("head:", paste(head(archs4.series), collapse=","), "<br>\n")
+cat("Number of unique series IDs:", comma(length(unique(archs4.series))), "<br>\n") # 7,909
+```
+
+## Search for GEO series IDs: exact matches  
+```{r}
+sum(archs4.series == "GSE64179")  # 0   GPL16791 	Illumina HiSeq 2500 (Homo sapiens)
+sum(archs4.series == "GSE67427")  # 155 GPL16791 	Illumina HiSeq 2500 (Homo sapiens)
+sum(archs4.series == "GSE114371") # 0   GPL17303 	Ion Torrent Proton (Homo sapiens)
+sum(archs4.series == "GSE116405") # 0   GPL16791 	Illumina HiSeq 2500 (Homo sapiens)
+sum(archs4.series == "GSE116412") # 0   GPL16791 	Illumina HiSeq 2500 (Homo sapiens)
+sum(archs4.series == "GSE148731") # 0   GPL16791 	Illumina HiSeq 2500 (Homo sapiens)
+```
+
+## Search for GEO series IDs: PARTIAL matches  
+### GSE64179  
+Expected samples (based on GEO web page): 12  
+```{r GSE64179, results="asis"}
+sum(grepl("GSE64179", archs4.series)) %>% 
+  cat("Number of matches found:", ., "<br>\n")
+unique(grep("GSE64179", archs4.series, ignore.case=T, value=T)) %>% # "GSE64179Xx-xXGSE64183"
+  cat("Unique match(es):", ., "<br>\n")
+# Number of matches found: 12 <br>
+# Unique match(es): GSE64179Xx-xXGSE64183 <br>
+```
+
+### GSE67427  
+Expected samples (based on GEO web page): 156  
+```{r GSE67427, results="asis"}
+sum(grepl("GSE67427", archs4.series)) %>% 
+  cat("Number of matches found:", ., "<br>\n")
+unique(grep("GSE67427", archs4.series, ignore.case=T, value=T)) %>% # 
+  cat("Unique match(es):", ., "<br>\n")
+# Expected samples (based on GEO web page): 156 <br>
+# Number of matches found: 155 <br>
+# Unique match(es): GSE67427 <br>
+```
+
+### GSE114371  
+Platform: GPL17303, Ion Torrent Proton (Homo sapiens)  
+Expected samples (based on GEO web page): 36  
+```{r GSE114371, results="asis"}
+sum(grepl("GSE114371", archs4.series)) %>% 
+  cat("Number of matches found:", ., "<br>\n")
+unique(grep("GSE114371", archs4.series, ignore.case=T, value=T)) %>% # 
+  cat("Unique match(es):", ., "<br>\n")
+```
+
+### GSE116412  
+GEO:  
+This SuperSeries is composed of the following SubSeries:  
+
+* GSE116399 	Gene activation precedes DNA demethylation in response to infection in human dendritic cells  
+* GSE116405 	Gene activation precedes DNA demethylation in response to infection in human dendritic cells  
+* GSE116406 	Gene activation precedes DNA demethylation in response to infection in human dendritic cells  
+
+### GSE116399  
+Public on Jul 03, 2018  
+Platform: GPL16791, Illumina HiSeq 2500 (Homo sapiens)  
+Expected samples (based on GEO web page): 53  
+```{r GSE116399, results="asis"}
+sum(grepl("GSE116399", archs4.series)) %>% 
+  cat("Number of matches found:", ., "<br>\n")
+unique(grep("GSE116399", archs4.series, ignore.case=T, value=T)) %>% # 
+  cat("Unique match(es):", ., "<br>\n")
+```
+
+### GSE116405  
+Public on Jul 03, 2018  
+Platform: GPL16791, Illumina HiSeq 2500 (Homo sapiens)  
+Expected samples (based on GEO web page): 51  
+Google search (4-Jul-20): 'Your search - "archs4" "GSE116405" - did not match any documents.'  
+```{r GSE116405, results="asis"}
+sum(grepl("GSE116405", archs4.series)) %>% 
+  cat("Number of matches found:", ., "<br>\n")
+unique(grep("GSE116405", archs4.series, ignore.case=T, value=T)) %>% # 
+  cat("Unique match(es):", ., "<br>\n")
+```
+
+### GSE116406  
+Public on Jul 03, 2018  
+Submission date: Jun 28, 2018  
+Last update date: Apr 17, 2019  
+Platform: GPL16791, Illumina HiSeq 2500 (Homo sapiens)  
+Expected samples (based on GEO web page): 10  
+```{r GSE116406, results="asis"}
+sum(grepl("GSE116406", archs4.series)) %>% 
+  cat("Number of matches found:", ., "<br>\n")
+unique(grep("GSE116406", archs4.series, ignore.case=T, value=T)) %>% # 
+  cat("Unique match(es):", ., "<br>\n")
+```
+
+### GSE148731  
+Public on Apr 16, 2020  
+Submission date: Apr 15, 2020  
+Last update date: May 07, 2020  
+Platform: GPL16791, Illumina HiSeq 2500 (Homo sapiens)  
+Expected samples (based on GEO web page): 24  
+```{r GSE148731, results="asis"}
+sum(grepl("GSE148731", archs4.series)) %>% 
+  cat("Number of matches found:", ., "<br>\n")
+unique(grep("GSE148731", archs4.series, ignore.case=T, value=T)) %>% # 
+  cat("Unique match(es):", ., "<br>\n")
+```
+
+## GEO sample (GSM) IDs  
+```{r}
+archs4.samples = h5read(archs4.db.file, "meta/Sample_geo_accession")
+# comma(length(samples)) # 238,522
+# sample.num <- stringr::str_remove(samples, "GSM") %>% as.numeric %>% sort(., decreasing = T)
+# class(sample.num)
+# head(sample.num)
+# 4230225 4230224 4230223 4230222 4230221 4230220
+
+# GSM4230225 >> Series GSE142479
+# Public on Feb 14, 2020
+```
+
+
+
+## Session info  
+<button class="button" onclick="myFunction('DIV_5')">Show/hide session info</button>
+<div id="DIV_5" class="div_default_hide">
+
+```{r print_date_and_time}
+Sys.time()
+```
+
+```{r print_session_info}
+# sessionInfo()
+devtools::session_info()
+```
+</div>
+  
+<script>
+  var divsToHide = document.getElementsByClassName("div_default_hide");
+for(var i = 0; i < divsToHide.length; i++)
+{
+  divsToHide[i].style.display = 'none';
+}
+</script>
