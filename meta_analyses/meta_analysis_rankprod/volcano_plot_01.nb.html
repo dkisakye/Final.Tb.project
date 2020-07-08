@@ -3319,16 +3319,14 @@ Overview:</p>
 <p>Save plot as PDF:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3V0LmZpbGUuMiA8LSBwYXN0ZTAodGhpcy5zY3JpcHQsIFwiLnBsb3QucGRmXCIpXG5vdXQuZmlsZS4yXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3V0LmZpbGUuMiA8LSBwYXN0ZTAodGhpcy5zY3JpcHQsIFwiLnBsb3QucGRmXCIpXG5nZ3NhdmUoZmlsZW5hbWU9b3V0LmZpbGUuMiwgcGxvdCA9IGdnMiwgd2lkdGggPSAxNiwgaGVpZ2h0PSAxNiwgdW5pdHM9XCJjbVwiKVxuY2F0KFwiU2F2ZWQ6XCIsIG91dC5maWxlLjIpXG5gYGAifQ== -->
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">out.file<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">paste0</span>(this.script, <span class="st">&quot;.plot.pdf&quot;</span>)</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">out.file<span class="fl">.2</span></a></code></pre></div>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw">ggsave</span>(<span class="dt">filename=</span>out.file<span class="fl">.2</span>, <span class="dt">plot =</span> gg2, <span class="dt">width =</span> <span class="dv">16</span>, <span class="dt">height=</span> <span class="dv">16</span>, <span class="dt">units=</span><span class="st">&quot;cm&quot;</span>)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw">cat</span>(<span class="st">&quot;Saved:&quot;</span>, out.file<span class="fl">.2</span>)</a></code></pre></div>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwidm9sY2Fub19wbG90XzAxLlJtZC5wbG90LnBkZlwiXG4ifQ== -->
-<pre><code>[1] &quot;volcano_plot_01.Rmd.plot.pdf&quot;</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiU2F2ZWQ6IHZvbGNhbm9fcGxvdF8wMS5SbWQucGxvdC5wZGZcbiJ9 -->
+<pre><code>Saved: volcano_plot_01.Rmd.plot.pdf</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2dzYXZlKGZpbGVuYW1lPW91dC5maWxlLjIsIHBsb3QgPSBnZzIsIHdpZHRoID0gMTYsIGhlaWdodD0gMTYsIHVuaXRzPVwiY21cIilcbmBgYCJ9 -->
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">ggsave</span>(<span class="dt">filename=</span>out.file<span class="fl">.2</span>, <span class="dt">plot =</span> gg2, <span class="dt">width =</span> <span class="dv">16</span>, <span class="dt">height=</span> <span class="dv">16</span>, <span class="dt">units=</span><span class="st">&quot;cm&quot;</span>)</a></code></pre></div>
-<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3352,8 +3350,8 @@ Show/hide session info
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBzZXNzaW9uSW5mbygpXG5kZXZ0b29sczo6c2Vzc2lvbl9pbmZvKClcbmBgYCJ9 -->
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># sessionInfo()</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2">devtools<span class="op">::</span><span class="kw">session_info</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co"># sessionInfo()</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">devtools<span class="op">::</span><span class="kw">session_info</span>()</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
