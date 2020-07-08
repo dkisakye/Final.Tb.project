@@ -1,5 +1,5 @@
 ---
-title: "Meta analysis - rank product method"
+title: "Meta analysis - rank product method for GSE108363"
 author: "A. Nohturfft"
 date: "`r Sys.Date()`"
 output:
@@ -140,13 +140,14 @@ cat(basename(geo2r.data.files), sep="<br>\n")
 geo2r.data.list <- lapply(geo2r.data.files, function(f) {
   a <- read.table(f, sep="\t", header=T, quote='"', stringsAsFactors = F)
   names(a)[grep("symbol", names(a), ignore.case = T)] <- "Gene.symbol"
-  names(a) <- stringr::str_remove(names(a), "^X\\.")
+  # names(a) <- stringr::str_remove(names(a), "^X\\.") 
   names(a) <- stringr::str_remove(names(a), "\\.$")
   a
 }) %>% 
-  set_names(stringr::str_remove_all(basename(geo2r.data.files), "\\.txt"))
+  set_names(stringr::str_remove_all(basename(geo2r.data.files), "^GSE108363.")) 
+  # set_names(stringr::str_remove_all(basename(geo2r.data.files), "\\.txt")) 
 
-names(geo2r.data.list) <- stringr::str_remove(names(geo2r.data.list), "^X")
+#names(geo2r.data.list) <- stringr::str_remove(names(geo2r.data.list), "^X")
 #names(geo2r.data.list)[grep("DC", names(geo2r.data.list))] <- "A-BUGS-23_DC"
 #names(geo2r.data.list)[grep("MP", names(geo2r.data.list))] <- "A-BUGS-23_MP"
 
@@ -154,6 +155,8 @@ names(geo2r.data.list) <- stringr::str_remove(names(geo2r.data.list), "^X")
 #length(geo2r.data.list) # 4
 #sapply(geo2r.data.list, class)
 #sapply(geo2r.data.list, nrow) %>% unname # 47323 47323 47323 47323
+names(geo2r.data.list)
+
 
 ```
 
@@ -183,7 +186,7 @@ fold.change.list <- lapply(seq_along(geo2r.data.list), function(i, list.names) {
     dplyr::mutate(Gene.symbol = ifelse(Gene.symbol=="", NA, Gene.symbol)) %>% 
     tidyr::drop_na(.) %>% 
     dplyr::mutate(logFC = as.numeric(logFC)) %>% 
-    dplyr::mutate(Gene.symbol = stringr::str_remove_all(Gene.symbol, '\\"')) %>% 
+    # dplyr::mutate(Gene.symbol = stringr::str_remove_all(Gene.symbol, '\\"')) %>%  
     tidyr::drop_na(.) %>% 
     dplyr::group_by(Gene.symbol) %>% 
     dplyr::summarise(logFC = median(logFC), .groups="drop") %>% 
@@ -212,13 +215,14 @@ data.frame(
 ## Combine all data frames  
 ### Merge data frames  
 ```{r}
-merged.df <- fold.change.list %>% purrr::reduce(dplyr::left_join, by="Gene.symbol")
+merged.df <- fold.change.list %>% purrr::reduce(dplyr::full_join, by="Gene.symbol")
 names(merged.df) <- stringr:: str_remove(names(merged.df), "_Geo2r") %>% 
   stringr::str_remove("_symbols$") %>% 
   stringr::str_replace("discovery", "Disc") %>% 
-  stringr::str_replace("validation", "Val")
+  stringr::str_replace("validation", "Val") %>%
+  stringr::str_remove(".txt")
 
-# dim(merged.df) # 21025     9
+ dim(merged.df) # 210762     5
 head(merged.df)
 ```
 
@@ -234,7 +238,7 @@ merged.df.filt <- merged.df %>%
 ```
 
 ```{r results="asis"}
-cat("Number of rows in merged data frame <i>after filtering</i>:<b>", comma(nrow(merged.df.filt)), "</b><br>\n")
+cat("Number of rows in merged data frame <i>after filtering</i>:<b>", comma(nrow(merged.df.filt)), "</b><br>\n") # br = newline in html
 cat("Number of gene symbols in merged data frame <i>after filtering</i>:<b>", comma(length(unique(merged.df.filt$Gene.symbol))), "</b><br>\n")
 ```
 
@@ -314,35 +318,20 @@ apply(test.mx,2,rank, ties.method = "min")
 
 ### Ranks: downregulated  
 ```{r}
-ranks.down.mx <- apply(merged.mx, 2, rank, ties.method="first")
+ranks.down.mx <- apply(merged.mx, 2, rank, ties.method="average")
 ranks.down.mx[1:10,1:4]
-
-#      GSE103092 GSE34151 A-BUGS-23_DC A-BUGS-23_MP
-# A1CF        9542     5260         8798         9071
-# A2M          270     1737         2033         9437
-# A4GALT      2694    10662         9954        10894
-# A4GNT       1675     6583         5425         5644
-# AAAS        6241     2666         9604         4181
-# AACS        2651     9377         1598         8406
-# AADAC      10877     4530         5426         5645
-# AAGAB       9105     3224         2179         1368
-# AAK1        7941     5985         5427         5646
-# AAMDC       5427     5180         2780         3250
-
-ranks.down.mx.2 <- apply(merged.mx, 2, rank, ties.method = "min")
-ranks.down.mx.2[1:10,1:4]
-
-      # GSE103092 GSE34151 A-BUGS-23_DC A-BUGS-23_MP
-#A1CF        9542     5260         8798         9071
-#A2M          270     1737         2033         9437
-#A4GALT      2694    10662         9954        10894
-#A4GNT       1675     6583         5425         5644
-#AAAS        6241     2666         9604         4181
-#AACS        2651     9377         1598         8406
-#AADAC      10877     4530         5425         5644
-#AAGAB       9105     3224         2179         1368
-#AAK1        7941     5985         5425         5644
-#AAMDC       5427     5180         2780         3250
+ 
+    # BCG.Disc BCG.Val Mtb.Disc Mtb.Val
+# A1BG        17518   10280  15602.5 10192.0
+# A1BG-AS1     8673    3352  16359.0 10592.5
+# A1CF        15864    8637   1858.0  7527.5
+# A2M         20607   20602  20624.0 20728.0
+# A2ML1       15673    1735  13080.0  7342.0
+# A3GALT2     16177   12208  16821.0  5621.0
+# A4GALT        859    1945  16752.0 11690.5
+# A4GNT       11945   18811    955.5  3383.5
+# AAAS        19463   18464  17707.5 18666.5
+# AACS         5529    9951   5485.5  2571.0
 ```
 
 
@@ -351,8 +340,20 @@ ranks.down.mx.2[1:10,1:4]
 
 ### Ranks: upregulated  
 ```{r}
-ranks.up.mx <- apply((merged.mx * -1), 2, rank, ties.method="first")
+ranks.up.mx <- apply((merged.mx * -1), 2, rank, ties.method="average")
 ranks.up.mx[1:10,1:4]
+
+        # BCG.Disc BCG.Val Mtb.Disc Mtb.Val
+# A1BG         3245   10483   5160.5 10571.0
+# A1BG-AS1    12090   17411   4404.0 10170.5
+# A1CF         4899   12126  18905.0 13235.5
+# A2M           156     161    139.0    35.0
+# A2ML1        5090   19028   7683.0 13421.0
+# A3GALT2      4586    8555   3942.0 15142.0
+# A4GALT      19904   18818   4011.0  9072.5
+# A4GNT        8818    1952  19807.5 17379.5
+# AAAS         1300    2299   3055.5  2096.5
+# AACS        15234   10812  15277.5 18192.0
 ```
 
 
@@ -363,6 +364,7 @@ x <- ranks.down.mx[,1:4] %>%
   tibble::rownames_to_column(var= "Gene") %>% 
   tidyr::pivot_longer(-c("Gene"), names_to = "Dataset", values_to = "Rank")
 head(x)
+
 ```
 
 ```{r}
@@ -387,7 +389,7 @@ pairs(ranks.down.mx, col = alpha("black", 0.3), pch=18, upper.panel = panel.cor,
       text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=3, font=2)})
 ```
 
-## Calculate (geometric) mean ranks + p values  
+## Calculate (geometric) mean ranks + p values for down-regulated genes 
 ```{r}
 # browseVignettes("RankProd")
 # help(package="RankProd")
@@ -399,14 +401,14 @@ pairs(ranks.down.mx, col = alpha("black", 0.3), pch=18, upper.panel = panel.cor,
 
 ```{r}
 cl.down <- rep(1, ncol(ranks.down.mx))
-# cl.down # 1 1 1 1 1 1 1 1
-origin.down <- seq_len(ncol(ranks.down.mx))
-# origin.down # 1 2 3 4 5 6 7 8
+cl.down # 1 1 1 1 
+origin.down <- seq_len(ncol(ranks.down.mx)) 
+origin.down # 1 2 3 4 
 down.rank.prod <- RankProd::RankProducts(data=ranks.down.mx,
                                        cl=cl.down,
                                        gene.names = row.names(ranks.down.mx))
 # class(down.rank.prod.sub) # "list"
-# length(down.rank.prod.sub) # 8
+ # length(down.rank.prod.sub) # 
 ```
 
 ```{r}
@@ -419,15 +421,16 @@ sapply(down.rank.prod, class) %>% as.matrix
 # groups            "numeric"
 # RandomPairs_ranks "matrix" 
 # nrep              "integer"
-dim(down.rank.prod$RPs) # 12305     2
+dim(down.rank.prod$RPs) # 20762   2
 head(down.rank.prod$RPs)
-#        class1 < class2 class1 > class2
-# A1CF          7704.643       3902.9610
-# A2M           3422.553        558.9375
-# A4GALT        1335.963      10710.0606
-# A4GNT         5064.388       4234.9634
-# AAAS          9141.174       2045.6024
-# AACS          3780.985       8184.8272
+
+         # class1 < class2 class1 > class2
+# A1BG           13006.895       6560.6679
+# A1BG-AS1        8423.611       9850.5364
+# A1CF            6610.666      11040.4999
+# A2M            20639.936        104.9481
+# A2ML1           7147.798       9995.6769
+# A3GALT2        11689.663       6956.4630
 ```
 
 ```{r}
@@ -451,13 +454,13 @@ head(down.pval.df)
 down.rp.pval.df <- merge(x=down.rp.df, y=down.pval.df, by="Gene", all=T) %>% 
   dplyr::mutate(pval.adj = p.adjust(pval, method = "fdr"))
 down.rp.pval.df
-range(down.rp.pval.df$RP) # 9.859569 12294.496248
-range(down.rp.pval.df$pval) # 8.101383e-11 1.000000e+00
-nrow(subset(down.rp.pval.df, pval <= 0.05)) # 1206
-nrow(subset(down.rp.pval.df, pval <= 0.01)) # 466
+range(down.rp.pval.df$RP) #   1.778279 20759.249911
+range(down.rp.pval.df$pval) #  4.795679e-16 1.000000e+00
+nrow(subset(down.rp.pval.df, pval <= 0.05)) # 1632
+nrow(subset(down.rp.pval.df, pval <= 0.01)) # 914
 
-nrow(subset(down.rp.pval.df, pval.adj <= 0.05)) # 130
-nrow(subset(down.rp.pval.df, pval.adj <= 0.01)) # 45
+nrow(subset(down.rp.pval.df, pval.adj <= 0.05)) # 512
+nrow(subset(down.rp.pval.df, pval.adj <= 0.01)) # 305
 ```
 
 ```{r}
@@ -470,19 +473,19 @@ subset(down.rp.pval.df, pval.adj <= 0.01) %>%
 down.genes.sel.05 <- subset(down.rp.pval.df, pval.adj <= 0.05) %>% 
   use_series("Gene") %>% sort
 class(down.genes.sel.05) # "character"
-length(down.genes.sel.05) # 130
+length(down.genes.sel.05) # 150
 ```
 
 ```{r}
 cat(down.genes.sel.05, sep=", ")
 ```
-
+## Create a dataframe of core significantly down-regulated genes (represented in all datasets)
 ```{r}
 down.df.sel.05 <- as.data.frame(ranks.down.mx) %>% 
   tibble::rownames_to_column("Gene") %>% 
   dplyr::filter(Gene %in% down.genes.sel.05)
 head(down.df.sel.05)
-# dim(down.df.sel.05) # 75  6
+#dim(down.df.sel.05) # 512   5
 ```
 
 ```{r}
@@ -501,9 +504,119 @@ pairs(down.mx.sel.05,  col = alpha("black", 0.4), pch=19, cex=2,
 ```{r message=FALSE, warning=FALSE}
 out.file.down <- paste0(this.script, ".down.05.txt")
 cat(down.genes.sel.05, sep="\n", file=out.file.down)
-cat("File saved:", out.file.down)
+cat("File saved:", out.file.down) # Question about this: for my dissertation, interest would be in the core down regulated genes, meaning that my list would include only SDEs in all datasets.(down.df.sel.05$gene)
 ```
 
+## Calculate geometric mean + p values for up regulated genes.
+```{r}
+cl.up <- rep(1, ncol(ranks.up.mx))
+cl.up # 1 1 1 1 
+origin.up<- seq_len(ncol(ranks.up.mx)) 
+origin.up # 1 2 3 4 
+up.rank.prod <- RankProd::RankProducts(data=ranks.up.mx,
+                                       cl=cl.up,
+                                       gene.names = row.names(ranks.up.mx))
+
+```
+```{r}
+sapply(up.rank.prod, class) %>% as.matrix
+# RPs               "matrix" 
+# RPrank            "matrix" 
+# pfp               "matrix" 
+# pval              "matrix" 
+# AveFC             "matrix" 
+# groups            "numeric"
+# RandomPairs_ranks "matrix" 
+# nrep              "integer"
+dim(up.rank.prod$RPs) # 20762   2
+head(up.rank.prod$RPs)
+         # class1 < class2 class1 > class2
+# A1BG           6560.6679       13006.895
+# A1BG-AS1       9850.5364        8423.611
+# A1CF          11040.4999        6610.666
+# A2M             104.9481       20639.936
+# A2ML1          9995.6769        7147.798
+# A3GALT2        6956.4630       11689.663
+
+```
+
+```{r}
+up.rp.df <- as.data.frame(up.rank.prod$RPs) %>% 
+  tibble::rownames_to_column(.) %>% 
+  dplyr::select(1:2) %>% 
+  set_colnames(c("Gene", "RP"))
+head(up.rp.df)
+```
+
+```{r}
+up.pval.df <- as.data.frame(up.rank.prod$pval) %>% 
+  tibble::rownames_to_column(.) %>% 
+  dplyr::select(1:2) %>% 
+  set_colnames(c("Gene", "pval"))
+head(up.pval.df)
+```
+
+### Correct for multiple hypothesis testing  
+```{r}
+up.rp.pval.df <- merge(x=up.rp.df, y=up.pval.df, by="Gene", all=T) %>% 
+  dplyr::mutate(pval.adj = p.adjust(pval, method = "fdr"))
+up.rp.pval.df
+range(up.rp.pval.df$RP) #    3.08007 20760.74994
+range(up.rp.pval.df$pval) # 1.66588e-14 1.00000e+00
+nrow(subset(up.rp.pval.df, pval <= 0.05)) #  1900
+nrow(subset(up.rp.pval.df, pval <= 0.01)) # 1122
+
+nrow(subset(up.rp.pval.df, pval.adj <= 0.05)) # 709
+nrow(subset(up.rp.pval.df, pval.adj <= 0.01)) # 366
+```
+
+```{r}
+subset(up.rp.pval.df, pval.adj <= 0.01) %>% 
+  dplyr::arrange(RP)
+```
+
+
+
+```{r}
+up.genes.sel.05 <- subset(up.rp.pval.df, pval.adj <= 0.05) %>% 
+  use_series("Gene") %>% sort
+class(up.genes.sel.05) # "character"
+length(up.genes.sel.05) # 709
+```
+
+```{r}
+cat(up.genes.sel.05, sep=", ")
+```
+
+## Create a dataframe of core significantly up-regulated genes(represented in all datasets)
+```{r}
+up.df.sel.05 <- as.data.frame(ranks.up.mx) %>% 
+  tibble::rownames_to_column("Gene") %>% 
+  dplyr::filter(Gene %in% up.genes.sel.05)
+head(up.df.sel.05)
+# dim(down.df.sel.05) # 512   5
+
+```
+
+```{r}
+up.mx.sel.05 <- as.matrix(up.df.sel.05[,-1]) %>% 
+  set_rownames(up.df.sel.05$Gene)
+up.mx.sel.05[1:4,1:4]
+```
+
+```{r}
+pairs(up.mx.sel.05,  col = alpha("black", 0.4), pch=19, cex=2,
+      upper.panel = panel.cor,
+      text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=3, font=2)})
+```
+
+# Save file
+```{r message=FALSE, warning=FALSE}
+out.file.up <- paste0(this.script, ".up.05.txt")
+cat(up.genes.sel.05, sep="\n", file=out.file.up)
+cat("File saved:", out.file.up) # Question about this: for my dissertation, interest would be in the core down regulated genes, meaning that my list would include only SDEs in all datasets.(down.df.sel.05$gene)
+```
+```
 
 ## Session info  
 <button class="button" onclick="myFunction('DIV_5')">Show/hide session info</button>
