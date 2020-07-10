@@ -352,16 +352,80 @@ head(rna.seq.data.list$GSE67472) %>%
 
 ```
 
+### Load RNA-seq data: GSE48731.MF1
+```{r message=FALSE}
+# list.files("../source_data/rna_seq/GSE148731")
+# rna.seq.data.files <- list()
+rna.seq.data.files$GSE148731.MF1 <- "../source_data/rna_seq/GSE148731/GSE148731_toptable_MF1_01.Rmd.2020_07_09.txt"
+stopifnot(file.exists(rna.seq.data.files$GSE148731.MF1))
+ # rna.seq.data.list <- list()
+rna.seq.data.list$GSE148731.MF1 <- read.table(file = rna.seq.data.files$GSE148731.MF1, header = TRUE, sep = "\t", stringsAsFactors = FALSE) %>%
+   select(c("Gene.symbol", "logFC")) %>% 
+  # mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+  # summarise(logFC = median(logFC), .groups="drop") %>% 
+   as.data.frame(., stringsAsFactors=FALSE)
+head(rna.seq.data.list$GSE148731.MF1)
+```
+```{r}
+# WITH AGGREGATING:
+dim(rna.seq.data.list$GSE148731.MF1) # 17802     2
+sapply(rna.seq.data.list$GSE148731.MF1, class) # "character"   "numeric"
+range(rna.seq.data.list$GSE148731.MF1$logFC) # -2.386124  9.704865
+sum(rna.seq.data.list$GSE148731.MF1$logFC == 0) #
+sum(duplicated(rna.seq.data.list$GSE148731.MF1$Gene.symbol)) # 0
 
+```
+
+```{r}
+head(rna.seq.data.list$GSE148731.MF1) %>% 
+  knitr::kable(., row.names = F, format="html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+```
+
+
+### Load RNA-seq data: GSE48731.MF2
+```{r message=FALSE}
+ # list.files("../source_data/rna_seq/GSE148731")
+# rna.seq.data.files <- list()
+rna.seq.data.files$GSE148731.MF2 <- "../source_data/rna_seq/GSE148731/GSE148731_toptable_MF2_01.Rmd.2020_07_09.txt"
+stopifnot(file.exists(rna.seq.data.files$GSE148731.MF2))
+ # rna.seq.data.list <- list()
+rna.seq.data.list$GSE148731.MF2 <- read.table(file = rna.seq.data.files$GSE148731.MF2, header = TRUE, sep = "\t", stringsAsFactors = FALSE) %>%
+   select(c("Gene.symbol", "logFC")) %>% 
+  # mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+  # summarise(logFC = median(logFC), .groups="drop") %>% 
+   as.data.frame(., stringsAsFactors=FALSE)
+head(rna.seq.data.list$GSE148731.MF2)
+```
+
+
+```{r}
+# WITH AGGREGATING:
+dim(rna.seq.data.list$GSE148731.MF2) #  17085     2
+sapply(rna.seq.data.list$GSE148731.MF2, class) # "character"   "numeric"
+range(rna.seq.data.list$GSE148731.MF2$logFC) # -7.524136  9.795100
+sum(rna.seq.data.list$GSE148731.MF2$logFC == 0) #
+sum(duplicated(rna.seq.data.list$GSE148731.MF2$Gene.symbol)) # 0
+
+```
+
+```{r}
+head(rna.seq.data.list$GSE148731.MF2) %>% 
+  knitr::kable(., row.names = F, format="html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+```
 
 ## Combine all data frames  
 ```{r}
+# length(rna.seq.data.list) #4
+# length(geo.fold.change.list)# 4
 all.data.list <- c(geo.fold.change.list, rna.seq.data.list)
 all(sapply(all.data.list, class) == "data.frame") # TRUE
 ```
 
 ```{r}
 lapply(all.data.list, names)
+length(all.data.list) # 8
 ```
 
 
@@ -371,7 +435,7 @@ merged.df <- all.data.list %>% purrr::reduce(dplyr::full_join, by="Gene.symbol")
   tibble::column_to_rownames("Gene.symbol") %>% 
   set_colnames(paste0("dataset", seq_along(.)))
 
-dim(merged.df) # 25620     6
+dim(merged.df) # 30687     8
 head(merged.df) %>% 
   knitr::kable(., row.names = T, format="html") %>% 
   kableExtra::kable_styling("striped", full_width = T)
@@ -412,10 +476,10 @@ one.na.max.count <- as.matrix(merged.df) %>%
     n
   })
  class(one.na.max.count) # integer
-length(one.na.max.count) # 25,620
+length(one.na.max.count) # 30687
 merged.df.filt.na <- merged.df[one.na.max.count <= 1,]
-dim(merged.df.filt.na)   # 11684     6  
- dim(merged.df)    # 25620     6     
+dim(merged.df.filt.na)   # 8626    8
+ dim(merged.df)    #  30687     8  
 ```
 
 Print 10 rows:  
@@ -769,7 +833,7 @@ up.100.df <- as.data.frame(t(mx.up.100)) %>%
   dplyr::select(Dataset, Technology, Cell.type, dplyr::everything())
 up.100.df$Technology[up.100.df$Dataset %in% names(rna.seq.data.list)] <- "RNA-seq"
 up.100.df$Cell.type[up.100.df$Dataset %in% c("GSE64179", "A-BUGS-23_DC")] <- "Dendritic cells"
-down.100.df[,1:6]
+up.100.df[,1:6]
 ```
 
 ```{r}
@@ -801,7 +865,7 @@ ComplexHeatmap::Heatmap(
 gs.down.01 <- rank.sum.down %>% 
   dplyr::filter(P.Val.Adj <= 0.01) %>% 
   use_series("Gene")
-# length(gs.down.01) # 259
+ length(gs.down.01) # 371
 cat("Number of consistently <b><i>down</i></b>regulated genes (p <= 0.01):<b>", length(gs.down.01), "</b>")
 ```
 
@@ -817,7 +881,7 @@ cat("File saved:", out.file.down.01)
 gs.up.01 <- rank.sum.up %>% 
   dplyr::filter(P.Val.Adj <= 0.01) %>% 
   use_series("Gene")
-# length(gs.up.01) # 317
+length(gs.up.01) # 547
 cat("Number of consistently <b><i>up</i></b>regulated genes (p <= 0.01):<b>", length(gs.up.01), "</b>")
 ```
 
