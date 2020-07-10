@@ -1,0 +1,400 @@
+---
+title: "GSE148731: Generate toptable for MF1 data"
+author: "A. Nohturfft"
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    df_print: paged
+    toc: yes
+    highlight: tango
+    number_sections: no
+    fig_caption: yes
+    theme: sandstone
+    code_folding: hide
+    toc_depth: 3
+    toc_float: yes
+---
+
+<style>
+h1 {background: darkblue;color: white;padding-left: 7px;}
+h2 {color: darkblue;}
+.code-folding-btn {display: none;}
+</style>
+
+<script>
+  function show_span(id) {
+    var x = document.getElementById(id);
+    if (x.style.display === 'none') {
+      x.style.display = 'inline';
+    } else {
+      x.style.display = 'none';
+    }
+  }
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.style.display === 'none') {
+    x.style.display = 'block';
+  } else {
+    x.style.display = 'none';
+  }
+}
+</script>
+
+## Objective:  
+For dataset GSE148731 generate toptable of fold changes from raw counts deposited in Excel files on GEO.
+
+1. Type-I macrophages, 24-hour data  
+2. Type-II macrophages, 24-hour data  
+
+<div class="question_box">
+**Background**:  
+Data on GEO cannot be used directly for meta analysis as data processing and data formats are not documented.  
+
+**Aims:**  
+1. Analyze RNA-seq data using `limma` package.  
+2. Save toptable for downstream meta analyses  
+
+**Approach:**
+Start with raw counts and follow [Bioconductor tutorial](https://www.bioconductor.org/help/workflows/RNAseq123/) by Law et al.  
+</div>
+
+```{r CLEAR MEMORY AND PACKAGES AND CONSOLE, results="hide"}
+.libPaths()
+# Clear memory
+rm(list=ls(all=TRUE))
+# Clear console
+cat("\014")
+```
+
+```{r Packages, echo=FALSE, results="hide"}
+# !! INSTALL PACKAGES FROM SETUP.R SCRIPT !!
+library(rmarkdown)
+# library(biomaRt)
+library(magrittr)
+library(readr)
+library(pryr)
+library(dplyr)
+library(limma)
+library(edgeR)
+# help(package="edgeR")
+# library(tidyverse)
+# library(readxl)
+library(htmlTable)
+library(RColorBrewer)
+# library(kableExtra)
+# library(data.table)
+# library(DT)
+# library(enrichR)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+library(rtracklayer)
+library(scales)
+```
+
+```{r results="hide"}
+(this.script <- rstudioapi::getActiveDocumentContext()$path %>% basename) 
+```
+
+## Load data  
+### Load raw counts table and aggregate by gene symbol  
+Calculate median counts where more than one row exists for the same gene symbol.  
+```{r results="asis"}
+data.file <- list.files(pattern=".*MF1.*xlsx$")
+data.file
+stopifnot(file.exists(data.file))
+```
+
+```{r LOAD DATA, results="hide"}
+df <- readxl::read_xlsx(path = data.file, range = "B1:R60449") %>% 
+  dplyr::select(gene, dplyr::contains("fastq")) %>% 
+  dplyr::select(gene, !dplyr::contains("scaled")) %>% 
+  dplyr::mutate(gene = toupper(gene))
+names(df)[grep("CTRL", names(df))] <- paste0("Counts.Ctrl.", seq_along(grep("CTRL", names(df))))
+names(df)[grep("MEAS", names(df))] <- paste0("Counts.Infected.", seq_along(grep("MEAS", names(df))))
+mx <- df %>% 
+  dplyr::group_by(gene) %>% 
+  dplyr::summarise(across(starts_with("Counts"), median, na.rm=T), .groups="drop") %>% 
+  tibble::column_to_rownames(var="gene") %>% 
+  as.matrix(.) %>% 
+  .[,order(colnames(.))]
+colnames(mx) <- stringr::str_remove(colnames(mx), "Counts\\.")
+rm(df)
+```
+
+
+Print first six rows of raw counts matrix:  
+```{r}
+head(mx) %>% 
+  knitr::kable(., row.names = T) %>% kableExtra::kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+### Check total counts per sample  
+```{r LOOK AT TOTAL COUNTS PER SAMPLE}
+# http://haozhu233.github.io/kableExtra/awesome_table_in_html.html
+data.frame(Sample=colnames(mx), Total.counts=comma(colSums(mx)), row.names = NULL) %>%
+  knitr::kable(.) %>% kableExtra::kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+## Analyse raw counts  
+### Create edgeR::DGEList object  
+```{r CREATE edgeR::DGEList OBJECT}
+group <- c(rep(c("Ctrl", "Infected"), c(3,3))) %>% as.factor
+# group # "Ctrl" "Ctrl" "Ctrl" "Dox"  "Dox"  "Dox"
+dgel <- edgeR::DGEList(counts=mx,
+                       group=group,
+                       genes=rownames(mx))
+```
+
+```{r}
+dgel
+```
+
+
+### Calculate Counts Per Million (CPM)  
+><p><i>"For differential expression and related analyses, gene expression is rarely considered at the level of raw counts since libraries sequenced at a greater depth will result in higher counts. Rather, it is common practice to transform raw counts onto a scale that accounts for such library size differences. Popular transformations include counts per million (CPM), log2-counts per million (log-CPM), reads per kilobase of transcript per million (RPKM), and fragments per kilobase of transcript per million (FPKM).</p><p>In our analyses, CPM and log-CPM transformations are used regularly although they do not account for feature length differences which RPKM and FPKM values do. Whilst RPKM and FPKM values can just as well be used, CPM and log-CPM values can be calculated using a counts matrix alone and will suffice for the type of comparisons we are interested in. Assuming that there are no differences in isoform usage between conditions, differential expression analyses look at gene expression changes between conditions rather than comparing expression across multiple genes or drawing conclusions on absolute levels of expression. In other words, gene lengths remain constant for comparisons of interest and any observed differences are a result of changes in condition rather than changes in gene length."</i></p>  
+
+The formula seems to be: `(raw counts / total counts in sample) x 1e6`
+```{r}
+cpm <- edgeR::cpm(dgel)
+lcpm.unfiltered <- edgeR::cpm(dgel, log=TRUE)
+head(cpm)
+```
+
+Now the total CPM per sample should be the same ...  
+```{r}
+colSums(cpm)
+```
+
+
+### Removing genes that are lowly expressed  
+>*"Using a nominal CPM value of 1 (which is equivalent to a log-CPM value of 0) genes are deemed to be expressed if their expression is above this threshold, and unexpressed otherwise. Genes must be expressed in at least one group (or in at least three samples across the entire experiment) to be kept for downstream analysis.  
+Although any sensible value can be used as the expression cutoff, typically a CPM value of 1 is used in our analyses as it separates expressed genes from unexpressed genes well for most datasets."*
+
+<div class="question_box">
+<p><b>Note</b>: I increased the minimum number of counts per gene (across the six samples) from 3 to 6 after plotting Mean-Varience Trend below, and following advice in the [tutorial](https://www.bioconductor.org/help/workflows/RNAseq123/) by Law et al. (Bioconductor).</p>
+</div>
+
+```{r REMOVE GENES WHERE COUNTS IN SAMPLES ARE LOW, results="asis"}
+# keep.exprs <- rowSums(cpm>1)>=3
+keep.exprs <- rowSums(cpm>1)>=6
+dgel.2 <- dgel[keep.exprs,, keep.lib.sizes=FALSE]
+lcpm.filtered <- cpm(dgel.2, log=TRUE)
+# dim(dgel) # 11823     6
+cat("New count of data rows:", comma(nrow(dgel.2$counts)), "<br>\n")
+```
+
+### Plot count (CPM) distributions  
+```{r}
+nsamples <- ncol(dgel.2)
+col <- brewer.pal(nsamples, "Paired")
+par(mfrow=c(1,2))
+# -----------------------------------
+# Un-filtered data:
+# -----------------------------------
+plot(density(lcpm.unfiltered[,1]), col=col[1], lwd=2, ylim=c(0,0.21), las=2, main="A. Raw data", xlab="Log-cpm")
+# title(main="A. Raw data", xlab="Log-cpm")
+# 
+abline(v=0, lty=3)
+for (i in 2:nsamples){
+ den <- density(lcpm.unfiltered[,i])
+ lines(den$x, den$y, col=col[i], lwd=2)
+}
+legend("topright", colnames(dgel.2$counts), text.col=col, bty="n")
+# -----------------------------------
+# Filtered data:
+# -----------------------------------
+plot(density(lcpm.filtered[,1]), col=col[1], lwd=2, ylim=c(0,0.21), las=2, main="B. Filtered data", xlab="Log-cpm")
+abline(v=0, lty=3)
+for (i in 2:nsamples){
+   den <- density(lcpm.filtered[,i])
+   lines(den$x, den$y, col=col[i], lwd=2)
+}
+legend("topright", colnames(dgel.2$counts), text.col=col, bty="n")
+rm(nsamples, col, den, lcpm.unfiltered, lcpm.filtered)
+```
+
+## Normalising gene expression distributions  
+<blockquote><i>"During the sample preparation or sequencing process, external factors that are not of biological interest can affect the expression of individual samples. For example, samples processed in the first batch of an experiment can have higher expression overall when compared to samples processed in a second batch. It is assumed that all samples should have a similar range and distribution of expression values. Normalisation is required to ensure that the expression distributions of each sample are similar across the entire experiment."</blockquote>  
+<blockquote>"Any plot showing the per sample expression distributions, such as a density or boxplot, is useful in determining whether any samples are dissimilar to others."</blockquote>  
+<blockquote>[...] "Normalisation by the method of trimmed mean of M-values (TMM) (Robinson and Oshlack 2010) is performed using the `calcNormFactors` function in <b>edgeR</b>. The normalisation factors calculated here are used as a scaling factor for the library sizes. When working with DGEList-objects, these normalisation factors are automatically stored in `dgel$samples$norm.factors`."</i> </blockquote>
+```{r}
+dgel.3 <- edgeR::calcNormFactors(dgel.2, method = "TMM")
+```
+
+Print normalization factors:
+```{r}
+cat(dgel.3$samples$norm.factors, sep="\n")
+```
+
+
+```{r}
+dgel.4 <- dgel.3
+dgel.4$samples$norm.factors <- 1
+par(mfrow=c(1,2))
+nsamples <- ncol(dgel)
+col <- brewer.pal(nsamples, "Paired")
+#-----------------------------------
+# Boxplot un-normalized data:
+#-----------------------------------
+lcpm.2 <- cpm(dgel.4, log=TRUE)
+boxplot(lcpm.2, las=2, col=col, main="")
+title(main="A. Unnormalised data",ylab="Log-cpm")
+#-----------------------------------
+# Boxplot normalized data:
+#-----------------------------------
+lcpm <- cpm(dgel.4, log=TRUE)
+boxplot(lcpm, las=2, col=col, main="")
+title(main="B. Normalised data",ylab="Log-cpm")
+rm(dgel.4, lcpm.2, lcpm, nsamples, col)
+```
+
+```{r}
+head(dgel.3$counts)
+```
+
+## Eploratory plot  
+### Unsupervised clustering of samples  
+<blockquote><i>"In our opinion, one of the most important exploratory plots to examine for gene expression analyses is the multi-dimensional scaling (MDS) plot, or similar. The plot shows similarities and dissimilarities between samples in an unsupervised manner so that one can have an idea of the extent to which differential expression can be detected before carrying out formal tests. Ideally, samples would cluster well within the primary condition of interest, and any sample straying far from its group could be identified and followed up for sources of error or extra variation. If present, technical replicates should lie very close to one another."</blockquote>
+
+<blockquote>"Such a plot can be made in limma using the plotMDS function. The first dimension represents the leading-fold-change that best separates samples and explains the largest proportion of variation in the data, with subsequent dimensions having a smaller effect and being orthogonal to the ones before it. When experimental design involves multiple factors, it is recommended that each factor is examined over several dimensions. If samples cluster by a given factor in any of these dimensions, it suggests that the factor contributes to expression differences and is worth including in the linear modelling. On the other hand, factors that show little or no effect may be left out of downstream analysis."</blockquote></i>
+
+```{r message=FALSE, warning=FALSE}
+lcpm <- cpm(dgel.3, log=TRUE)
+par(mfrow=c(1,2))
+# col.group <- group
+col.group <- dgel.3$samples$group # "factor"
+levels(col.group) <-  brewer.pal(nlevels(col.group), "Set1")
+col.group <- as.character(col.group)
+# col.lane <- lane
+# levels(col.lane) <-  brewer.pal(nlevels(col.lane), "Set2")
+# col.lane <- as.character(col.lane)
+limma::plotMDS(lcpm, labels=group, col=col.group)
+title(main="Clustering: Sample groups")
+```
+
+## Differential expression analysis  
+### Creating a design matrix  
+```{r}
+design <- stats::model.matrix(~0+group)
+colnames(design) <- gsub("group", "", colnames(design))
+design
+```
+
+### Set up contrasts  
+```{r}
+contr.matrix <- limma::makeContrasts(
+  Infected.vs.Ctrl = Infected - Ctrl,
+   levels = colnames(design)
+   )
+contr.matrix
+```
+
+### Removing heteroscedascity from count data  
+>*"It has been shown that for RNA-seq count data, the variance is not independent of the mean (Law et al. 2014) – this is true of raw counts or when transformed to log-CPM values. Methods that model counts using a Negative Binomial distribution assume a quadratic mean-variance relationship. In limma, linear modelling is carried out on the log-CPM values which are assumed to be normally distributed and the mean-variance relationship is accommodated using precision weights calculated by the voom function."*  
+
+>*"When operating on a DGEList-object, voom converts raw counts to log-CPM values by automatically extracting library sizes and normalisation factors from x itself. Additional normalisation to log-CPM values can be specified within voom using the normalize.method argument."*  
+
+>*"The mean-variance relationship of log-CPM values for this dataset is shown in the left-hand panel of the next figure. Typically, the voom-plot shows a decreasing trend between the means and variances resulting from a combination of technical variation in the sequencing experiment and biological variation amongst the replicate samples from different cell populations. Experiments with high biological variation usually result in flatter trends, where variance values plateau at high expression values."*  
+
+>*"Experiments with low biological variation tend to result in sharp decreasing trends. Moreover, the voom-plot provides a visual check on the level of filtering performed upstream. If filtering of lowly-expressed genes is insufficient, a drop in variance levels can be observed at the low end of the expression scale due to very small counts. If this is observed, one should return to the earlier filtering step and increase the expression threshold applied to the dataset.</mark>"*  
+
+```{r}
+# elist <- limma::voom(dgel, design, plot=TRUE)
+elist <- limma::voom(dgel.3, design, save.plot=TRUE)
+# class(elist) # "EList" ("limma")
+elist
+```
+
+
+### Fitting linear model  
+>*"Linear modelling in limma is carried out using the lmFit and contrasts.fit functions originally written for application to microarrays. The functions can be used for both microarray and RNA-seq data and fit a separate model to the expression values for each gene. Next, empirical Bayes moderation is carried out by borrowing information across all the genes to obtain more precise estimates of gene-wise variability (Smyth 2004). The model’s residual variances are plotted against average expression values in the next figure [on the right]. It can be seen from this plot that the variance is no longer dependent on the mean expression level."*  
+
+```{r}
+vfit <- limma::lmFit(elist, design)
+vfit <- limma::contrasts.fit(vfit, contrasts=contr.matrix)
+efit <- limma::eBayes(vfit)
+```
+
+
+```{r PLOT MEAN VARIANCE TRENDS}
+par(mfrow=c(1,2))
+plot(x=elist$voom.xy$x, y=elist$voom.xy$y, pch = 16, cex = 0.3,
+     xlab=elist$voom.xy$xlab,
+     ylab=elist$voom.xy$ylab,
+     main="voom: Mean-variance trend")
+lines(x=elist$voom.line$x, y=elist$voom.line$y, type="l", col="red")
+limma::plotSA(efit, main="Final model: Mean−variance trend")
+```
+
+## Eploring differential gene epression  
+### Examining the number of differentially expressed genes  
+>*"For a quick look at differential expression levels, the number of significantly up- and down-regulated genes can be summarised in a table. Significance is defined using an adjusted p-value cutoff that is set at 5% by default."*  
+
+```{r SET MAX P.VALUE, results="asis"}
+maximum.p.value <- 0.01
+cat("Maximum p.value:<b>", maximum.p.value, "</b><br>\n")
+```
+
+```{r SET MINIMUM FOLD CHANGE, results="asis"}
+minimum.fold.change <- 1
+cat("Minimum log2 fold change:<b>", minimum.fold.change, "</b><br>\n")
+```
+
+
+```{r}
+# p.value: numeric value between 0 and 1 giving the required family-wise error rate or false discovery rate.
+# lfc: numeric, minimum absolute log2-fold-change required.
+
+summary(limma::decideTests(efit, p.value=maximum.p.value, lfc=minimum.fold.change))
+```
+
+## Toptable  
+### Generate toptable with limma  
+```{r}
+top.table <- limma::topTable(efit, number=Inf, sort.by="logFC") %>% 
+  dplyr::rename(Gene.symbol = genes)
+```
+
+Print first 6 rows (suppressed):  
+```{r}
+arrange(top.table, logFC) %>% 
+  head %>% 
+  knitr::kable(., row.names=F) %>% kableExtra::kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+Print first 6 rows (induced):  
+```{r}
+arrange(top.table, desc(logFC)) %>% 
+  head %>% 
+  knitr::kable(., row.names=F) %>% kableExtra::kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+
+### Save toptable  
+```{r}
+out.file <- paste(this.script, gsub("-", "_", Sys.Date()), "txt", sep=".")
+write.table(top.table, file=out.file, sep="\t", row.names = F, col.names = T)
+cat(out.file)
+```
+
+## Session info  
+<button class="button" onclick="myFunction('DIV_5')">Show/hide session info</button>
+  <div id="DIV_5" class="div_default_hide">
+  ```{r print_date_and_time}
+Sys.time()
+```
+
+```{r print_session_info}
+# sessionInfo()
+devtools::session_info()
+```
+</div>
+  
+<script>
+  var divsToHide = document.getElementsByClassName("div_default_hide");
+for(var i = 0; i < divsToHide.length; i++)
+{
+  divsToHide[i].style.display = 'none';
+}
+</script>
