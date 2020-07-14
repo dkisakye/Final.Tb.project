@@ -1,0 +1,106 @@
+---
+title: "R Notebook"
+author: '9401'
+date: "14/07/2020"
+output:
+  html_notebook:
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    highlight: tango
+    number_sections: no
+    fig_caption: yes
+    theme: sandstone
+    code_folding: hide
+---
+
+  
+<style>
+h1 {background: darkblue;color: white;padding-left: 7px;}
+h2 {color: darkblue;}
+.code-folding-btn {display: none;}
+</style>
+  
+<script>
+  function show_span(id) {
+    var x = document.getElementById(id);
+    if (x.style.display === 'none') {
+      x.style.display = 'inline';
+    } else {
+      x.style.display = 'none';
+    }
+  }
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.style.display === 'none') {
+    x.style.display = 'block';
+  } else {
+    x.style.display = 'none';
+  }
+}
+</script>
+
+```{r cleanup, warning=FALSE, message=FALSE, error=FALSE}
+# CHECK R VERSION
+ stopifnot(R.version.string == "R version 3.5.3 (2019-03-11)")
+
+# CLEANUP
+# Clear all variables:
+rm(list=ls(all=TRUE))
+
+# Unload current packages:
+if (!is.null(names(utils::sessionInfo()[["otherPkgs"]]))) pacman::p_unload("all") 
+```
+
+```{r setup}
+# KNITR DEFAULTS
+knitr::opts_chunk$set(eval = TRUE, fig.height = 10)
+```
+
+
+## Load Packages
+```{r, warning=FALSE, message=FALSE, error=FALSE}
+library(readxl)
+library(knitr)
+library(magrittr)
+library(dplyr)
+library(kableExtra)
+library(rstudioapi)
+```
+
+
+```{r setup_script, eval=TRUE, results='hide'}
+
+# GET CURRENT SCRIPT NAME
+(this.script <- rstudioapi::getActiveDocumentContext() %>% .$path %>% basename)
+getwd()
+list.files()
+stopifnot(this.script != "")
+```
+
+
+## Table of individual studies chosen for the meta-analysis
+```{r}
+# getwd()
+# list.files()
+data.file <- "../data.in/datasets.final.xlsx"
+stopifnot(file.exists(data.file))
+datasets.final<- read_excel(path = data.file )
+
+head(datasets.final)
+names(datasets.final)
+
+table.1 <- as.data.frame(datasets.final, row.names = FALSE) %>%
+  rename(c("Sample Counts" = "Sample\r\nCount", "Control Replicates" = "Replicates\r\nCtrl" ,"Mtb Replicates"= "Replicates.MTb", "Time point"= "Time point/hrs\r\nchosen")) 
+  head(table.1)
+  names(table.1)
+  
+table.1.sub <- subset(table.1 ) %>%
+  dplyr::select("Series_ID","Pubmed ID","Sample Counts","Mtb Replicates", "Control Replicates","Time point", "Tissue","Treatment" , "Technology",  "Platform ID")
+
+  knitr::kable(table.1.sub, row.names = FALSE, format = "html") %>%
+  kableExtra::kable_styling("striped", full_width = T)
+  
+  
+```
+
