@@ -1,0 +1,613 @@
+---
+title: "Multidimensional scaling analysis"
+author: "A. Nohturfft"
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    df_print: paged
+    toc: yes
+    highlight: tango
+    number_sections: no
+    fig_caption: yes
+    theme: sandstone
+    code_folding: hide
+    toc_depth: 3
+    toc_float: yes
+---
+  
+<style>
+h1 {background: darkblue;color: white;padding-left: 7px;}
+h2 {color: darkblue;}
+.code-folding-btn {display: none;}
+</style>
+  
+<script>
+  function show_span(id) {
+    var x = document.getElementById(id);
+    if (x.style.display === 'none') {
+      x.style.display = 'inline';
+    } else {
+      x.style.display = 'none';
+    }
+  }
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.style.display === 'none') {
+    x.style.display = 'block';
+  } else {
+    x.style.display = 'none';
+  }
+}
+</script>
+
+## Objective  
+
+Perform multidimensional scaling analysis of all data, (including von Both).  
+  
+```{r include=FALSE}
+# About <style> chunk above:
+# * provides custom formatting for level-1 and level-2 headers
+# * hides the 'code' buttons next to every code chunk in the html output; leaves only one 'code' button at the top of the html notebook.
+
+# About the <script> chunk at the top and bottom of the file:
+# * allows to insert <div>'s whose content visbility is toggled with a button.
+# * I use this to show/hide te output of sessionInfo() at the end of the script (see below)
+```
+
+
+```{r include=FALSE}
+# RMARKDOWN HELP
+# Rmarkdown:
+# https://bookdown.org/yihui/rmarkdown/
+
+# Chunk options:
+# https://yihui.name/knitr/options
+```
+
+```{r cleanup, warning=FALSE, message=FALSE, error=FALSE}
+# CHECK R VERSION
+# stopifnot(R.version.string == "R version 3.4.3 (2017-11-30)")
+
+# CLEANUP
+# Clear all variables:
+rm(list=ls(all=TRUE))
+
+# Unload current packages:
+# if (!is.null(names(utils::sessionInfo()[["otherPkgs"]]))) pacman::p_unload("all")
+```
+
+```{r setup}
+# KNITR DEFAULTS
+knitr::opts_chunk$set(eval = TRUE, fig.height = 10)
+```
+
+```{r packages, results="hide", warning=FALSE, message=FALSE, error=FALSE}
+# LOAD PACKAGES:
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+if (!requireNamespace("enrichR", quietly = TRUE)) install.packages("enrichR")
+if (!requireNamespace("ggrepel", quietly = TRUE)) install.packages("ggrepel")
+if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) BiocManager::install("ComplexHeatmap")
+if (!require(stringr)) install.packages("stringr")
+if (!require(rstudioapi)) install.packages("rstudioapi")
+if (!require(tidyr)) install.packages("tidyr")
+if (!require(tibble)) install.packages("tibble")
+if (!require(readxl)) install.packages("readxl")
+if (!require(purrr)) install.packages("purrr")
+if (!require(RColorBrewer)) install.packages("RColorBrewer")
+if (!require(devtools)) install.packages("devtools")
+if (!require(magrittr)) install.packages("magrittr")
+if (!require(dplyr)) install.packages("dplyr")
+if (!require(scales)) install.packages("scales")
+if (!require(knitr)) install.packages("knitr")
+if (!require(kableExtra)) install.packages("kableExtra")
+if (!requireNamespace("RankProd", quietly = TRUE)) BiocManager::install("RankProd")
+
+library(magrittr)
+library(dplyr)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(RankProd)
+library(ggrepel)
+```
+
+```{r setup_script, eval=TRUE, results='hide'}
+# GET CURRENT SCRIPT NAME
+(this.script <- rstudioapi::getActiveDocumentContext() %>% .$path %>% basename)
+getwd()
+list.files()
+stopifnot(this.script != "")
+```
+
+## Data: microarray studies    
+
+### Geo2r data files  
+```{r results="hide"}
+geo2r.data.files <- list.files(path="../source_data", recursive = T, 
+                               pattern="^GSE.*Geo2r.*txt$", full.names = T)
+cat(basename(geo2r.data.files), sep="<br>\n")
+```
+
+```{r results="hide"}
+tailleux.data.files <- list.files(path="../source_data", recursive = T,
+                                  pattern="*tailleux.*txt", full.names = T)
+cat(basename(tailleux.data.files), sep="<br>\n")
+
+```
+
+```{r results="asis"}
+muarray.data.files <- c(geo2r.data.files, tailleux.data.files)
+muarray.data.files <- grep("GSE29731", muarray.data.files, invert = T, value=T)
+cat(basename(muarray.data.files), sep="<br>\n")
+```
+
+### Load Geo2r data  
+```{r results="hide"}
+geo2r.data.list <- lapply(muarray.data.files, function(f) {
+  a <- read.table(f, sep="\t", header=T, quote='"', stringsAsFactors = F)
+  names(a)[grep("symbol", names(a), ignore.case = T)] <- "Gene.symbol"
+  names(a) <- stringr::str_remove(names(a), "^X\\.")
+  names(a) <- stringr::str_remove(names(a), "\\.$")
+  a
+}) %>% 
+  set_names(stringr::str_remove_all(basename(muarray.data.files), "\\.txt"))
+
+names(geo2r.data.list) <- stringr::str_remove(names(geo2r.data.list), "_Geo2r")
+names(geo2r.data.list) <- stringr::str_replace(names(geo2r.data.list), "discovery", "Dis")
+names(geo2r.data.list) <- stringr::str_replace(names(geo2r.data.list), "validation", "Val")
+names(geo2r.data.list) <- stringr::str_remove(names(geo2r.data.list), "^X")
+names(geo2r.data.list)[grep("DC", names(geo2r.data.list))] <- "A-BUGS-23_DC"
+names(geo2r.data.list)[grep("MP", names(geo2r.data.list))] <- "A-BUGS-23_MP"
+names(geo2r.data.list)[grep("GSE34151", names(geo2r.data.list))] <- "GSE34151_DC"
+names(geo2r.data.list)[grep("GSE103092", names(geo2r.data.list))] <- "GSE103092_THP1"
+
+# class(geo2r.data.list) # "list"
+# length(geo2r.data.list) # 4
+# sapply(geo2r.data.list, class) # "data.frame"
+# sapply(geo2r.data.list, nrow) %>% unname # 29102 47231 24501 24501
+```
+
+```{r}
+data.frame(List.item = names(geo2r.data.list),
+           class = sapply(geo2r.data.list, class),
+           Columns = sapply(geo2r.data.list, ncol),
+           Rows = comma(sapply(geo2r.data.list, nrow)),
+           Has.Gene.Symbols = sapply(geo2r.data.list, function(x) {any(grepl("Gene.symbol", names(x)))})
+           # Unique.genes = sapply(geo2r.data.list, function(x) {length(unique(x$))})
+           ) %>% 
+  mutate(Has.Gene.Symbols = cell_spec(Has.Gene.Symbols, "html", color = ifelse(Has.Gene.Symbols == "TRUE", "black", "red"))) %>% 
+  knitr::kable(., row.names = F, align=c("l", "l", "c", "c", "c"), format = "html", escape = F) %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+```
+
+### Aggregate logFC by gene symbol  
+```{r}
+geo.fold.change.list <- lapply(seq_along(geo2r.data.list), function(i, list.names) {
+  df <- geo2r.data.list[[i]]
+  x <- dplyr::select(df, Gene.symbol, logFC) %>% 
+    dplyr::mutate(Gene.symbol = ifelse(Gene.symbol=="", NA, Gene.symbol)) %>% 
+    tidyr::drop_na(.) %>% 
+    dplyr::mutate(logFC = as.numeric(logFC)) %>% 
+    dplyr::mutate(Gene.symbol = stringr::str_remove_all(Gene.symbol, '\\"')) %>% 
+    tidyr::drop_na(.) %>% 
+    dplyr::group_by(Gene.symbol) %>% 
+    dplyr::summarise(logFC = median(logFC), .groups="drop") %>% 
+    tidyr::drop_na(.) %>% 
+    as.data.frame(., stringsAsFactors=FALSE)
+  # names(x)[names(x) == "logFC"] <- list.names[i]
+  x
+}, list.names = names(geo2r.data.list)) %>% 
+  set_names(names(geo2r.data.list))
+names(geo.fold.change.list) <- stringr::str_remove(names(geo.fold.change.list), "_Geo2r.*$")
+```
+
+
+```{r}
+data.frame(
+  List.item = names(geo.fold.change.list),
+  Class = sapply(geo.fold.change.list, function(x) {paste(class(x), collapse=",")}),
+  Columns = sapply(geo.fold.change.list, ncol),
+  Rows = comma(sapply(geo.fold.change.list, nrow)),
+  Duplicated.genes = sapply(geo.fold.change.list, function(x) {any(duplicated(x$Gene.symbol))})
+) %>% 
+  knitr::kable(., row.names = F, align=c("l", "l", "c", "c", "c"), format = "html", escape = F) %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+```
+
+## Data: RNA-seq studies  
+```{r}
+# <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE64179">GSE64179</a>
+# https://pubmed.ncbi.nlm.nih.gov/26392366/
+add.geo.hyperlink <- function(id) {
+  a <- "<a href='https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc="
+  b <- "'>"
+  c <- "</a>"
+  res <- paste0(a, id, b, id, c)
+  res
+}
+
+add.pubmed.hyperlink <- function(id) {
+  a <- "<a href='https://pubmed.ncbi.nlm.nih.gov/"
+  b <- "/'>"
+  c <- "</a>"
+  res <- paste0(a, id, b, id, c)
+  res
+}
+```
+
+
+```{r}
+rs.dataset.table <- data.frame(
+  c=c("GSE64179", "26392366", "6", "Dendritic cells"),
+  b=c("GSE67427", "26586179", "8", "Monocyte derived macrophages"),
+  a=c("GSE148731", "32341411", "6", "M1, M2 macrophages")
+) %>%
+  t %>% 
+  as.data.frame(., stringsAsFactors=F) %>% 
+  set_colnames(c("Accession", "Pubmed", "Replicates", "Cell.Type")) %>% 
+  mutate(Accession=add.geo.hyperlink(Accession)) %>% 
+  mutate(Pubmed = add.pubmed.hyperlink(Pubmed))
+knitr::kable(rs.dataset.table, row.names = F, escape=F, format = "html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+```
+
+
+### Load RNA-seq data: GSE64179  
+```{r message=FALSE}
+# list.files("../source_data/rna_seq/GSE64179")
+rna.seq.data.files <- list()
+rna.seq.data.files$GSE64179_DC <- "../source_data/rna_seq/GSE64179/Pacis_2015_TableS6_DEG.xlsx"
+stopifnot(file.exists(rna.seq.data.files$GSE64179_DC))
+rna.seq.data.list <- list()
+rna.seq.data.list$GSE64179_DC <- readxl::read_xlsx(path=rna.seq.data.files$GSE64179_DC, range = "B3:C18818") %>% 
+  set_colnames(c("Gene.symbol", "logFC")) %>% 
+  mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+  group_by(Gene.symbol) %>% 
+  summarise(logFC = median(logFC), .groups="drop") %>% 
+  as.data.frame(., stringsAsFactors=FALSE)
+```
+
+
+```{r}
+# WITHOUT GROUPING / AGGREGATING:
+# dim(rna.seq.data$GSE64179) # 18815     2
+# sapply(rna.seq.data$GSE64179, class) # "character"   "numeric"
+# range(rna.seq.data$GSE64179$logFC) # -9.426613 11.612170
+# sum(rna.seq.data$GSE64179$logFC == 0) # 0
+# sum(duplicated(rna.seq.data$GSE64179$Gene.symbol)) # 37
+# dups <- rna.seq.data$GSE64179$Gene.symbol[duplicated(rna.seq.data$GSE64179$Gene.symbol)]
+# subset(rna.seq.data$GSE64179, Gene.symbol %in% dups) %>% 
+#   arrange(Gene.symbol, logFC)
+# head(rna.seq.data$GSE64179)
+```
+
+```{r}
+# WITH AGGREGATING: 
+# dim(rna.seq.data$GSE64179) # 18776     2
+# sapply(rna.seq.data$GSE64179, class) # "character"   "numeric"
+# range(rna.seq.data$GSE64179$logFC) # -9.426613 11.612170
+# sum(rna.seq.data$GSE64179$logFC == 0) # 0
+# sum(duplicated(rna.seq.data$GSE64179$Gene.symbol)) # 0
+head(rna.seq.data.list$GSE64179_DC) %>% 
+  knitr::kable(., row.names = F, format="html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+```
+
+
+
+
+### Load RNA-seq data: GSE67472
+```{r}
+rna.seq.data.files$GSE67472_MP <-"../source_data/rna_seq/GSE67427/GSE67427_table_s2.txt"
+stopifnot(file.exists(rna.seq.data.files$GSE67472_MP))
+#rna.seq.data.list <-list()
+rna.seq.data.list$GSE67472_MP<- read.table(file = rna.seq.data.files$GSE67472_MP, header = T, sep = "\t", stringsAsFactors = FALSE)  %>% 
+#str(rna.seq.data.list$GSE67472) #data.frame':	12728 obs. of  140 variables:
+  # head(rna.seq.data.list$GSE67472)
+  
+  # names(rna.seq.data.list$GSE67472)
+  # select(matches(c("name", "Rv.18")))
+ select(matches(c("name","Rv.18.logFC"), ignore.case = TRUE)) %>%
+   # head(rna.seq.data.list$GSE67472)
+  set_colnames(c("Gene.symbol", "logFC")) %>%
+  mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+  group_by(Gene.symbol) %>% 
+  summarise(logFC = median(logFC), .groups="drop") %>% 
+  as.data.frame(., stringsAsFactors=FALSE)
+ head(rna.seq.data.list$GSE67472_MP)
+```
+
+```{r}
+# WITHOUT GROUPING / AGGREGATING:
+dim(rna.seq.data.list$GSE67472_MP) #  12724     2
+sapply(rna.seq.data.list$GSE67472_MP, class) # "character"   "numeric"
+range(rna.seq.data.list$GSE67472_MP$logFC) # -4.155479  8.205439
+sum(rna.seq.data.list$GSE67472_MP$logFC == 0) # 0
+sum(duplicated(rna.seq.data.list$GSE67472_MP$Gene.symbol)) # 0
+# dups <- rna.seq.data$GSE64179$Gene.symbol[duplicated(rna.seq.data$GSE64179$Gene.symbol)]
+# subset(rna.seq.data$GSE64179, Gene.symbol %in% dups) %>% 
+#   arrange(Gene.symbol, logFC)
+# head(rna.seq.data$GSE64179)
+```
+
+```{r}
+# WITH AGGREGATING: 
+# dim(rna.seq.data$GSE64179) # 18776     2
+# sapply(rna.seq.data$GSE64179, class) # "character"   "numeric"
+# range(rna.seq.data$GSE64179$logFC) # -9.426613 11.612170
+# sum(rna.seq.data$GSE64179$logFC == 0) # 0
+# sum(duplicated(rna.seq.data$GSE64179$Gene.symbol)) # 0
+head(rna.seq.data.list$GSE67472_MP) %>% 
+  knitr::kable(., row.names = F, format="html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+
+```
+
+### Load RNA-seq data: GSE48731.MF1
+```{r message=FALSE}
+# list.files("../source_data/rna_seq/GSE148731")
+# rna.seq.data.files <- list()
+rna.seq.data.files$GSE148731.MF1 <- "../source_data/rna_seq/GSE148731/GSE148731_toptable_MF1_01.Rmd.2020_07_09.txt"
+stopifnot(file.exists(rna.seq.data.files$GSE148731.MF1))
+ # rna.seq.data.list <- list()
+rna.seq.data.list$GSE148731.MF1 <- read.table(file = rna.seq.data.files$GSE148731.MF1, header = TRUE, sep = "\t", stringsAsFactors = FALSE) %>%
+   select(c("Gene.symbol", "logFC")) %>% 
+  # mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+  # summarise(logFC = median(logFC), .groups="drop") %>% 
+   as.data.frame(., stringsAsFactors=FALSE)
+head(rna.seq.data.list$GSE148731.MF1)
+```
+
+
+```{r}
+# WITH AGGREGATING:
+dim(rna.seq.data.list$GSE148731.MF1) # 17802     2
+sapply(rna.seq.data.list$GSE148731.MF1, class) # "character"   "numeric"
+range(rna.seq.data.list$GSE148731.MF1$logFC) # -2.386124  9.704865
+sum(rna.seq.data.list$GSE148731.MF1$logFC == 0) #
+sum(duplicated(rna.seq.data.list$GSE148731.MF1$Gene.symbol)) # 0
+
+```
+
+```{r}
+head(rna.seq.data.list$GSE148731.MF1) %>% 
+  knitr::kable(., row.names = F, format="html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+```
+
+
+### Load RNA-seq data: GSE48731.MF2
+```{r message=FALSE}
+ # list.files("../source_data/rna_seq/GSE148731")
+# rna.seq.data.files <- list()
+rna.seq.data.files$GSE148731.MF2 <- "../source_data/rna_seq/GSE148731/GSE148731_toptable_MF2_01.Rmd.2020_07_09.txt"
+stopifnot(file.exists(rna.seq.data.files$GSE148731.MF2))
+ # rna.seq.data.list <- list()
+rna.seq.data.list$GSE148731.MF2 <- read.table(file = rna.seq.data.files$GSE148731.MF2, header = TRUE, sep = "\t", stringsAsFactors = FALSE) %>%
+   select(c("Gene.symbol", "logFC")) %>% 
+  # mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+  # summarise(logFC = median(logFC), .groups="drop") %>% 
+   as.data.frame(., stringsAsFactors=FALSE)
+head(rna.seq.data.list$GSE148731.MF2)
+```
+
+
+```{r}
+# WITH AGGREGATING:
+dim(rna.seq.data.list$GSE148731.MF2) #  17085     2
+sapply(rna.seq.data.list$GSE148731.MF2, class) # "character"   "numeric"
+range(rna.seq.data.list$GSE148731.MF2$logFC) # -7.524136  9.795100
+sum(rna.seq.data.list$GSE148731.MF2$logFC == 0) #
+sum(duplicated(rna.seq.data.list$GSE148731.MF2$Gene.symbol)) # 0
+
+```
+
+```{r}
+head(rna.seq.data.list$GSE148731.MF2) %>% 
+  knitr::kable(., row.names = F, format="html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+```
+
+## Combine all data frames  
+```{r results="hide"}
+length(rna.seq.data.list) # 4
+length(geo.fold.change.list) # 8
+all.data.list <- c(geo.fold.change.list, rna.seq.data.list)
+stopifnot(all(sapply(all.data.list, class) == "data.frame"))
+```
+
+```{r results="hide"}
+names(all.data.list)
+lapply(all.data.list, names)
+length(all.data.list) # 8
+```
+
+
+### Merge data frames  
+```{r}
+merged.df <- all.data.list %>% purrr::reduce(dplyr::full_join, by="Gene.symbol") %>% 
+  tibble::column_to_rownames("Gene.symbol") %>% 
+  set_colnames(names(all.data.list))
+
+# dim(merged.df) # 30687    12
+head(merged.df) %>% 
+  knitr::kable(., row.names = T, format="html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+```
+
+Summary table:  
+```{r}
+df.summary <- data.frame(
+  Column = names(merged.df),
+  Min = round(sapply(merged.df, min, na.rm=T), 2),
+  Max = round(sapply(merged.df, max, na.rm=T), 2),
+  Count.zero = sapply(merged.df, function(x) {sum(x==0, na.rm=T)}),
+  Count.NA = comma(sapply(merged.df, function(x) {sum(is.na(x))}))
+) %>% 
+  mutate(Count.zero = comma(as.integer(Count.zero), accuracy=1))
+knitr::kable(df.summary, row.names = F, format="html", align=rep("l", 5)) %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+```
+
+
+```{r results="asis"}
+cat("Number of rows in merged data frame:<b>", comma(nrow(merged.df)), "</b><br>\n")
+cat("Number of gene symbols in merged data frame:<b>", comma(length(unique(row.names(merged.df)))), "</b><br>\n")
+```
+
+```{r results="asis"}
+cat("Number of complete data rows: <b>", comma(sum(complete.cases(merged.df))), "</b> (",
+    percent(sum(complete.cases(merged.df))/length(unique(row.names(merged.df)))),
+    ")<br>\n", sep="")
+```
+
+## Remove all rows with any missing data  
+```{r results="hide"}
+max.na <- 0
+merged.df.filt.na <- merged.df[complete.cases(merged.df),]
+dim(merged.df.filt.na)   # 7,729   12
+dim(merged.df)    #  30,687     12
+```
+
+```{r results="asis"}
+cat("Number of genes remaining in filtered data: <b>",
+    comma(nrow(merged.df.filt.na)),
+    "</b> (", percent(nrow(merged.df.filt.na) / nrow(merged.df)), ")", sep="")
+```
+
+### Summary table after filtering NAs:  
+```{r}
+df.summary.2 <- data.frame(
+  Column = names(merged.df.filt.na),
+  Dataset=names(all.data.list),
+  Min = round(sapply(merged.df.filt.na, min, na.rm=T), 2),
+  Max = round(sapply(merged.df.filt.na, max, na.rm=T), 2),
+  Count.zero = sapply(merged.df.filt.na, function(x) {sum(x==0, na.rm=T)}),
+  Count.NA = comma(sapply(merged.df.filt.na, function(x) {sum(is.na(x))}))
+) %>% 
+  mutate(Count.zero = comma(as.integer(Count.zero), accuracy=1))
+knitr::kable(df.summary.2, row.names = F, format="html", align=rep("l", 5)) %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+rm(df.summary.2)
+```
+
+
+
+## Calculate ranks (1)  
+
+* Convert logFC to ranks  
+* ties are averaged  
+
+### Ranks: downregulated  
+
+```{r}
+ranks.down.mx <- merged.df.filt.na %>% 
+  tibble::rownames_to_column("Gene") %>% 
+  dplyr::mutate(across(-Gene, rank, ties.method="average", na.last="keep")) %>%
+  dplyr::rowwise() %>% 
+  dplyr::mutate(ranksum = sum(c_across(-Gene))) %>% 
+  dplyr::arrange(ranksum) %>% 
+  dplyr::select(-ranksum) %>% 
+  dplyr::ungroup() %>% 
+  tibble::column_to_rownames("Gene") %>% 
+  as.matrix
+stopifnot(all(complete.cases(ranks.down.mx)))
+head(ranks.down.mx)
+```
+
+```{r results="hide"}
+apply(ranks.down.mx, 2, max)
+```
+
+### Ranks: upregulated  
+```{r}
+ranks.up.mx <- as.matrix(merged.df.filt.na) %>% 
+  magrittr::multiply_by(-1) %>% 
+  as.data.frame(., stringsAsFactors=F) %>%
+  tibble::rownames_to_column("Gene") %>% 
+  dplyr::mutate(across(-Gene, rank, ties.method="average", na.last="keep")) %>%
+  dplyr::rowwise() %>% 
+  dplyr::mutate(ranksum = sum(c_across(-Gene))) %>% 
+  dplyr::arrange(ranksum) %>% 
+  dplyr::select(-ranksum) %>% 
+  dplyr::ungroup() %>% 
+  tibble::column_to_rownames("Gene") %>% 
+  as.matrix
+stopifnot(all(complete.cases(ranks.up.mx)))
+head(ranks.up.mx)
+```
+
+## Plot multidimensional scaling analysis 
+(based on Figure S1, Doublet et al., 2017)  
+
+```{r}
+dist.mx <- dist(t(ranks.down.mx), method = "manhattan")
+
+# dim(as.matrix(dist.mx)) # 8 8
+mds <- cmdscale(dist.mx) %>% 
+  as.data.frame(.) %>% 
+  set_colnames(c("Dim1", "Dim2")) %>%
+  dplyr::mutate(Dataset = names(all.data.list)) %>% 
+  dplyr::mutate(Technology = ifelse(Dataset %in% names(rna.seq.data.list), "RNA-seq", "Microarray")) %>%
+  dplyr::mutate(Cell.type = ifelse(grepl("_DC", Dataset), "Dendritic cells", "Macrophages")) %>% 
+  dplyr::mutate(Cell.type = ifelse(grepl("GSE108363", Dataset), "Whole blood", Cell.type)) %>% 
+  dplyr::mutate(Dataset = stringr::str_remove(Dataset, "_.*$")) %>% 
+  dplyr::mutate(Dataset.Num = seq_len(nrow(.))) %>% 
+  dplyr::select(Dataset.Num, everything())
+
+mds %>% 
+  dplyr::mutate(Dim1 = comma(Dim1)) %>% 
+  dplyr::mutate(Dim2 = comma(Dim2)) %>% 
+  knitr::kable(., row.names = F, format="html") %>% 
+  kableExtra::kable_styling("striped")
+rm(dist.mx)
+```
+
+```{r}
+set.seed(2)
+font.size <- 10
+gg.mds <- ggplot(mds, aes(x=Dim1, y=Dim2, colour=Cell.type, shape=Technology, label=Dataset.Num)) +
+  geom_point(size=5) +
+  # geom_text() +
+  geom_text_repel(colour="black", fontface="bold", box.padding=0.5, min.segment.length=10) +
+  xlab("Dimension 1") + ylab("Dimension 2") + 
+  geom_vline(xintercept = 0, colour="darkgrey") +
+  geom_hline(yintercept = 0, colour="darkgrey") +
+  theme(axis.text=element_text(size=font.size, color="black")) +
+  theme(axis.title=element_text(size=font.size, color="black", face="bold")) +
+  theme(legend.text = element_text(size=font.size, face="bold")) +
+  theme(legend.title = element_text(size=font.size, face="bold")) + 
+  scale_shape_manual(values=c(18, 19))
+gg.mds
+```
+
+### Save plot as pdf  
+```{r}
+out.file <- paste("data_out", stringr::str_replace(this.script, "\\.[Rr][Mm][Dd]$", ".pdf"), sep="/")
+ggsave(gg.mds, filename = out.file, height = 10, width = 15, units = "cm", useDingbats=)
+out.file
+```
+
+
+
+## Session info  
+<button class="button" onclick="myFunction('DIV_5')">Show/hide session info</button>
+<div id="DIV_5" class="div_default_hide">
+
+```{r print_date_and_time}
+Sys.time()
+```
+
+```{r print_session_info}
+# sessionInfo()
+devtools::session_info()
+```
+</div>
+  
+<script>
+  var divsToHide = document.getElementsByClassName("div_default_hide");
+for(var i = 0; i < divsToHide.length; i++)
+{
+  divsToHide[i].style.display = 'none';
+}
+</script>
