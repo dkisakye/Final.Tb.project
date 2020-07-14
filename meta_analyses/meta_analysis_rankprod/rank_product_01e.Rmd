@@ -782,7 +782,7 @@ down.100.df <- as.data.frame(t(mx.down.100)) %>%
   dplyr::mutate(Cell.type = "Macrophages") %>%
   dplyr::select(Dataset, Technology, Cell.type, dplyr::everything())
 down.100.df$Technology[down.100.df$Dataset %in% names(rna.seq.data.list)] <- "RNA-seq"
-down.100.df$Cell.type[down.100.df$Dataset %in% c("GSE64179", "A-BUGS-23_DC")] <- "Dendritic cells"
+down.100.df$Cell.type[down.100.df$Dataset %in% c("GSE64179", "A-BUGS-23_DC", "GSE34151")] <- "Dendritic cells"
 down.100.df[,1:6]
 ```
 
