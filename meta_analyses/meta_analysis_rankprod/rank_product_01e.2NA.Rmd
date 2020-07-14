@@ -478,8 +478,14 @@ two.na.max.count <- as.matrix(merged.df) %>%
 class(two.na.max.count) # integer
 length(two.na.max.count) # 30687
 merged.df.filt.na <- merged.df[two.na.max.count <= 2,]
-dim(merged.df.filt.na)   # 11873     8  vs  8626    8 (one NA max)
+dim(merged.df.filt.na)# 11873     8  vs  8626    8 (one NA max)
  dim(merged.df)    #  30687     8  
+```
+```{r}
+cat("Number of rows with max two NA: <b>", comma(nrow(merged.df.filt.na)), "</b> (",
+    percent(nrow(merged.df.filt.na)/length(unique(row.names(merged.df)))),
+    ")<br>\n", sep="")
+
 ```
 
 Print 10 rows:  
@@ -865,7 +871,7 @@ ComplexHeatmap::Heatmap(
 gs.down.01 <- rank.sum.down %>% 
   dplyr::filter(P.Val.Adj <= 0.01) %>% 
   use_series("Gene")
- length(gs.down.01) # 371
+ length(gs.down.01) # 569
 cat("Number of consistently <b><i>down</i></b>regulated genes (p <= 0.01):<b>", length(gs.down.01), "</b>")
 ```
 
@@ -881,7 +887,7 @@ cat("File saved:", out.file.down.01)
 gs.up.01 <- rank.sum.up %>% 
   dplyr::filter(P.Val.Adj <= 0.01) %>% 
   use_series("Gene")
-length(gs.up.01) # 547
+length(gs.up.01) # 804
 cat("Number of consistently <b><i>up</i></b>regulated genes (p <= 0.01):<b>", length(gs.up.01), "</b>")
 ```
 
