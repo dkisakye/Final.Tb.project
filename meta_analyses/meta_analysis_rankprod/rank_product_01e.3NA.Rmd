@@ -120,6 +120,17 @@ library(kableExtra)
 library(RankProd)
 ```
 
+```{r}
+x <- head(iris, 10)
+x
+```
+
+```{r}
+write.table(x, file="delete.txt", sep="\t", row.names = F, col.names = T)
+```
+
+
+
 ```{r setup_script, eval=TRUE, results='hide'}
 # GET CURRENT SCRIPT NAME
 (this.script <- rstudioapi::getActiveDocumentContext() %>% .$path %>% basename)
