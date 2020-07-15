@@ -1,0 +1,10 @@
+|File                                                    | Gene.count|
+|:-------------------------------------------------------|----------:|
+|A-BUGS-23-DC.analysis.rmd.genes.up.uniq.txt             |        646|
+|A-BUGS-23-MP.analysis.rmd.genes.up.uniq.txt             |        515|
+|GSE103092.analysis.rmd.genes.up.uniq.txt                |          8|
+|GSE108363.bcg.discovery.analysis.Rmd.genes.up.uniq.txt  |        193|
+|GSE108363.bcg.validation.analysis.Rmd.genes.up.uniq.txt |        379|
+|GSE108363.mtb.discovery.analysis.Rmd.genes.up.uniq.txt  |         57|
+|GSE108363.mtb.validation.analysis.Rmd.genes.up.uniq.txt |        265|
+|GSE34151.analysis.rmd.genes.up.uniq.txt                 |        665|
