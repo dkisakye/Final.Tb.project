@@ -361,7 +361,7 @@ stopifnot(file.exists(rna.seq.data.files$GSE148731.MF1))
  # rna.seq.data.list <- list()
 rna.seq.data.list$GSE148731.MF1 <- read.table(file = rna.seq.data.files$GSE148731.MF1, header = TRUE, sep = "\t", stringsAsFactors = FALSE) %>%
    select(c("Gene.symbol", "logFC")) %>% 
-   mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+  mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
   # summarise(logFC = median(logFC), .groups="drop") %>% 
    as.data.frame(., stringsAsFactors=FALSE)
 head(rna.seq.data.list$GSE148731.MF1)
@@ -392,8 +392,8 @@ stopifnot(file.exists(rna.seq.data.files$GSE148731.MF2))
  # rna.seq.data.list <- list()
 rna.seq.data.list$GSE148731.MF2 <- read.table(file = rna.seq.data.files$GSE148731.MF2, header = TRUE, sep = "\t", stringsAsFactors = FALSE) %>%
    select(c("Gene.symbol", "logFC")) %>% 
-   mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
-  # summarise(logFC = median(logFC), .groups="drop") %>% 
+  mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+ # summarise(logFC = median(logFC), .groups="drop") %>% 
    as.data.frame(., stringsAsFactors=FALSE)
 head(rna.seq.data.list$GSE148731.MF2)
 ```
@@ -468,21 +468,23 @@ cat("Number of complete data rows: <b>", comma(sum(complete.cases(merged.df))), 
     ")<br>\n", sep="")
 ```
 
-### Filter rows: Two NA max  
+### Filter rows: Three NA max  
 ```{r}
-two.na.max.count <- as.matrix(merged.df) %>% 
+three.na.max.count <- as.matrix(merged.df) %>% 
   apply(., 1, function(x) {  # 1 = select rows
     n <- sum(is.na(x))
     n
   })
-class(two.na.max.count) # integer
-length(two.na.max.count) # 30687
-merged.df.filt.na <- merged.df[two.na.max.count <= 2,]
-dim(merged.df.filt.na)# 11873     8  vs  8626    8 (one NA max)
+class(three.na.max.count) # integer
+length(three.na.max.count) # 30687
+merged.df.filt.na <- merged.df[three.na.max.count <= 3,]
+dim(merged.df.filt.na)# 14491    12 vs 11873     8  vs  8626    8 (one NA max)
  dim(merged.df)    #  30687     8  
 ```
+
+
 ```{r}
-cat("Number of rows with max two NA: <b>", comma(nrow(merged.df.filt.na)), "</b> (",
+cat("Number of rows with max three NA: <b>", comma(nrow(merged.df.filt.na)), "</b> (",
     percent(nrow(merged.df.filt.na)/length(unique(row.names(merged.df)))),
     ")<br>\n", sep="")
 
