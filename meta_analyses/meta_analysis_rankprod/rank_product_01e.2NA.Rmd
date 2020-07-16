@@ -134,6 +134,7 @@ stopifnot(this.script != "")
 ```{r results="hide"}
 geo2r.data.files <- list.files(path="../source_data", recursive = T, 
                                pattern="^GSE.*Geo2r.*txt$", full.names = T)
+geo2r.data.files <- grep(pattern = "GSE108363", geo2r.data.files, invert = T, value = T)
 cat(basename(geo2r.data.files), sep="<br>\n")
 ```
 
@@ -435,7 +436,7 @@ merged.df <- all.data.list %>% purrr::reduce(dplyr::full_join, by="Gene.symbol")
   tibble::column_to_rownames("Gene.symbol") %>% 
   set_colnames(paste0("dataset", seq_along(.)))
 
-dim(merged.df) # 30687     8
+dim(merged.df) # 30687     12
 head(merged.df) %>% 
   knitr::kable(., row.names = T, format="html") %>% 
   kableExtra::kable_styling("striped", full_width = T)
@@ -478,8 +479,8 @@ two.na.max.count <- as.matrix(merged.df) %>%
 class(two.na.max.count) # integer
 length(two.na.max.count) # 30687
 merged.df.filt.na <- merged.df[two.na.max.count <= 2,]
-dim(merged.df.filt.na)# 11873     8  vs  8626    8 (one NA max)
- dim(merged.df)    #  30687     8  
+dim(merged.df.filt.na)# 11873     8  vs  8626    12 (one NA max)
+ dim(merged.df)    #  30687     8
 ```
 ```{r}
 cat("Number of rows with max two NA: <b>", comma(nrow(merged.df.filt.na)), "</b> (",
@@ -662,11 +663,19 @@ panel.cor <- function(x, y, digits = 3, prefix = "", cex.cor, ...)
      # text(0.5, 0.5, txt, cex = cex.cor * r)
      text(0.5, 0.5, txt, cex=2.5, col="blue", font = 3)
 }
-merged.df %>% 
+plot.1<- merged.df %>% 
   set_colnames(names(all.data.list)) %>% 
   pairs(., col = alpha("black", 0.3), pch=18, upper.panel = panel.cor,
         xaxt='n', yaxt='n',
         text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=3, font=2)})
+plot.1
+```
+### Save plot as a pdf
+```{r}
+out.file <- paste("data_out", stringr::str_replace(this.script, "\\.[Rr][Mm][Dd]$", ".pdf"), sep="/")
+out.file
+ggsave(plot.1, filename = out.file, height = 10, width = 15, units = "cm", useDingbats=)
+out.file
 ```
 
 ### Plot ranks  
@@ -778,7 +787,6 @@ head(mx.down.100)
 ```{r}
 down.100.df <- as.data.frame(t(mx.down.100))
 # dim(down.100.df) # 5 100
-
 row.names(down.100.df) <- names(all.data.list)
 
 down.100.df <- as.data.frame(t(mx.down.100)) %>% 
