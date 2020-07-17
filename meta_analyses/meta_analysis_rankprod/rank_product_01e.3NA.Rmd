@@ -145,6 +145,7 @@ stopifnot(this.script != "")
 ```{r results="hide"}
 geo2r.data.files <- list.files(path="../source_data", recursive = T, 
                                pattern="^GSE.*Geo2r.*txt$", full.names = T)
+geo2r.data.files <- grep(pattern = "GSE108363", geo2r.data.files, invert = T, value = T)
 cat(basename(geo2r.data.files), sep="<br>\n")
 ```
 
@@ -160,7 +161,6 @@ muarray.data.files <- c(geo2r.data.files, tailleux.data.files)
 muarray.data.files <- grep("GSE29731", muarray.data.files, invert = T, value=T)
 cat(basename(muarray.data.files), sep="<br>\n")
 ```
-
 ### Load Geo2r data  
 ```{r results="hide"}
 geo2r.data.list <- lapply(muarray.data.files, function(f) {
@@ -171,6 +171,7 @@ geo2r.data.list <- lapply(muarray.data.files, function(f) {
   a
 }) %>% 
   set_names(stringr::str_remove_all(basename(muarray.data.files), "\\.txt"))
+
 
 names(geo2r.data.list) <- stringr::str_remove(names(geo2r.data.list), "^X")
 names(geo2r.data.list)[grep("DC", names(geo2r.data.list))] <- "A-BUGS-23_DC"
@@ -489,7 +490,7 @@ three.na.max.count <- as.matrix(merged.df) %>%
 class(three.na.max.count) # integer
 length(three.na.max.count) # 30687
 merged.df.filt.na <- merged.df[three.na.max.count <= 3,]
-dim(merged.df.filt.na)# 14491    12 vs 11873     8  vs  8626    8 (one NA max)
+dim(merged.df.filt.na)# 14743 8 vs 11873     8  vs  8626    8 (one NA max)
  dim(merged.df)    #  30687     8  
 ```
 
@@ -673,14 +674,31 @@ panel.cor <- function(x, y, digits = 3, prefix = "", cex.cor, ...)
      txt <- paste0("r=", txt)
      # if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
      # text(0.5, 0.5, txt, cex = cex.cor * r)
-     text(0.5, 0.5, txt, cex=2.5, col="blue", font = 3)
+     text(0.5, 0.5, txt, cex=1.0, col="blue", font = 3)
 }
 merged.df %>% 
   set_colnames(names(all.data.list)) %>% 
-  pairs(., col = alpha("black", 0.3), pch=18, upper.panel = panel.cor,
+  pairs(., col = alpha("black", 0.3), pch=20, upper.panel = panel.cor,
         xaxt='n', yaxt='n',
-        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=3, font=2)})
+        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=2, font=2)})
 ```
+
+### Save plot as a pdf
+```{r}
+out.file <- paste("data_out", stringr::str_replace(this.script, "\\.[Rr][Mm][Dd]$", ".pdf"), sep="/")
+out.file
+```
+
+```{r}
+pdf(file=out.file, width = 6.7, height=4)
+merged.df %>% 
+  set_colnames(names(all.data.list)) %>% 
+  pairs(., col = alpha("black", 0.2), pch=20, upper.panel = panel.cor,
+        xaxt='n', yaxt='n',
+        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=0.5, font=2)})
+dev.off()
+```
+
 
 ### Plot ranks  
 ```{r}
@@ -752,11 +770,19 @@ rank.sum.down <- get.rank.sum(ranks.down.mx.2) %>%
   get.rank.sum.stats(.)
 # class(rank.sum.down) # "data.frame"
 # dim(rank.sum.down) # 11684     4
-rank.sum.down %>% 
+top.10.down<- rank.sum.down %>% 
   arrange(Rank.Sum) %>% 
   head(., 10) %>% 
   knitr::kable(., row.names = F, align=rep("l", 4), format = "html", escape = F) %>% 
   kableExtra::kable_styling("striped", full_width = T)
+top.10.down
+
+```
+### Save top 10 down regulated genes
+```{r}
+out.table.down <- paste0("data_out/",this.script, ".top.down.txt")
+out.table.down
+write.table(top.10.down, file = out.table.down, sep = "")
 ```
 
 ### Rank sum stats: upregulation  
