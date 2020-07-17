@@ -772,9 +772,9 @@ rank.sum.down <- get.rank.sum(ranks.down.mx.2) %>%
 # dim(rank.sum.down) # 11684     4
 top.10.down<- rank.sum.down %>% 
   arrange(Rank.Sum) %>% 
-  head(., 10) %>% 
-  knitr::kable(., row.names = F, align=rep("l", 4), format = "html", escape = F) %>% 
-  kableExtra::kable_styling("striped", full_width = T)
+  head(., 10) 
+  # knitr::kable(., row.names = F, align=rep("l", 4), format = "html", escape = F) %>% 
+  # kableExtra::kable_styling("striped", full_width = T)
 top.10.down
 
 ```
@@ -791,12 +791,21 @@ rank.sum.up <- get.rank.sum(ranks.up.mx.2) %>%
   get.rank.sum.stats(.)
 # class(rank.sum.up) # "data.frame"
 # dim(rank.sum.up) # 12786     4
-rank.sum.up %>% 
+top.10.up <- rank.sum.up %>% 
   arrange(Rank.Sum) %>% 
-  head(., 10) %>% 
-  knitr::kable(., row.names = F, align=rep("l", 4), format = "html", escape = F) %>% 
-  kableExtra::kable_styling("striped", full_width = T)
+  head(., 10) 
+  # knitr::kable(., row.names = F, align=rep("l", 4), format = "html", escape = F) %>% 
+  # kableExtra::kable_styling("striped", full_width = T)
+top.10.up
 ```
+`
+### Save top 10 up regulated genes
+```{r}
+out.table.up <- paste0("data_out/",this.script, ".top.up.txt")
+out.table.up
+write.table(top.10.up, file = out.table.up, sep = "")
+```
+
 
 ## Heatmaps for top regulated genes  
 ([Datanovia Tutorial](https://www.datanovia.com/en/lessons/heatmap-in-r-static-and-interactive-visualization/#r-base-heatmap-heatmap))
@@ -813,6 +822,15 @@ mx.down.100 <- ranks.down.mx.2[down.100,] %>%
 # dim(mx.down.100) # 100   5
 head(mx.down.100)
 ```
+### Save top 100 upregulated genes
+```{r}
+out.file <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".down.100.txt"), sep="/")
+
+out.file
+cat(down.100, file = out.file, sep = "\n")
+```
+
+
 
 ```{r}
 down.100.df <- as.data.frame(t(mx.down.100))
@@ -832,8 +850,8 @@ down.100.df[,1:6]
 ```
 
 ```{r}
-col <- list(Technology = c("Microarray" = "yellow", "RNA-seq" = "darkgreen"),
-            Cell.type = c("Macrophages" = "lightgrey", "Dendritic cells" = "black"))
+col <- list(Technology = c("Microarray" = "lightgreen", "RNA-seq" = "yellow"),
+            Cell.type = c("Macrophages" = "grey", "Dendritic cells" = "black"))
 ha <- ComplexHeatmap::HeatmapAnnotation(
   Technology = down.100.df$Technology,
   Cell.type = down.100.df$Cell.type,
@@ -842,14 +860,38 @@ ha <- ComplexHeatmap::HeatmapAnnotation(
 ```
 
 ```{r}
-# help(Heatmap, package="ComplexHeatmap")
+help(Heatmap, package="ComplexHeatmap")
 # "YlOrRd", "YlOrBr", "YlGnBu"*, "PuBuGn", "YlGn", "RdPu"-, "PuRd"-, "BuGn"
 # "Blues", "Greens", "Purples", "Oranges"
-heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(9, "YlGnBu"))(256) %>% rev
+heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(7, "YlGnBu"))(256) %>% rev
 ComplexHeatmap::Heatmap(
   mx.down.100, name = "Rank",
   col = heat.cols,
   top_annotation = ha)
+
+```
+### Save heatmap for down regulated genes
+```{r}
+out.file.map.down <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".map.down.pdf"), sep="/")
+out.file.map.down
+```
+
+```{r}
+# pdf(file = out.file.map.down, paper = "a4")
+# heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(7, "YlGnBu"))(256) %>% rev
+# ComplexHeatmap::Heatmap(
+  # mx.down.100, name = "Rank",
+  # col = heat.cols,
+  # top_annotation = ha)
+# dev.off()
+```
+
+```{r}
+
+ggsave(filename = out.file.map.down, last_plot(), height = 21, width = 29, units = "cm", useDingbats=)
+
+# filename = out.file.map.down, plot = last_plot(), height = 21, width = 29, units = "cm", )
+
 ```
 
 
@@ -862,6 +904,15 @@ mx.up.100 <- ranks.up.mx.2[up.100,] %>%
   set_colnames(names(all.data.list))
  dim(mx.up.100) # 100   6
 head(mx.up.100)
+
+```
+### Save top 100 upregulated genes
+```{r}
+out.file <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".up.100.txt"), sep="/")
+
+out.file
+cat(up.100, file = out.file, sep = "\n")
+
 ```
 
 
@@ -878,12 +929,12 @@ up.100.df <- as.data.frame(t(mx.up.100)) %>%
   dplyr::select(Dataset, Technology, Cell.type, dplyr::everything())
 up.100.df$Technology[up.100.df$Dataset %in% names(rna.seq.data.list)] <- "RNA-seq"
 up.100.df$Cell.type[up.100.df$Dataset %in% c("GSE64179", "A-BUGS-23_DC","GSE34151")] <- "Dendritic cells"
-up.100.df[,1:6]
+length(up.100.df)
 ```
 
 ```{r}
 col <- list(Technology = c("Microarray" = "yellow", "RNA-seq" = "darkgreen"),
-            Cell.type = c("Macrophages" = "lightgrey", "Dendritic cells" = "black"))
+            Cell.type = c("Macrophages" = "grey", "Dendritic cells" = "black"))
 ha <- ComplexHeatmap::HeatmapAnnotation(
   Technology = up.100.df$Technology,
   Cell.type = up.100.df$Cell.type,
@@ -895,13 +946,29 @@ ha <- ComplexHeatmap::HeatmapAnnotation(
 # help(Heatmap, package="ComplexHeatmap")
 # "YlOrRd", "YlOrBr", "YlGnBu"*, "PuBuGn", "YlGn", "RdPu"-, "PuRd"-, "BuGn"
 # "Blues", "Greens", "Purples", "Oranges"
-heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(9, "YlGnBu"))(256) %>% rev
+heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(8, "YlGnBu"))(256) %>% rev
 ComplexHeatmap::Heatmap(
   mx.up.100, name = "Rank",
   col = heat.cols,
   top_annotation = ha)
 ```
 
+
+### Save heatmap for up regulated genes
+```{r}
+out.file.map.up <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".map.up.pdf"), sep="/")
+out.file.map.up
+```
+
+```{r}
+pdf(file = out.file.map.up, paper = "a4")
+heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(7, "YlGnBu"))(256) %>% rev
+ComplexHeatmap::Heatmap(
+  mx.up.100, name = "Rank",
+  col = heat.cols,
+  top_annotation = ha)
+dev.off()
+```
 
 
 ## Save genes  
@@ -910,8 +977,9 @@ ComplexHeatmap::Heatmap(
 gs.down.01 <- rank.sum.down %>% 
   dplyr::filter(P.Val.Adj <= 0.01) %>% 
   use_series("Gene")
- length(gs.down.01) # 569
+ length(gs.down.01) # 824
 cat("Number of consistently <b><i>down</i></b>regulated genes (p <= 0.01):<b>", length(gs.down.01), "</b>")
+
 ```
 
 ```{r}
@@ -926,7 +994,7 @@ cat("File saved:", out.file.down.01)
 gs.up.01 <- rank.sum.up %>% 
   dplyr::filter(P.Val.Adj <= 0.01) %>% 
   use_series("Gene")
-length(gs.up.01) # 804
+length(gs.up.01) # 912
 cat("Number of consistently <b><i>up</i></b>regulated genes (p <= 0.01):<b>", length(gs.up.01), "</b>")
 ```
 
