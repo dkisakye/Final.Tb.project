@@ -661,22 +661,32 @@ panel.cor <- function(x, y, digits = 3, prefix = "", cex.cor, ...)
      txt <- paste0("r=", txt)
      # if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
      # text(0.5, 0.5, txt, cex = cex.cor * r)
-     text(0.5, 0.5, txt, cex=2.5, col="blue", font = 3)
+     text(0.5, 0.5, txt, cex=1.0, col="blue", font = 3)
 }
-plot.1<- merged.df %>% 
+ merged.df %>% 
   set_colnames(names(all.data.list)) %>% 
-  pairs(., col = alpha("black", 0.3), pch=18, upper.panel = panel.cor,
+  pairs(., col = alpha("black", 0.2), pch=20, cex =0.1, upper.panel = panel.cor,
         xaxt='n', yaxt='n',
-        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=3, font=2)})
-plot.1
+        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=0.5, font=2)})
+
 ```
+
+
 ### Save plot as a pdf
 ```{r}
 out.file <- paste("data_out", stringr::str_replace(this.script, "\\.[Rr][Mm][Dd]$", ".pdf"), sep="/")
 out.file
-ggsave(plot.1, filename = out.file, height = 10, width = 15, units = "cm", useDingbats=)
-out.file
 ```
+```{r}
+pdf(file=out.file, width = 6.7, height=4)
+merged.df %>% 
+  set_colnames(names(all.data.list)) %>% 
+  pairs(., col = alpha("black", 0.2), pch=20, upper.panel = panel.cor,
+        xaxt='n', yaxt='n',
+        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=0.5, font=2)})
+dev.off()
+```
+
 
 ### Plot ranks  
 ```{r}
