@@ -352,7 +352,7 @@ stopifnot(file.exists(rna.seq.data.files$GSE148731.MF1))
  # rna.seq.data.list <- list()
 rna.seq.data.list$GSE148731.MF1 <- read.table(file = rna.seq.data.files$GSE148731.MF1, header = TRUE, sep = "\t", stringsAsFactors = FALSE) %>%
    select(c("Gene.symbol", "logFC")) %>% 
-  # mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+   mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
   # summarise(logFC = median(logFC), .groups="drop") %>% 
    as.data.frame(., stringsAsFactors=FALSE)
 head(rna.seq.data.list$GSE148731.MF1)
