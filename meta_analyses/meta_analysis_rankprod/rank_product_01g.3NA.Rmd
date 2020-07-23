@@ -271,12 +271,12 @@ rna.seq.data.files <- list()
 rna.seq.data.files$GSE64179 <- "../source_data/rna_seq/GSE64179/Pacis_2015_TableS6_DEG.xlsx"
 stopifnot(file.exists(rna.seq.data.files$GSE64179))
 rna.seq.data.list <- list()
-rna.seq.data.list$GSE64179 <- readxl::read_xlsx(path=rna.seq.data.files$GSE64179, range = "B3:C18818") %>% 
-  set_colnames(c("Gene.symbol", "logFC")) %>% 
-  mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
-  group_by(Gene.symbol) %>% 
-  summarise(logFC = median(logFC), .groups="drop") %>% 
-  as.data.frame(., stringsAsFactors=FALSE)
+rna.seq.data.list$GSE64179 <- readxl::read_xlsx(path=rna.seq.data.files$GSE64179, range = "B3:C18818") %>%
+set_colnames(c("Gene.symbol", "logFC")) %>% 
+mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+group_by(Gene.symbol) %>% 
+summarise(logFC = median(logFC), .groups="drop") %>% 
+as.data.frame(., stringsAsFactors=FALSE)
 ```
 
 
@@ -773,7 +773,7 @@ top.10.down
 ```{r}
 out.table.down <- paste0("data_out/",this.script, ".top.down.txt")
 out.table.down
-write.table(top.10.down, file = out.table.down, sep = "")
+write.table(top.10.down, file = out.table.down, sep = "\t")
 ```
 
 ### Rank sum stats: upregulation  
@@ -794,7 +794,7 @@ top.10.up
 ```{r}
 out.table.up <- paste0("data_out/",this.script, ".top.up.txt")
 out.table.up
-write.table(top.10.up, file = out.table.up, sep = "")
+write.table(top.10.up, file = out.table.up, sep = "\t")
 ```
 
 
