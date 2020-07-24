@@ -46,7 +46,7 @@ function myFunction(id) {
 
 ```{r cleanup, warning=FALSE, message=FALSE, error=FALSE}
 # CHECK R VERSION
-stopifnot(R.version.string == "R version 3.5.3 (2019-03-11)")
+# stopifnot(R.version.string == "R version 3.5.3 (2019-03-11)")
 
 # CLEANUP
 # Clear all variables:
@@ -78,21 +78,31 @@ stopifnot(this.script != "")
 ## Downregulated genes  
 ### Find files with downregulated genes  
 ```{r}
-
 getwd()
-gene.list.down <- list.files(path = "./meta_analyses/meta_analysis_rankprod/data_out", pattern = "\\.200\\.down", full.names = F)
+data.file <- (path = "./meta_analyses/meta_analysis_rankprod/data_out/rank_product_01g.3NA.top.200.down.200.txt")
+data.file
+cat(basename(data.file))
+gene.list.down<- scan(file = data.file, what = "character")
 
-
-genes.down <-lapply(gene.list.down, function(f){
-  scan(file = f, what = "character")
-})
-
-genes.down
-
+ # gene.list.down %>%
+   # lapply(scan(what = "character")) %>%
+   # cat(basename(gene.list.down))
+ # gene.list.down
+# "rank_product_01g.3NA.top.200.down.200.txt"
 ```
+
+
+## Enrichr libraries  
+### Find library files  
+```{r results="asis"}
+enrichr.files <- list.files("data.in/enrichr", pattern=".*txt$", full.names = T)
+cat(basename(enrichr.files), sep="\n")
+```
+
 
 ### Load libraries  
 ```{r results="hide"}
+
 enrichr.libs.list <- lapply(enrichr.files, function(f) {
   readLines(con=f)
 }) %>% 
@@ -100,6 +110,8 @@ enrichr.libs.list <- lapply(enrichr.files, function(f) {
 class(enrichr.libs.list) # "list"
 length(enrichr.libs.list) # 4
 sapply(enrichr.libs.list, class) %>% as.matrix 
+enrichr.libs.list
+enrichr.libs.list<- grep(pattern = "^TRRUST", invert = T)
 
 # ARCHS4_TFs_Coexp                  "character"
 # ChEA_2016                         "character"
@@ -122,10 +134,9 @@ length(enrichr.libs.v) # 4661
 
 ### Define dataset search terms  
 ```{r results="asis"}
-search.terms <- c("ETV3L human tf ARCHS4 coexpression",
-                  "24523406",
-                  "^ETV3L\t",
-                  "^RELA human\t")
+search.terms <- c("^HHEX human tf ARCHS4 coexpression\t",
+                  "^NR1H3 23393188 ChIP-Seq",
+                  "^LYL1\t")
 cat(search.terms, sep="\n")
 ```
 
@@ -175,7 +186,6 @@ enrichr.gene.sets <- lapply(search.terms, function(st) {
   gene.symbols <- extract.gene.symbols(lib.match) %>% toupper
   return(gene.symbols)
 }) %>% 
-cat(basename(gene.list.down))
   set_names(list.names)
 
 rm(search.terms.mod, list.names)
