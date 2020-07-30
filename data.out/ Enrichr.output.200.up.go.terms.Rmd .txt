@@ -1,0 +1,9 @@
+"Term"	"Overlap"	"Adjusted.P.value"
+"1"	"cytokine-mediated signaling pathway (GO:0019221)"	"52/633"	3.41395516470733e-29
+"2"	"cellular response to cytokine stimulus (GO:0071345)"	"37/456"	1.00655163680512e-19
+"3"	"cytokine activity (GO:0005125)"	"24/155"	8.27086968329255e-19
+"4"	"chemokine activity (GO:0008009)"	"10/46"	1.36852772445083e-08
+"5"	"NF-kappaB complex"	"67/864"	4.74017909221996e-38
+"6"	"interleukin-12 complex"	"47/504"	4.51172016631779e-29
+"7"	"Immune system"	"53/1046"	4.1371507972107e-20
+"8"	"Synovial tissue"	"17/84"	6.56951654196972e-15
