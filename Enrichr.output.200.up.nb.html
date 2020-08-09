@@ -2620,6 +2620,15 @@ window.initializeSourceEmbed = function(filename) {
   });
 };
 </script>
+<script>$(document).ready(function(){
+    if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    if ($('[data-toggle="popover"]').popover === 'function') {
+        $('[data-toggle="popover"]').popover();
+    }
+});
+</script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -3031,10 +3040,40 @@ function myFunction(id) {
 <h3>Load Packages</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaWYgKCFyZXF1aXJlKHN0cmluZ3IpKSBpbnN0YWxsLnBhY2thZ2VzKFwic3RyaW5nclwiKVxuaWYgKCFyZXF1aXJlKHJzdHVkaW9hcGkpKSBpbnN0YWxsLnBhY2thZ2VzKFwicnN0dWRpb2FwaVwiKVxuaWYgKCFyZXF1aXJlKHRpZHlyKSkgaW5zdGFsbC5wYWNrYWdlcyhcInRpZHlyXCIpXG5pZiAoIXJlcXVpcmUodGliYmxlKSkgaW5zdGFsbC5wYWNrYWdlcyhcInRpYmJsZVwiKVxuaWYgKCFyZXF1aXJlKHJlYWR4bCkpIGluc3RhbGwucGFja2FnZXMoXCJyZWFkeGxcIilcbmlmICghcmVxdWlyZShwdXJycikpIGluc3RhbGwucGFja2FnZXMoXCJwdXJyclwiKVxuaWYgKCFyZXF1aXJlKFJDb2xvckJyZXdlcikpIGluc3RhbGwucGFja2FnZXMoXCJSQ29sb3JCcmV3ZXJcIilcbmlmICghcmVxdWlyZShkZXZ0b29scykpIGluc3RhbGwucGFja2FnZXMoXCJkZXZ0b29sc1wiKVxuaWYgKCFyZXF1aXJlKG1hZ3JpdHRyKSkgaW5zdGFsbC5wYWNrYWdlcyhcIm1hZ3JpdHRyXCIpXG5pZiAoIXJlcXVpcmUoZHBseXIpKSBpbnN0YWxsLnBhY2thZ2VzKFwiZHBseXJcIilcbmlmICghcmVxdWlyZShzY2FsZXMpKSBpbnN0YWxsLnBhY2thZ2VzKFwic2NhbGVzXCIpXG5pZiAoIXJlcXVpcmUoa25pdHIpKSBpbnN0YWxsLnBhY2thZ2VzKFwia25pdHJcIilcbmlmICghcmVxdWlyZShrYWJsZUV4dHJhKSkgaW5zdGFsbC5wYWNrYWdlcyhcImthYmxlRXh0cmFcIilcblxubGlicmFyeShtYWdyaXR0cilcbmxpYnJhcnkoZHBseXIpXG5saWJyYXJ5KHNjYWxlcylcbmxpYnJhcnkoa25pdHIpXG5saWJyYXJ5KGthYmxlRXh0cmEpXG5saWJyYXJ5KFJhbmtQcm9kKVxubGlicmFyeShzdHJpbmdyKVxuYGBgIn0= -->
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(stringr)) <span class="kw">install.packages</span>(<span class="st">&quot;stringr&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(rstudioapi)) <span class="kw">install.packages</span>(<span class="st">&quot;rstudioapi&quot;</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(tidyr)) <span class="kw">install.packages</span>(<span class="st">&quot;tidyr&quot;</span>)</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(tibble)) <span class="kw">install.packages</span>(<span class="st">&quot;tibble&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(readxl)) <span class="kw">install.packages</span>(<span class="st">&quot;readxl&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(purrr)) <span class="kw">install.packages</span>(<span class="st">&quot;purrr&quot;</span>)</span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(RColorBrewer)) <span class="kw">install.packages</span>(<span class="st">&quot;RColorBrewer&quot;</span>)</span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(devtools)) <span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(magrittr)) <span class="kw">install.packages</span>(<span class="st">&quot;magrittr&quot;</span>)</span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(dplyr)) <span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(scales)) <span class="kw">install.packages</span>(<span class="st">&quot;scales&quot;</span>)</span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(knitr)) <span class="kw">install.packages</span>(<span class="st">&quot;knitr&quot;</span>)</span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(kableExtra)) <span class="kw">install.packages</span>(<span class="st">&quot;kableExtra&quot;</span>)</span>
+<span id="cb3-14"><a href="#cb3-14"></a></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="kw">library</span>(magrittr)</span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb3-17"><a href="#cb3-17"></a><span class="kw">library</span>(scales)</span>
+<span id="cb3-18"><a href="#cb3-18"></a><span class="kw">library</span>(knitr)</span>
+<span id="cb3-19"><a href="#cb3-19"></a><span class="kw">library</span>(kableExtra)</span>
+<span id="cb3-20"><a href="#cb3-20"></a><span class="kw">library</span>(RankProd)</span>
+<span id="cb3-21"><a href="#cb3-21"></a><span class="kw">library</span>(stringr)</span></code></pre></div>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBHRVQgQ1VSUkVOVCBTQ1JJUFQgTkFNRVxuKHRoaXMuc2NyaXB0IDwtIHJzdHVkaW9hcGk6OmdldEFjdGl2ZURvY3VtZW50Q29udGV4dCgpICU+JSAuJHBhdGggJT4lIGJhc2VuYW1lKVxuZ2V0d2QoKVxubGlzdC5maWxlcygpXG5zdG9waWZub3QodGhpcy5zY3JpcHQgIT0gXCJcIilcbmBgYCJ9 -->
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># GET CURRENT SCRIPT NAME</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>(this.script &lt;-<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">getActiveDocumentContext</span>() <span class="op">%&gt;%</span><span class="st"> </span>.<span class="op">$</span>path <span class="op">%&gt;%</span><span class="st"> </span>basename)</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="kw">getwd</span>()</span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="kw">list.files</span>()</span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="kw">stopifnot</span>(this.script <span class="op">!=</span><span class="st"> &quot;&quot;</span>)</span></code></pre></div>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -3042,43 +3081,123 @@ function myFunction(id) {
 <h3>Load Enrichr files</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2V0d2QoKVxuZW5yaWNoci5maWxlczwtIGxpc3QuZmlsZXMocGF0aCA9IFwiZGF0YS5pbi9lbnJpY2hyL3RyYW5zY3JpcHRpb24ubGlic1wiLCBmdWxsLm5hbWVzID0gVClcbmVucmljaHIuZmlsZXMgPC0gZ3JlcChwYXR0ZXJuID1cIi4qdGFibGUudXBcIiwgZW5yaWNoci5maWxlcyxpZ25vcmUuY2FzZSA9IFQsIHZhbHVlID0gVClcbmVucmljaHIuZmlsZXNcbmNhdChiYXNlbmFtZShlbnJpY2hyLmZpbGVzKSwgc2VwPVwiPGJyPlxcblwiKVxuXG5gYGAifQ== -->
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">getwd</span>()</span>
-<span id="cb3-2"><a href="#cb3-2"></a>enrichr.files&lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> <span class="st">&quot;data.in/enrichr/transcription.libs&quot;</span>, <span class="dt">full.names =</span> T)</span>
-<span id="cb3-3"><a href="#cb3-3"></a>enrichr.files &lt;-<span class="st"> </span><span class="kw">grep</span>(<span class="dt">pattern =</span><span class="st">&quot;.*table.up&quot;</span>, enrichr.files,<span class="dt">ignore.case =</span> T, <span class="dt">value =</span> T)</span>
-<span id="cb3-4"><a href="#cb3-4"></a>enrichr.files</span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="kw">cat</span>(<span class="kw">basename</span>(enrichr.files), <span class="dt">sep=</span><span class="st">&quot;&lt;br&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2V0d2QoKVxuYGBgIn0= -->
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">getwd</span>()</span></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiL1VzZXJzL2RpYW5hL0ZpbmFsLlRiLnByb2plY3RcIlxuIn0= -->
+<pre><code>[1] &quot;/Users/diana/Final.Tb.project&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZW5yaWNoci5maWxlczwtIGxpc3QuZmlsZXMocGF0aCA9IFwiZGF0YS5pbi9lbnJpY2hyL3RyYW5zY3JpcHRpb24ubGlic1wiLCBmdWxsLm5hbWVzID0gVClcbmVucmljaHIuZmlsZXMgPC0gZ3JlcChwYXR0ZXJuID1cIi4qdGFibGUudXBcIiwgZW5yaWNoci5maWxlcyxpZ25vcmUuY2FzZSA9IFQsIHZhbHVlID0gVClcbmVucmljaHIuZmlsZXNcbmBgYCJ9 -->
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>enrichr.files&lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> <span class="st">&quot;data.in/enrichr/transcription.libs&quot;</span>, <span class="dt">full.names =</span> T)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>enrichr.files &lt;-<span class="st"> </span><span class="kw">grep</span>(<span class="dt">pattern =</span><span class="st">&quot;.*table.up&quot;</span>, enrichr.files,<span class="dt">ignore.case =</span> T, <span class="dt">value =</span> T)</span>
+<span id="cb7-3"><a href="#cb7-3"></a>enrichr.files</span></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiZGF0YS5pbi9lbnJpY2hyL3RyYW5zY3JpcHRpb24ubGlicy9BUkNIUzRfVEZzX0NvZXhwX3RhYmxlLnVwLjIwMC50eHRcIiAgICAgICAgICAgICAgICAgICAgICAgXG5bMl0gXCJkYXRhLmluL2VucmljaHIvdHJhbnNjcmlwdGlvbi5saWJzL0NoRUFfMjAxNl90YWJsZS51cC4yMDAudHh0XCIgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcblszXSBcImRhdGEuaW4vZW5yaWNoci90cmFuc2NyaXB0aW9uLmxpYnMvRW5yaWNocl9TdWJtaXNzaW9uc19URi1HZW5lX0Nvb2N1cnJlbmNlX3RhYmxlLnVwLjIwMC50eHRcIlxuWzRdIFwiZGF0YS5pbi9lbnJpY2hyL3RyYW5zY3JpcHRpb24ubGlicy9URl9QZXJ0dXJiYXRpb25zX0ZvbGxvd2VkX2J5X0V4cHJlc3Npb25fdGFibGUudXAuMjAwLnR4dFwiXG5bNV0gXCJkYXRhLmluL2VucmljaHIvdHJhbnNjcmlwdGlvbi5saWJzL1RSUlVTVF9UcmFuc2NyaXB0aW9uX0ZhY3RvcnNfMjAxOV90YWJsZS51cC4yMDAudHh0XCIgICAgICBcbiJ9 -->
+<pre><code>[1] &quot;data.in/enrichr/transcription.libs/ARCHS4_TFs_Coexp_table.up.200.txt&quot;                       
+[2] &quot;data.in/enrichr/transcription.libs/ChEA_2016_table.up.200.txt&quot;                              
+[3] &quot;data.in/enrichr/transcription.libs/Enrichr_Submissions_TF-Gene_Coocurrence_table.up.200.txt&quot;
+[4] &quot;data.in/enrichr/transcription.libs/TF_Perturbations_Followed_by_Expression_table.up.200.txt&quot;
+[5] &quot;data.in/enrichr/transcription.libs/TRRUST_Transcription_Factors_2019_table.up.200.txt&quot;      </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0KGJhc2VuYW1lKGVucmljaHIuZmlsZXMpLCBzZXA9XCI8YnI+XFxuXCIpXG5gYGAifQ== -->
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">cat</span>(<span class="kw">basename</span>(enrichr.files), <span class="dt">sep=</span><span class="st">&quot;&lt;br&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiQVJDSFM0X1RGc19Db2V4cF90YWJsZS51cC4yMDAudHh0PGJyPlxuQ2hFQV8yMDE2X3RhYmxlLnVwLjIwMC50eHQ8YnI+XG5FbnJpY2hyX1N1Ym1pc3Npb25zX1RGLUdlbmVfQ29vY3VycmVuY2VfdGFibGUudXAuMjAwLnR4dDxicj5cblRGX1BlcnR1cmJhdGlvbnNfRm9sbG93ZWRfYnlfRXhwcmVzc2lvbl90YWJsZS51cC4yMDAudHh0PGJyPlxuVFJSVVNUX1RyYW5zY3JpcHRpb25fRmFjdG9yc18yMDE5X3RhYmxlLnVwLjIwMC50eHRcbiJ9 -->
+<pre><code>ARCHS4_TFs_Coexp_table.up.200.txt&lt;br&gt;
+ChEA_2016_table.up.200.txt&lt;br&gt;
+Enrichr_Submissions_TF-Gene_Coocurrence_table.up.200.txt&lt;br&gt;
+TF_Perturbations_Followed_by_Expression_table.up.200.txt&lt;br&gt;
+TRRUST_Transcription_Factors_2019_table.up.200.txt</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZW5yaWNoci5kYXRhLmxpc3QgPC0gbGFwcGx5KGVucmljaHIuZmlsZXMsIGZ1bmN0aW9uKGYpIHtcbiAgYSA8LSByZWFkLnRhYmxlKGYsIHNlcCA9IFwiXFx0XCIsIGhlYWRlciA9IFQsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGKVxuICBhXG59KSAgJT4lXG4gIHNldF9uYW1lcyhzdHJpbmdyOjpzdHJfcmVtb3ZlX2FsbChiYXNlbmFtZShlbnJpY2hyLmZpbGVzKSwgXCJcXFxcX3RhYmxlLnVwLjIwMC50eHRcIikpXG5cbnNhcHBseShlbnJpY2hyLmRhdGEubGlzdCwgY2xhc3MpXG5gYGAifQ== -->
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>enrichr.data.list &lt;-<span class="st"> </span><span class="kw">lapply</span>(enrichr.files, <span class="cf">function</span>(f) {</span>
+<span id="cb11-2"><a href="#cb11-2"></a>  a &lt;-<span class="st"> </span><span class="kw">read.table</span>(f, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">header =</span> T, <span class="dt">stringsAsFactors =</span> F)</span>
+<span id="cb11-3"><a href="#cb11-3"></a>  a</span>
+<span id="cb11-4"><a href="#cb11-4"></a>})  <span class="op">%&gt;%</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="st">  </span><span class="kw">set_names</span>(stringr<span class="op">::</span><span class="kw">str_remove_all</span>(<span class="kw">basename</span>(enrichr.files), <span class="st">&quot;</span><span class="ch">\\</span><span class="st">_table.up.200.txt&quot;</span>))</span>
+<span id="cb11-6"><a href="#cb11-6"></a></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="kw">sapply</span>(enrichr.data.list, class)</span></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgICAgICAgICAgICBBUkNIUzRfVEZzX0NvZXhwICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIENoRUFfMjAxNiBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiZGF0YS5mcmFtZVwiICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiZGF0YS5mcmFtZVwiIFxuRW5yaWNocl9TdWJtaXNzaW9uc19URi1HZW5lX0Nvb2N1cnJlbmNlIFRGX1BlcnR1cmJhdGlvbnNfRm9sbG93ZWRfYnlfRXhwcmVzc2lvbiBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiZGF0YS5mcmFtZVwiICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiZGF0YS5mcmFtZVwiIFxuICAgICAgVFJSVVNUX1RyYW5zY3JpcHRpb25fRmFjdG9yc18yMDE5IFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJkYXRhLmZyYW1lXCIgXG4ifQ== -->
+<pre><code>                       ARCHS4_TFs_Coexp                               ChEA_2016 
+                           &quot;data.frame&quot;                            &quot;data.frame&quot; 
+Enrichr_Submissions_TF-Gene_Coocurrence TF_Perturbations_Followed_by_Expression 
+                           &quot;data.frame&quot;                            &quot;data.frame&quot; 
+      TRRUST_Transcription_Factors_2019 
+                           &quot;data.frame&quot; </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbmBgYCJ9 -->
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>  </span></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZW5yaWNoci5kYXRhLmxpc3QgPC0gbGFwcGx5KGVucmljaHIuZmlsZXMsIGZ1bmN0aW9uKGYpIHtcbiAgYSA8LSByZWFkLnRhYmxlKGYsIHNlcCA9IFwiXFx0XCIsIGhlYWRlciA9IFQsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGKVxuICBhXG59KSAgJT4lXG4gIHNldF9uYW1lcyhzdHJpbmdyOjpzdHJfcmVtb3ZlX2FsbChiYXNlbmFtZShlbnJpY2hyLmZpbGVzKSwgXCJcXFxcX3RhYmxlLnVwLjIwMC50eHRcIikpXG5cbnNhcHBseShlbnJpY2hyLmRhdGEubGlzdCwgY2xhc3MpXG4gIFxuYGBgIn0= -->
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>enrichr.data.list &lt;-<span class="st"> </span><span class="kw">lapply</span>(enrichr.files, <span class="cf">function</span>(f) {</span>
-<span id="cb4-2"><a href="#cb4-2"></a>  a &lt;-<span class="st"> </span><span class="kw">read.table</span>(f, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">header =</span> T, <span class="dt">stringsAsFactors =</span> F)</span>
-<span id="cb4-3"><a href="#cb4-3"></a>  a</span>
-<span id="cb4-4"><a href="#cb4-4"></a>})  <span class="op">%&gt;%</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="st">  </span><span class="kw">set_names</span>(stringr<span class="op">::</span><span class="kw">str_remove_all</span>(<span class="kw">basename</span>(enrichr.files), <span class="st">&quot;</span><span class="ch">\\</span><span class="st">_table.up.200.txt&quot;</span>))</span>
-<span id="cb4-6"><a href="#cb4-6"></a></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="kw">sapply</span>(enrichr.data.list, class)</span>
-<span id="cb4-8"><a href="#cb4-8"></a>  </span></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YS5mcmFtZShMaXN0Lml0ZW0gPSBuYW1lcyhlbnJpY2hyLmRhdGEubGlzdCksXG4gICAgICAgICAgIGNsYXNzID0gc2FwcGx5KGVucmljaHIuZGF0YS5saXN0LCBjbGFzcyksXG4gICAgICAgICAgIENvbHVtbnMgPSBzYXBwbHkoZW5yaWNoci5kYXRhLmxpc3QsIG5jb2wpLFxuICAgICAgICAgICBSb3dzID0gY29tbWEoc2FwcGx5KGVucmljaHIuZGF0YS5saXN0LCBucm93KSkpICU+JSBcbiAgXG4gICBcbiAga25pdHI6OmthYmxlKC4sIHJvdy5uYW1lcyA9IEYsIGFsaWduPWMoXCJsXCIsIFwibFwiLCBcImNcIiwgXCJjXCIpLCBmb3JtYXQgPSBcImh0bWxcIiwgZXNjYXBlID0gRikgJT4lIFxuICAgXG4gIGthYmxlRXh0cmE6OmthYmxlX3N0eWxpbmcoXCJzdHJpcGVkXCIsIGZ1bGxfd2lkdGggPSBUKVxuYGBgIn0= -->
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">data.frame</span>(<span class="dt">List.item =</span> <span class="kw">names</span>(enrichr.data.list),</span>
+<span id="cb14-2"><a href="#cb14-2"></a>           <span class="dt">class =</span> <span class="kw">sapply</span>(enrichr.data.list, class),</span>
+<span id="cb14-3"><a href="#cb14-3"></a>           <span class="dt">Columns =</span> <span class="kw">sapply</span>(enrichr.data.list, ncol),</span>
+<span id="cb14-4"><a href="#cb14-4"></a>           <span class="dt">Rows =</span> <span class="kw">comma</span>(<span class="kw">sapply</span>(enrichr.data.list, nrow))) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="st">  </span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="st">   </span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(., <span class="dt">row.names =</span> F, <span class="dt">align=</span><span class="kw">c</span>(<span class="st">&quot;l&quot;</span>, <span class="st">&quot;l&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="dt">format =</span> <span class="st">&quot;html&quot;</span>, <span class="dt">escape =</span> F) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="st">   </span></span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="dt">full_width =</span> T)</span></code></pre></div>
 <!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YS5mcmFtZShMaXN0Lml0ZW0gPSBuYW1lcyhlbnJpY2hyLmRhdGEubGlzdCksXG4gICAgICAgICAgIGNsYXNzID0gc2FwcGx5KGVucmljaHIuZGF0YS5saXN0LCBjbGFzcyksXG4gICAgICAgICAgIENvbHVtbnMgPSBzYXBwbHkoZW5yaWNoci5kYXRhLmxpc3QsIG5jb2wpLFxuICAgICAgICAgICBSb3dzID0gY29tbWEoc2FwcGx5KGVucmljaHIuZGF0YS5saXN0LCBucm93KSkpICU+JSBcbiAgXG4gICBcbiAga25pdHI6OmthYmxlKC4sIHJvdy5uYW1lcyA9IEYsIGFsaWduPWMoXCJsXCIsIFwibFwiLCBcImNcIiwgXCJjXCIpLCBmb3JtYXQgPSBcImh0bWxcIiwgZXNjYXBlID0gRikgJT4lIFxuICAgXG4gIGthYmxlRXh0cmE6OmthYmxlX3N0eWxpbmcoXCJzdHJpcGVkXCIsIGZ1bGxfd2lkdGggPSBUKVxuXG4gIFxuYGBgIn0= -->
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">data.frame</span>(<span class="dt">List.item =</span> <span class="kw">names</span>(enrichr.data.list),</span>
-<span id="cb5-2"><a href="#cb5-2"></a>           <span class="dt">class =</span> <span class="kw">sapply</span>(enrichr.data.list, class),</span>
-<span id="cb5-3"><a href="#cb5-3"></a>           <span class="dt">Columns =</span> <span class="kw">sapply</span>(enrichr.data.list, ncol),</span>
-<span id="cb5-4"><a href="#cb5-4"></a>           <span class="dt">Rows =</span> <span class="kw">comma</span>(<span class="kw">sapply</span>(enrichr.data.list, nrow))) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="st">  </span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="st">   </span></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(., <span class="dt">row.names =</span> F, <span class="dt">align=</span><span class="kw">c</span>(<span class="st">&quot;l&quot;</span>, <span class="st">&quot;l&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="dt">format =</span> <span class="st">&quot;html&quot;</span>, <span class="dt">escape =</span> F) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="st">   </span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="dt">full_width =</span> T)</span>
-<span id="cb5-10"><a href="#cb5-10"></a></span>
-<span id="cb5-11"><a href="#cb5-11"></a>  </span></code></pre></div>
+<p>
+<!-- rnb-htmlwidget-begin eyJkZXBlbmRlbmNpZXMiOlt7Im5hbWUiOiJqcXVlcnkiLCJ2ZXJzaW9uIjoiMS4xMS4zIiwic3JjIjp7ImZpbGUiOiIvTGlicmFyeS9GcmFtZXdvcmtzL1IuZnJhbWV3b3JrL1ZlcnNpb25zLzQuMC9SZXNvdXJjZXMvbGlicmFyeS9ybWFya2Rvd24vcm1kL2gvanF1ZXJ5In0sIm1ldGEiOltdLCJzY3JpcHQiOiJqcXVlcnkubWluLmpzIiwic3R5bGVzaGVldCI6W10sImhlYWQiOltdLCJhdHRhY2htZW50IjpbXSwicGFja2FnZSI6W10sImFsbF9maWxlcyI6dHJ1ZX0seyJuYW1lIjoiYm9vdHN0cmFwIiwidmVyc2lvbiI6IjMuMy41Iiwic3JjIjp7ImZpbGUiOiIvTGlicmFyeS9GcmFtZXdvcmtzL1IuZnJhbWV3b3JrL1ZlcnNpb25zLzQuMC9SZXNvdXJjZXMvbGlicmFyeS9ybWFya2Rvd24vcm1kL2gvYm9vdHN0cmFwIn0sIm1ldGEiOnsidmlld3BvcnQiOiJ3aWR0aD1kZXZpY2Utd2lkdGgsIGluaXRpYWwtc2NhbGU9MSJ9LCJzY3JpcHQiOlsianMvYm9vdHN0cmFwLm1pbi5qcyIsInNoaW0vaHRtbDVzaGl2Lm1pbi5qcyIsInNoaW0vcmVzcG9uZC5taW4uanMiXSwic3R5bGVzaGVldCI6ImNzcy9zaW1wbGV4Lm1pbi5jc3MiLCJoZWFkIjpbXSwiYXR0YWNobWVudCI6W10sInBhY2thZ2UiOltdLCJhbGxfZmlsZXMiOnRydWV9LHsibmFtZSI6ImtlUHJpbnQiLCJ2ZXJzaW9uIjoiMC4wLjEiLCJzcmMiOnsiZmlsZSI6Ii9MaWJyYXJ5L0ZyYW1ld29ya3MvUi5mcmFtZXdvcmsvVmVyc2lvbnMvNC4wL1Jlc291cmNlcy9saWJyYXJ5L2thYmxlRXh0cmEva2VQcmludC0wLjAuMSJ9LCJtZXRhIjpbXSwic2NyaXB0Ijoia2VQcmludC5qcyIsInN0eWxlc2hlZXQiOltdLCJoZWFkIjpbXSwiYXR0YWNobWVudCI6W10sInBhY2thZ2UiOltdLCJhbGxfZmlsZXMiOnRydWV9XSwibWV0YWRhdGEiOnsiY2xhc3NlcyI6WyJzaGlueS50YWcubGlzdCIsImxpc3QiXSwic2l6aW5nUG9saWN5IjpbXX19 -->
+
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> List.item </th>
+   <th style="text-align:left;"> class </th>
+   <th style="text-align:center;"> Columns </th>
+   <th style="text-align:center;"> Rows </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> ARCHS4_TFs_Coexp </td>
+   <td style="text-align:left;"> data.frame </td>
+   <td style="text-align:center;"> 9 </td>
+   <td style="text-align:center;"> 1,126 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ChEA_2016 </td>
+   <td style="text-align:left;"> data.frame </td>
+   <td style="text-align:center;"> 9 </td>
+   <td style="text-align:center;"> 628 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Enrichr_Submissions_TF-Gene_Coocurrence </td>
+   <td style="text-align:left;"> data.frame </td>
+   <td style="text-align:center;"> 9 </td>
+   <td style="text-align:center;"> 1,661 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TF_Perturbations_Followed_by_Expression </td>
+   <td style="text-align:left;"> data.frame </td>
+   <td style="text-align:center;"> 9 </td>
+   <td style="text-align:center;"> 1,832 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRRUST_Transcription_Factors_2019 </td>
+   <td style="text-align:left;"> data.frame </td>
+   <td style="text-align:center;"> 9 </td>
+   <td style="text-align:center;"> 261 </td>
+  </tr>
+</tbody>
+</table>
+
+<!-- rnb-htmlwidget-end -->
+ <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbk5BXG5gYGAifQ== --></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="ot">NA</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="ot">NA</span></span></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3088,15 +3207,15 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5cbmVucmljaHIubGlzdDwtIGxhcHBseShzZXFfYWxvbmcoZW5yaWNoci5kYXRhLmxpc3QpLCBmdW5jdGlvbihpLCBsaXN0Lm5hbWVzKSB7XG4gIGRmIDwtIGVucmljaHIuZGF0YS5saXN0W1tpXV1cbiAgeCA8LSBkcGx5cjo6c2VsZWN0KGRmLFRlcm0sIE92ZXJsYXAsQWRqdXN0ZWQuUC52YWx1ZSkgJT4lXG4gICAgICAgZHBseXI6OmZpbHRlcihBZGp1c3RlZC5QLnZhbHVlIDw9IDAuMDEpXG4gICAgICAgfSxcbiAgbGlzdC5uYW1lcyA9IG5hbWVzKGVucmljaHIuZGF0YS5saXN0KSkgJT4lIFxuICBzZXRfbmFtZXMobmFtZXMoZW5yaWNoci5kYXRhLmxpc3QpKVxuXG5gYGAifQ== -->
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a></span>
-<span id="cb6-2"><a href="#cb6-2"></a></span>
-<span id="cb6-3"><a href="#cb6-3"></a>enrichr.list&lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">seq_along</span>(enrichr.data.list), <span class="cf">function</span>(i, list.names) {</span>
-<span id="cb6-4"><a href="#cb6-4"></a>  df &lt;-<span class="st"> </span>enrichr.data.list[[i]]</span>
-<span id="cb6-5"><a href="#cb6-5"></a>  x &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(df,Term, Overlap,Adjusted.P.value) <span class="op">%&gt;%</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="st">       </span>dplyr<span class="op">::</span><span class="kw">filter</span>(Adjusted.P.value <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>)</span>
-<span id="cb6-7"><a href="#cb6-7"></a>       },</span>
-<span id="cb6-8"><a href="#cb6-8"></a>  <span class="dt">list.names =</span> <span class="kw">names</span>(enrichr.data.list)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="st">  </span><span class="kw">set_names</span>(<span class="kw">names</span>(enrichr.data.list))</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a></span>
+<span id="cb16-2"><a href="#cb16-2"></a></span>
+<span id="cb16-3"><a href="#cb16-3"></a>enrichr.list&lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">seq_along</span>(enrichr.data.list), <span class="cf">function</span>(i, list.names) {</span>
+<span id="cb16-4"><a href="#cb16-4"></a>  df &lt;-<span class="st"> </span>enrichr.data.list[[i]]</span>
+<span id="cb16-5"><a href="#cb16-5"></a>  x &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(df,Term, Overlap,Adjusted.P.value) <span class="op">%&gt;%</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="st">       </span>dplyr<span class="op">::</span><span class="kw">filter</span>(Adjusted.P.value <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.01</span>)</span>
+<span id="cb16-7"><a href="#cb16-7"></a>       },</span>
+<span id="cb16-8"><a href="#cb16-8"></a>  <span class="dt">list.names =</span> <span class="kw">names</span>(enrichr.data.list)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb16-9"><a href="#cb16-9"></a><span class="st">  </span><span class="kw">set_names</span>(<span class="kw">names</span>(enrichr.data.list))</span></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3106,30 +3225,78 @@ function myFunction(id) {
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5kYXRhLmZyYW1lKFxuICBMaXN0Lml0ZW0gPSBuYW1lcyhlbnJpY2hyLmxpc3QpLFxuICBDbGFzcyA9IHNhcHBseShlbnJpY2hyLmxpc3QsIGZ1bmN0aW9uKHgpIHtwYXN0ZShjbGFzcyh4KSwgY29sbGFwc2U9XCIsXCIpfSksXG4gIENvbHVtbnMgPSBzYXBwbHkoZW5yaWNoci5saXN0LCBuY29sKSxcbiAgUm93cyA9IHNhcHBseShlbnJpY2hyLmxpc3QsIG5yb3cpXG4pICU+JSBcbiAga25pdHI6OmthYmxlKC4sIHJvdy5uYW1lcyA9IEYsIGFsaWduPWMoXCJsXCIsIFwibFwiLCBcImNcIiwgXCJjXCIpLCBmb3JtYXQgPSBcImh0bWxcIiwgZXNjYXBlID0gRikgJT4lIFxuICBrYWJsZUV4dHJhOjprYWJsZV9zdHlsaW5nKFwic3RyaXBlZFwiLCBmdWxsX3dpZHRoID0gVClcbmBgYCJ9 -->
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">data.frame</span>(</span>
-<span id="cb7-3"><a href="#cb7-3"></a>  <span class="dt">List.item =</span> <span class="kw">names</span>(enrichr.list),</span>
-<span id="cb7-4"><a href="#cb7-4"></a>  <span class="dt">Class =</span> <span class="kw">sapply</span>(enrichr.list, <span class="cf">function</span>(x) {<span class="kw">paste</span>(<span class="kw">class</span>(x), <span class="dt">collapse=</span><span class="st">&quot;,&quot;</span>)}),</span>
-<span id="cb7-5"><a href="#cb7-5"></a>  <span class="dt">Columns =</span> <span class="kw">sapply</span>(enrichr.list, ncol),</span>
-<span id="cb7-6"><a href="#cb7-6"></a>  <span class="dt">Rows =</span> <span class="kw">sapply</span>(enrichr.list, nrow)</span>
-<span id="cb7-7"><a href="#cb7-7"></a>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(., <span class="dt">row.names =</span> F, <span class="dt">align=</span><span class="kw">c</span>(<span class="st">&quot;l&quot;</span>, <span class="st">&quot;l&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="dt">format =</span> <span class="st">&quot;html&quot;</span>, <span class="dt">escape =</span> F) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb7-9"><a href="#cb7-9"></a><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="dt">full_width =</span> T)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="kw">data.frame</span>(</span>
+<span id="cb17-3"><a href="#cb17-3"></a>  <span class="dt">List.item =</span> <span class="kw">names</span>(enrichr.list),</span>
+<span id="cb17-4"><a href="#cb17-4"></a>  <span class="dt">Class =</span> <span class="kw">sapply</span>(enrichr.list, <span class="cf">function</span>(x) {<span class="kw">paste</span>(<span class="kw">class</span>(x), <span class="dt">collapse=</span><span class="st">&quot;,&quot;</span>)}),</span>
+<span id="cb17-5"><a href="#cb17-5"></a>  <span class="dt">Columns =</span> <span class="kw">sapply</span>(enrichr.list, ncol),</span>
+<span id="cb17-6"><a href="#cb17-6"></a>  <span class="dt">Rows =</span> <span class="kw">sapply</span>(enrichr.list, nrow)</span>
+<span id="cb17-7"><a href="#cb17-7"></a>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb17-8"><a href="#cb17-8"></a><span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(., <span class="dt">row.names =</span> F, <span class="dt">align=</span><span class="kw">c</span>(<span class="st">&quot;l&quot;</span>, <span class="st">&quot;l&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="dt">format =</span> <span class="st">&quot;html&quot;</span>, <span class="dt">escape =</span> F) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb17-9"><a href="#cb17-9"></a><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="dt">full_width =</span> T)</span></code></pre></div>
 <!-- rnb-source-end -->
+
+<!-- rnb-htmlwidget-begin eyJkZXBlbmRlbmNpZXMiOlt7Im5hbWUiOiJqcXVlcnkiLCJ2ZXJzaW9uIjoiMS4xMS4zIiwic3JjIjp7ImZpbGUiOiIvTGlicmFyeS9GcmFtZXdvcmtzL1IuZnJhbWV3b3JrL1ZlcnNpb25zLzQuMC9SZXNvdXJjZXMvbGlicmFyeS9ybWFya2Rvd24vcm1kL2gvanF1ZXJ5In0sIm1ldGEiOltdLCJzY3JpcHQiOiJqcXVlcnkubWluLmpzIiwic3R5bGVzaGVldCI6W10sImhlYWQiOltdLCJhdHRhY2htZW50IjpbXSwicGFja2FnZSI6W10sImFsbF9maWxlcyI6dHJ1ZX0seyJuYW1lIjoiYm9vdHN0cmFwIiwidmVyc2lvbiI6IjMuMy41Iiwic3JjIjp7ImZpbGUiOiIvTGlicmFyeS9GcmFtZXdvcmtzL1IuZnJhbWV3b3JrL1ZlcnNpb25zLzQuMC9SZXNvdXJjZXMvbGlicmFyeS9ybWFya2Rvd24vcm1kL2gvYm9vdHN0cmFwIn0sIm1ldGEiOnsidmlld3BvcnQiOiJ3aWR0aD1kZXZpY2Utd2lkdGgsIGluaXRpYWwtc2NhbGU9MSJ9LCJzY3JpcHQiOlsianMvYm9vdHN0cmFwLm1pbi5qcyIsInNoaW0vaHRtbDVzaGl2Lm1pbi5qcyIsInNoaW0vcmVzcG9uZC5taW4uanMiXSwic3R5bGVzaGVldCI6ImNzcy9zaW1wbGV4Lm1pbi5jc3MiLCJoZWFkIjpbXSwiYXR0YWNobWVudCI6W10sInBhY2thZ2UiOltdLCJhbGxfZmlsZXMiOnRydWV9LHsibmFtZSI6ImtlUHJpbnQiLCJ2ZXJzaW9uIjoiMC4wLjEiLCJzcmMiOnsiZmlsZSI6Ii9MaWJyYXJ5L0ZyYW1ld29ya3MvUi5mcmFtZXdvcmsvVmVyc2lvbnMvNC4wL1Jlc291cmNlcy9saWJyYXJ5L2thYmxlRXh0cmEva2VQcmludC0wLjAuMSJ9LCJtZXRhIjpbXSwic2NyaXB0Ijoia2VQcmludC5qcyIsInN0eWxlc2hlZXQiOltdLCJoZWFkIjpbXSwiYXR0YWNobWVudCI6W10sInBhY2thZ2UiOltdLCJhbGxfZmlsZXMiOnRydWV9XSwibWV0YWRhdGEiOnsiY2xhc3NlcyI6WyJzaGlueS50YWcubGlzdCIsImxpc3QiXSwic2l6aW5nUG9saWN5IjpbXX19 -->
+
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> List.item </th>
+   <th style="text-align:left;"> Class </th>
+   <th style="text-align:center;"> Columns </th>
+   <th style="text-align:center;"> Rows </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> ARCHS4_TFs_Coexp </td>
+   <td style="text-align:left;"> data.frame </td>
+   <td style="text-align:center;"> 3 </td>
+   <td style="text-align:center;"> 106 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ChEA_2016 </td>
+   <td style="text-align:left;"> data.frame </td>
+   <td style="text-align:center;"> 3 </td>
+   <td style="text-align:center;"> 60 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Enrichr_Submissions_TF-Gene_Coocurrence </td>
+   <td style="text-align:left;"> data.frame </td>
+   <td style="text-align:center;"> 3 </td>
+   <td style="text-align:center;"> 1053 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TF_Perturbations_Followed_by_Expression </td>
+   <td style="text-align:left;"> data.frame </td>
+   <td style="text-align:center;"> 3 </td>
+   <td style="text-align:center;"> 356 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRRUST_Transcription_Factors_2019 </td>
+   <td style="text-align:left;"> data.frame </td>
+   <td style="text-align:center;"> 3 </td>
+   <td style="text-align:center;"> 57 </td>
+  </tr>
+</tbody>
+</table>
+
+<!-- rnb-htmlwidget-end -->
+
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZW5yaWNoci5saXN0LnN1YnNldDwtIGxhcHBseShzZXFfYWxvbmcoZW5yaWNoci5saXN0KSwgZnVuY3Rpb24oaSwgbGlzdC5uYW1lcykge1xuICBkZiA8LSBlbnJpY2hyLmxpc3RbW2ldXVxuICB4IDwtIGhlYWQoZGYsMilcbn0sXG4gIGxpc3QubmFtZXMgPSBuYW1lcyhlbnJpY2hyLmxpc3QpKSAlPiUgXG4gIHNldF9uYW1lcyhuYW1lcyhlbnJpY2hyLmxpc3QpKVxuXG4jIGVucmljaHIubGlzdC5zdWJzZXRcbiMgbmFtZXMoZW5yaWNoci5saXN0LnN1YnNldClcbmBgYCJ9 -->
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>enrichr.list.subset&lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">seq_along</span>(enrichr.list), <span class="cf">function</span>(i, list.names) {</span>
-<span id="cb8-2"><a href="#cb8-2"></a>  df &lt;-<span class="st"> </span>enrichr.list[[i]]</span>
-<span id="cb8-3"><a href="#cb8-3"></a>  x &lt;-<span class="st"> </span><span class="kw">head</span>(df,<span class="dv">2</span>)</span>
-<span id="cb8-4"><a href="#cb8-4"></a>},</span>
-<span id="cb8-5"><a href="#cb8-5"></a>  <span class="dt">list.names =</span> <span class="kw">names</span>(enrichr.list)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="st">  </span><span class="kw">set_names</span>(<span class="kw">names</span>(enrichr.list))</span>
-<span id="cb8-7"><a href="#cb8-7"></a></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co"># enrichr.list.subset</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co"># names(enrichr.list.subset)</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>enrichr.list.subset&lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">seq_along</span>(enrichr.list), <span class="cf">function</span>(i, list.names) {</span>
+<span id="cb18-2"><a href="#cb18-2"></a>  df &lt;-<span class="st"> </span>enrichr.list[[i]]</span>
+<span id="cb18-3"><a href="#cb18-3"></a>  x &lt;-<span class="st"> </span><span class="kw">head</span>(df,<span class="dv">2</span>)</span>
+<span id="cb18-4"><a href="#cb18-4"></a>},</span>
+<span id="cb18-5"><a href="#cb18-5"></a>  <span class="dt">list.names =</span> <span class="kw">names</span>(enrichr.list)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="st">  </span><span class="kw">set_names</span>(<span class="kw">names</span>(enrichr.list))</span>
+<span id="cb18-7"><a href="#cb18-7"></a></span>
+<span id="cb18-8"><a href="#cb18-8"></a><span class="co"># enrichr.list.subset</span></span>
+<span id="cb18-9"><a href="#cb18-9"></a><span class="co"># names(enrichr.list.subset)</span></span></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3138,34 +3305,71 @@ function myFunction(id) {
 <h3>Merge data frames</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2xhc3MoZW5yaWNoci5saXN0LnN1YnNldCkgI2xpc3RcblxubWVyZ2VkLmRmIDwtIGVucmljaHIubGlzdC5zdWJzZXQgJT4lIFxuICBwdXJycjo6cmVkdWNlKGRwbHlyOjpmdWxsX2pvaW4pXG5cbm1lcmdlZC5kZlxuXG5tZXJnZWQuZGYuZmluYWwgPC0gZGF0YS5mcmFtZShcbiAgIyBMaWJyYXJ5ID0gbmFtZXMoZW5yaWNoci5saXN0LnN1YnNldCksXG4gIFRlcm0gPSBtZXJnZWQuZGYkVGVybSxcbiAgT3ZlcmxhcCA9IG1lcmdlZC5kZiRPdmVybGFwLFxuICBBZGp1c3RlZC5QLnZhbHVlID0gbWVyZ2VkLmRmJEFkanVzdGVkLlAudmFsdWVcbilcblxubWVyZ2VkLmRmLmZpbmFsXG5cbiAgXG5gYGAifQ== -->
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">class</span>(enrichr.list.subset) <span class="co">#list</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a></span>
-<span id="cb9-3"><a href="#cb9-3"></a>merged.df &lt;-<span class="st"> </span>enrichr.list.subset <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="st">  </span>purrr<span class="op">::</span><span class="kw">reduce</span>(dplyr<span class="op">::</span>full_join)</span>
-<span id="cb9-5"><a href="#cb9-5"></a></span>
-<span id="cb9-6"><a href="#cb9-6"></a>merged.df</span>
-<span id="cb9-7"><a href="#cb9-7"></a></span>
-<span id="cb9-8"><a href="#cb9-8"></a>merged.df.final &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
-<span id="cb9-9"><a href="#cb9-9"></a>  <span class="co"># Library = names(enrichr.list.subset),</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a>  <span class="dt">Term =</span> merged.df<span class="op">$</span>Term,</span>
-<span id="cb9-11"><a href="#cb9-11"></a>  <span class="dt">Overlap =</span> merged.df<span class="op">$</span>Overlap,</span>
-<span id="cb9-12"><a href="#cb9-12"></a>  <span class="dt">Adjusted.P.value =</span> merged.df<span class="op">$</span>Adjusted.P.value</span>
-<span id="cb9-13"><a href="#cb9-13"></a>)</span>
-<span id="cb9-14"><a href="#cb9-14"></a></span>
-<span id="cb9-15"><a href="#cb9-15"></a>merged.df.final</span>
-<span id="cb9-16"><a href="#cb9-16"></a></span>
-<span id="cb9-17"><a href="#cb9-17"></a>  </span></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2xhc3MoZW5yaWNoci5saXN0LnN1YnNldCkgI2xpc3RcbmBgYCJ9 -->
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">class</span>(enrichr.list.subset) <span class="co">#list</span></span></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwibGlzdFwiXG4ifQ== -->
+<pre><code>[1] &quot;list&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWVyZ2VkLmRmIDwtIGVucmljaHIubGlzdC5zdWJzZXQgJT4lIFxuICBwdXJycjo6cmVkdWNlKGRwbHlyOjpmdWxsX2pvaW4pXG5gYGAifQ== -->
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>merged.df &lt;-<span class="st"> </span>enrichr.list.subset <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="st">  </span>purrr<span class="op">::</span><span class="kw">reduce</span>(dplyr<span class="op">::</span>full_join)</span></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiSm9pbmluZywgYnkgPSBjKFwiVGVybVwiLCBcIk92ZXJsYXBcIiwgXCJBZGp1c3RlZC5QLnZhbHVlXCIpXG5Kb2luaW5nLCBieSA9IGMoXCJUZXJtXCIsIFwiT3ZlcmxhcFwiLCBcIkFkanVzdGVkLlAudmFsdWVcIilcbkpvaW5pbmcsIGJ5ID0gYyhcIlRlcm1cIiwgXCJPdmVybGFwXCIsIFwiQWRqdXN0ZWQuUC52YWx1ZVwiKVxuSm9pbmluZywgYnkgPSBjKFwiVGVybVwiLCBcIk92ZXJsYXBcIiwgXCJBZGp1c3RlZC5QLnZhbHVlXCIpXG4ifQ== -->
+<pre><code>Joining, by = c(&quot;Term&quot;, &quot;Overlap&quot;, &quot;Adjusted.P.value&quot;)
+Joining, by = c(&quot;Term&quot;, &quot;Overlap&quot;, &quot;Adjusted.P.value&quot;)
+Joining, by = c(&quot;Term&quot;, &quot;Overlap&quot;, &quot;Adjusted.P.value&quot;)
+Joining, by = c(&quot;Term&quot;, &quot;Overlap&quot;, &quot;Adjusted.P.value&quot;)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWVyZ2VkLmRmXG5gYGAifQ== -->
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>merged.df</span></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjN9LCJyZGYiOiJINHNJQUFBQUFBQUFBNDFUdjIvVFFCaTlKQTFSWFZFcXRSTkk2S2hBQWlteGMvWWx1U0NCY0JJbmpkcjh3RTVMR1JoTWN2a0JpUk1jcHcxTVlldkFnSVRFaHNTRXhNakNDaElMTTZ5SWxZRUI4USswbkJOZjZtYkMwcDN2ZmQvMzNuMzN6dFp6KzRxd0x3QUFRbURKbmNOc0F1SGRXajVHQUZnS01oQmdpV1gzUFdicDlXa2xBR3RzQ0Y1aXM2eGpWWUh0VWMrMG9OT0VxcDdkTWpDczkrbDRZTlBoc05PM2VLVlcyMU4yL3FmeWhxN3RxRkRHQ1ZuQjhTVE10b3ZWbUVHZndId3hvMWNNeHF1VVZMamw2bmlFYTJvdHIwQlpTWkk0d3VsVFFpRlRRckdDa1QxVHZNVFVNOTQ2UE8zSkE5ZU5Lc0p4dUoyRDFVeUpjWFpMYWhrV0RJMG9Da0ZRTDZ1R2RoZm1LdmZLWG4yMGREOERLOXBwb1V3UTYxYlh0SnhSek1HQ1Z0YWdqQkxZejFrcDU3Y3phR2FDRnhLbXA1MUZ6bnA3THBXUTVIUjZqaFFmaXFTUmhCQ1JPVXpHSlJtUmVTMlIvVXlDL0NnUmwzQmM0UWdUQ1Nmbk9aeVdGRjh1eVJCaXExVzNLL0hieVdYMXl1M2Ywcmowd1g3NmZRVy9uYnpNdnJuNDdOYlhqV2p4Z2JJWnpkMGtsOVpSSi9ycTlXY2MvZHNnOVkvUHY3dzQxTk9Ud3FlTjBMcy9LVFhhUFhwLytKT0U0ZEd2Mk1hUGhVOHNiSms5T3ZRc0NQSExxbEc3eDg5WU9hQjIxeHg0Y0UxdFBCb05IZG9RcStLQjJSM1JCYjFsdTM4b2NzM3piQVFuWVBvSWl4dlh1K2FRYjh5RFFzTjBUTEZwTXo1RHh3dVVTSC9nc08rVmtZTHVUeEdacWJMMGJMaDJCZTVjQmZ6eEN3ZnNoY0NGa2VWMjJZalYyeVByY1N6bDB3SmU1d0V2eHRlaFdUdkJFMDhxd3QyaXpBaCtnR2FuSmJacHA5VjIrSFZTcTlXeEtEOTExM3hJZWZFcTgycHFsVGl3T3hZbkNDdzZGSjIrY3lwYTczZDVaT29LT1A0SHlFeVh2MFVFQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Term"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Overlap"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Adjusted.P.value"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"NR4A3 human tf ARCHS4 coexpression","2":"75/299","3":"3.911435e-83"},{"1":"ETV3L human tf ARCHS4 coexpression","2":"73/299","3":"5.124244e-80"},{"1":"RELA 24523406 ChIP-Seq FIBROSARCOMA Human","2":"91/1182","3":"3.365059e-55"},{"1":"ATF3 23680149 ChIP-Seq GBM1-GSC Human","2":"60/2189","3":"4.379908e-11"},{"1":"RELB","2":"82/299","3":"1.893965e-95"},{"1":"ETV3L","2":"81/299","3":"5.869360e-94"},{"1":"SP140 KD PBMC HUMAN GSE83381 RNASEQ DOWN","2":"50/403","3":"4.634485e-37"},{"1":"MYB OE HUMAN GSE2816 CREEDSID GENE 2154 DOWN","2":"48/469","3":"1.003348e-31"},{"1":"NFKB1 human","2":"49/303","3":"1.540176e-42"},{"1":"RELA human","2":"46/301","3":"7.760867e-39"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5tZXJnZWQuZGYuZmluYWwgPC0gZGF0YS5mcmFtZShcbiAgIyBMaWJyYXJ5ID0gbmFtZXMoZW5yaWNoci5saXN0LnN1YnNldCksXG4gIFRlcm0gPSBtZXJnZWQuZGYkVGVybSxcbiAgT3ZlcmxhcCA9IG1lcmdlZC5kZiRPdmVybGFwLFxuICBBZGp1c3RlZC5QLnZhbHVlID0gbWVyZ2VkLmRmJEFkanVzdGVkLlAudmFsdWVcbilcblxubWVyZ2VkLmRmLmZpbmFsXG5gYGAifQ== -->
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a></span>
+<span id="cb24-2"><a href="#cb24-2"></a>merged.df.final &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb24-3"><a href="#cb24-3"></a>  <span class="co"># Library = names(enrichr.list.subset),</span></span>
+<span id="cb24-4"><a href="#cb24-4"></a>  <span class="dt">Term =</span> merged.df<span class="op">$</span>Term,</span>
+<span id="cb24-5"><a href="#cb24-5"></a>  <span class="dt">Overlap =</span> merged.df<span class="op">$</span>Overlap,</span>
+<span id="cb24-6"><a href="#cb24-6"></a>  <span class="dt">Adjusted.P.value =</span> merged.df<span class="op">$</span>Adjusted.P.value</span>
+<span id="cb24-7"><a href="#cb24-7"></a>)</span>
+<span id="cb24-8"><a href="#cb24-8"></a></span>
+<span id="cb24-9"><a href="#cb24-9"></a>merged.df.final</span></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjN9LCJyZGYiOiJINHNJQUFBQUFBQUFBNDFUdjIvVFFCaTlKQTFSWFZFcXRSTkk2S2hBQWlteGMvWWx1U0NCY0JJbmpkcjh3RTVMR1JoTWN2a0JpUk1jcHcxTVlldkFnSVRFaHNTRXhNakNDaElMTTZ5SWxZRUI4USswbkJOZjZtYkMwcDN2ZmQvMzNuMzN6dFp6KzRxd0x3QUFRbURKbmNOc0F1SGRXajVHQUZnS01oQmdpV1gzUFdicDlXa2xBR3RzQ0Y1aXM2eGpWWUh0VWMrMG9OT0VxcDdkTWpDczkrbDRZTlBoc05PM2VLVlcyMU4yL3FmeWhxN3RxRkRHQ1ZuQjhTVE10b3ZWbUVHZndId3hvMWNNeHF1VVZMamw2bmlFYTJvdHIwQlpTWkk0d3VsVFFpRlRRckdDa1QxVHZNVFVNOTQ2UE8zSkE5ZU5Lc0p4dUoyRDFVeUpjWFpMYWhrV0RJMG9Da0ZRTDZ1R2RoZm1LdmZLWG4yMGREOERLOXBwb1V3UTYxYlh0SnhSek1HQ1Z0YWdqQkxZejFrcDU3Y3phR2FDRnhLbXA1MUZ6bnA3THBXUTVIUjZqaFFmaXFTUmhCQ1JPVXpHSlJtUmVTMlIvVXlDL0NnUmwzQmM0UWdUQ1Nmbk9aeVdGRjh1eVJCaXExVzNLL0hieVdYMXl1M2Ywcmowd1g3NmZRVy9uYnpNdnJuNDdOYlhqV2p4Z2JJWnpkMGtsOVpSSi9ycTlXY2MvZHNnOVkvUHY3dzQxTk9Ud3FlTjBMcy9LVFhhUFhwLytKT0U0ZEd2Mk1hUGhVOHNiSms5T3ZRc0NQSExxbEc3eDg5WU9hQjIxeHg0Y0UxdFBCb05IZG9RcStLQjJSM1JCYjFsdTM4b2NzM3piQVFuWVBvSWl4dlh1K2FRYjh5RFFzTjBUTEZwTXo1RHh3dVVTSC9nc08rVmtZTHVUeEdacWJMMGJMaDJCZTVjQmZ6eEN3ZnNoY0NGa2VWMjJZalYyeVByY1N6bDB3SmU1d0V2eHRlaFdUdkJFMDhxd3QyaXpBaCtnR2FuSmJacHA5VjIrSFZTcTlXeEtEOTExM3hJZWZFcTgycHFsVGl3T3hZbkNDdzZGSjIrY3lwYTczZDVaT29LT1A0SHlFeVh2MFVFQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Term"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Overlap"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Adjusted.P.value"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"NR4A3 human tf ARCHS4 coexpression","2":"75/299","3":"3.911435e-83"},{"1":"ETV3L human tf ARCHS4 coexpression","2":"73/299","3":"5.124244e-80"},{"1":"RELA 24523406 ChIP-Seq FIBROSARCOMA Human","2":"91/1182","3":"3.365059e-55"},{"1":"ATF3 23680149 ChIP-Seq GBM1-GSC Human","2":"60/2189","3":"4.379908e-11"},{"1":"RELB","2":"82/299","3":"1.893965e-95"},{"1":"ETV3L","2":"81/299","3":"5.869360e-94"},{"1":"SP140 KD PBMC HUMAN GSE83381 RNASEQ DOWN","2":"50/403","3":"4.634485e-37"},{"1":"MYB OE HUMAN GSE2816 CREEDSID GENE 2154 DOWN","2":"48/469","3":"1.003348e-31"},{"1":"NFKB1 human","2":"49/303","3":"1.540176e-42"},{"1":"RELA human","2":"46/301","3":"7.760867e-39"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbk5BXG5gYGAifQ== -->
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="ot">NA</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="ot">NA</span></span></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3V0LmZpbGUgPC0gcGFzdGUoXCJkYXRhLm91dC9cIix0aGlzLnNjcmlwdCwgXCIudHh0XCIpXG5vdXQuZmlsZVxud3JpdGUudGFibGUoZGYudXAsIGZpbGUgPSBvdXQuZmlsZSwgc2VwID1cIlxcdFwiKVxuYGBgIn0= -->
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>out.file &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;data.out/&quot;</span>,this.script, <span class="st">&quot;.txt&quot;</span>)</span>
-<span id="cb10-2"><a href="#cb10-2"></a>out.file</span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="kw">write.table</span>(df.up, <span class="dt">file =</span> out.file, <span class="dt">sep =</span><span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</span></code></pre></div>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3V0LmZpbGUgPC0gcGFzdGUoXCJkYXRhLm91dC9cIix0aGlzLnNjcmlwdCwgXCIudHh0XCIpXG5vdXQuZmlsZVxuYGBgIn0= -->
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>out.file &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;data.out/&quot;</span>,this.script, <span class="st">&quot;.txt&quot;</span>)</span>
+<span id="cb26-2"><a href="#cb26-2"></a>out.file</span></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiZGF0YS5vdXQvIEVucmljaHIub3V0cHV0LjIwMC51cC5SbWQgLnR4dFwiXG4ifQ== -->
+<pre><code>[1] &quot;data.out/ Enrichr.output.200.up.Rmd .txt&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud3JpdGUudGFibGUoZGYudXAsIGZpbGUgPSBvdXQuZmlsZSwgc2VwID1cIlxcdFwiKVxuYGBgIn0= -->
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="kw">write.table</span>(df.up, <span class="dt">file =</span> out.file, <span class="dt">sep =</span><span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</span></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gaXMuZGF0YS5mcmFtZSh4KSA6IG9iamVjdCAnZGYudXAnIG5vdCBmb3VuZFxuIn0= -->
+<pre><code>Error in is.data.frame(x) : object &#39;df.up&#39; not found</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>```</p>
