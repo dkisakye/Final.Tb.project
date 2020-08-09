@@ -296,34 +296,34 @@ head(rna.seq.data.list$GSE64179_DC) %>%
 
 
 
-### Load RNA-seq data: GSE67472
+### Load RNA-seq data: GSE67427
 ```{r}
-rna.seq.data.files$GSE67472_MP <-"../source_data/rna_seq/GSE67427/GSE67427_table_s2.txt"
-stopifnot(file.exists(rna.seq.data.files$GSE67472_MP))
+rna.seq.data.files$GSE67427_MP <-"../source_data/rna_seq/GSE67427/GSE67427_table_s2.txt"
+stopifnot(file.exists(rna.seq.data.files$GSE67427_MP))
 #rna.seq.data.list <-list()
-rna.seq.data.list$GSE67472_MP<- read.table(file = rna.seq.data.files$GSE67472_MP, header = T, sep = "\t", stringsAsFactors = FALSE)  %>% 
-#str(rna.seq.data.list$GSE67472) #data.frame':	12728 obs. of  140 variables:
-  # head(rna.seq.data.list$GSE67472)
+rna.seq.data.list$GSE67427_MP<- read.table(file = rna.seq.data.files$GSE67427_MP, header = T, sep = "\t", stringsAsFactors = FALSE)  %>% 
+#str(rna.seq.data.list$GSE67427) #data.frame':	12728 obs. of  140 variables:
+  # head(rna.seq.data.list$GSE67427)
   
-  # names(rna.seq.data.list$GSE67472)
+  # names(rna.seq.data.list$GSE67427)
   # select(matches(c("name", "Rv.18")))
  select(matches(c("name","Rv.18.logFC"), ignore.case = TRUE)) %>%
-   # head(rna.seq.data.list$GSE67472)
+   # head(rna.seq.data.list$GSE67427)
   set_colnames(c("Gene.symbol", "logFC")) %>%
   mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
   group_by(Gene.symbol) %>% 
   summarise(logFC = median(logFC), .groups="drop") %>% 
   as.data.frame(., stringsAsFactors=FALSE)
- head(rna.seq.data.list$GSE67472_MP)
+ head(rna.seq.data.list$GSE67427_MP)
 ```
 
 ```{r}
 # WITHOUT GROUPING / AGGREGATING:
-dim(rna.seq.data.list$GSE67472_MP) #  12724     2
-sapply(rna.seq.data.list$GSE67472_MP, class) # "character"   "numeric"
-range(rna.seq.data.list$GSE67472_MP$logFC) # -4.155479  8.205439
-sum(rna.seq.data.list$GSE67472_MP$logFC == 0) # 0
-sum(duplicated(rna.seq.data.list$GSE67472_MP$Gene.symbol)) # 0
+dim(rna.seq.data.list$GSE67427_MP) #  12724     2
+sapply(rna.seq.data.list$GSE67427_MP, class) # "character"   "numeric"
+range(rna.seq.data.list$GSE67427_MP$logFC) # -4.155479  8.205439
+sum(rna.seq.data.list$GSE67427_MP$logFC == 0) # 0
+sum(duplicated(rna.seq.data.list$GSE67427_MP$Gene.symbol)) # 0
 # dups <- rna.seq.data$GSE64179$Gene.symbol[duplicated(rna.seq.data$GSE64179$Gene.symbol)]
 # subset(rna.seq.data$GSE64179, Gene.symbol %in% dups) %>% 
 #   arrange(Gene.symbol, logFC)
@@ -337,7 +337,7 @@ sum(duplicated(rna.seq.data.list$GSE67472_MP$Gene.symbol)) # 0
 # range(rna.seq.data$GSE64179$logFC) # -9.426613 11.612170
 # sum(rna.seq.data$GSE64179$logFC == 0) # 0
 # sum(duplicated(rna.seq.data$GSE64179$Gene.symbol)) # 0
-head(rna.seq.data.list$GSE67472_MP) %>% 
+head(rna.seq.data.list$GSE67427_MP) %>% 
   knitr::kable(., row.names = F, format="html") %>% 
   kableExtra::kable_styling("striped", full_width = T)
 
@@ -584,7 +584,7 @@ gg.mds
 ### Save plot as pdf  
 ```{r}
 out.file <- paste("data_out", stringr::str_replace(this.script, "\\.[Rr][Mm][Dd]$", ".pdf"), sep="/")
-ggsave(gg.mds, filename = out.file, height = 10, width = 15, units = "cm", useDingbats=)
+ggsave(gg.mds, filename = out.file, height = 10, width = 17, units = "cm", useDingbats=)
 out.file
 ```
 
