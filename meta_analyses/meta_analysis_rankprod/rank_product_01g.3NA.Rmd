@@ -966,13 +966,31 @@ gs.down.01 <- rank.sum.down %>%
 cat("Number of consistently <b><i>down</i></b>regulated genes (p <= 0.01):<b>", length(gs.down.01), "</b>")
 
 ```
-
 ```{r}
 out.file.down.01 <- paste0("data_out/", this.script, ".down.01.txt")
 cat(gs.down.01, sep="\n", file=out.file.down.01)
 cat("File saved:", out.file.down.01)
 
 ```
+
+### Save down regulated genes with adjusted p value < 0.001
+```{r}
+gs.down.001 <- rank.sum.down %>% 
+  dplyr::filter(P.Val.Adj <= 0.001) %>% 
+  use_series("Gene")
+ length(gs.down.001) # 299
+cat("Number of consistently <b><i>down</i></b>regulated genes (p <= 0.001):<b>", length(gs.down.001), "</b>")
+
+
+```
+
+```{r}
+out.file.down.001 <- paste0("data_out/", this.script, ".down.001.txt")
+cat(gs.down.001, sep="\n", file=out.file.down.001)
+cat("File saved:", out.file.down.001)
+
+```
+
 
 ### Save top upregulated genes  
 ```{r results="asis"}
@@ -987,6 +1005,20 @@ cat("Number of consistently <b><i>up</i></b>regulated genes (p <= 0.01):<b>", le
 out.file.up.01 <- paste0("data_out/", this.script, ".up.01.txt")
 cat(gs.up.01, sep="\n", file=out.file.up.01)
 cat("File saved:", out.file.up.01)
+```
+### Save up regulated genes with adjusted p value < 0.001
+```{r}
+gs.up.001 <- rank.sum.up %>% 
+  dplyr::filter(P.Val.Adj <= 0.001) %>% 
+  use_series("Gene")
+length(gs.up.001) # 479
+cat("Number of consistently <b><i>up</i></b>regulated genes (p <= 0.001):<b>", length(gs.up.001), "</b>")
+```
+
+```{r}
+out.file.up.001 <- paste0("data_out/", this.script, ".up.001.txt")
+cat(gs.up.001, sep="\n", file=out.file.up.001)
+cat("File saved:", out.file.up.001)
 ```
 
 
