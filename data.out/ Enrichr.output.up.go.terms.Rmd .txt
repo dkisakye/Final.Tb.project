@@ -1,0 +1,9 @@
+"Term"	"Overlap"	"Adjusted.P.value"
+"1"	"cytokine-mediated signaling pathway (GO:0019221)"	"84/633"	6.21147307813729e-35
+"2"	"cellular response to cytokine stimulus (GO:0071345)"	"62/456"	1.12504070867411e-25
+"3"	"cytokine activity (GO:0005125)"	"30/155"	6.79767674294931e-16
+"4"	"transcription factor activity, RNA polymerase II core promoter proximal region sequence-specific binding (GO:0000982)"	"28/280"	1.12449277323364e-07
+"5"	"NF-kappaB complex"	"114/864"	1.76256002310185e-49
+"6"	"interleukin-12 complex"	"74/504"	6.14246557656446e-34
+"7"	"Immune system"	"104/1046"	2.54866993604487e-33
+"8"	"Spleen"	"440/14937"	1.52693433748482e-19
