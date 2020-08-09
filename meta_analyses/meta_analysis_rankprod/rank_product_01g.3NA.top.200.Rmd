@@ -54,7 +54,7 @@ Overview:
 7. Replace NAs with average ranks in the other datasets  
 8. Now rank again so number of ranks in each dataset is the same  
 9. Calculate **rank sum** statistics and p values using RankProd package  
-10. Generate heatmaps of top 100 regulated genes  
+10. Generate heatmaps of top 200 regulated genes  
   
 ```{r include=FALSE}
 # About <style> chunk above:
@@ -812,56 +812,56 @@ get.heatmap <- function(mx, heat.cols, ha) {
 }
 ```
 
-### Heatmap: 100 most downregulated genes  
+### Heatmap: 200 most downregulated genes  
 ```{r}
 # nrow(subset(rank.sum.up, P.Val.Adj <= 0.05)) # 594
 # nrow(subset(rank.sum.up, P.Val.Adj <= 0.01)) # 317
-down.100 <- dplyr::arrange(rank.sum.down, P.Val.Adj, Rank.Sum) %>% 
-  head(.,100) %>% .$Gene
-# down.100
-mx.down.100 <- ranks.down.mx.2[down.100,] %>% 
+down.200 <- dplyr::arrange(rank.sum.down, P.Val.Adj, Rank.Sum) %>% 
+  head(.,200) %>% .$Gene
+ # tail(down.200)
+mx.down.200 <- ranks.down.mx.2[down.200,] %>% 
   set_colnames(names(all.data.list))
-colnames(mx.down.100) <- str_replace(colnames(mx.down.100), "_DC", " (DC)")
-colnames(mx.down.100) <- str_replace(colnames(mx.down.100), "_MP", " (MP)")
-colnames(mx.down.100) <- str_replace(colnames(mx.down.100), ".MF1", " (MF1)")
-colnames(mx.down.100) <- str_replace(colnames(mx.down.100), ".MF2", " (MF2)")
-# dim(mx.down.100) # 100   5
-head(mx.down.100)
+colnames(mx.down.200) <- str_replace(colnames(mx.down.200), "_DC", " (DC)")
+colnames(mx.down.200) <- str_replace(colnames(mx.down.200), "_MP", " (MP)")
+colnames(mx.down.200) <- str_replace(colnames(mx.down.200), ".MF1", " (MF1)")
+colnames(mx.down.200) <- str_replace(colnames(mx.down.200), ".MF2", " (MF2)")
+# dim(mx.down.200) # 200   5
+head(mx.down.200)
 ```
-### Save top 100 upregulated genes
+### Save top 200 upregulated genes
 ```{r}
-out.file <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".down.100.txt"), sep="/")
+out.file <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".down.200.txt"), sep="/")
 
 out.file
-cat(down.100, file = out.file, sep = "\n")
+cat(down.200, file = out.file, sep = "\n")
 ```
 
 
 
 ```{r}
-down.100.df <- as.data.frame(t(mx.down.100))
-# dim(down.100.df) # 5 100
+down.200.df <- as.data.frame(t(mx.down.200))
+# dim(down.200.df) # 5 200
 
-row.names(down.100.df) <- names(all.data.list)
+row.names(down.200.df) <- names(all.data.list)
 
-down.100.df <- as.data.frame(t(mx.down.100)) %>% 
+down.200.df <- as.data.frame(t(mx.down.200)) %>% 
   set_rownames(names(all.data.list)) %>% 
   tibble::rownames_to_column("Dataset") %>% 
   dplyr::mutate(Technology = "Microarray") %>%
   dplyr::mutate(Cell.type = "Macrophages") %>%
   dplyr::select(Dataset, Technology, Cell.type, dplyr::everything())
-down.100.df$Technology[down.100.df$Dataset %in% names(rna.seq.data.list)] <- "RNA-seq"
-down.100.df$Cell.type[down.100.df$Dataset %in% c("GSE64179", "A-BUGS-23_DC", "GSE34151")] <- "Dendritic cells"
-down.100.df[,1:6]
+down.200.df$Technology[down.200.df$Dataset %in% names(rna.seq.data.list)] <- "RNA-seq"
+down.200.df$Cell.type[down.200.df$Dataset %in% c("GSE64179", "A-BUGS-23_DC", "GSE34151")] <- "Dendritic cells"
+down.200.df[,1:6]
 ```
 
 ```{r}
 # help(HeatmapAnnotation, package="ComplexHeatmap")
-col.down <- list(Technology = c("Microarray" = "lightgreen", "RNA-seq" = "yellow"),
+col.down <- list(Technology = c("Microarray" = "Darkblue", "RNA-seq" = "lightblue"),
             Cell.type = c("Macrophages" = "grey", "Dendritic cells" = "black"))
 ha.down <- ComplexHeatmap::HeatmapAnnotation(
-  Technology = down.100.df$Technology,
-  Cell.type = down.100.df$Cell.type,
+  Technology = down.200.df$Technology,
+  Cell.type = down.200.df$Cell.type,
   col=col.down
 )
 rm(col.down)
@@ -870,8 +870,8 @@ rm(col.down)
 ```{r}
 # "YlOrRd", "YlOrBr", "YlGnBu"*, "PuBuGn", "YlGn", "RdPu"-, "PuRd"-, "BuGn"
 # "Blues", "Greens", "Purples", "Oranges"
-heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(7, "YlGnBu"))(256) %>% rev
-get.heatmap(mx.down.100, heat.cols, ha.down)
+heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(7, "Oranges"))(256) %>% rev
+get.heatmap(mx.down.200, heat.cols, ha.down)
 ```
 ### Save heatmap for down regulated genes
 ```{r}
@@ -882,63 +882,63 @@ out.file.map.down
 ```
 
 ```{r}
-pdf(file = out.file.map.down, paper = "a4", width=6, height=8.5)
-get.heatmap(mx.down.100, heat.cols, ha.down)
+pdf(file = out.file.map.down, paper = "a4", width= 6, height= 8.5)
+get.heatmap(mx.down.200, heat.cols, ha.down)
 dev.off()
 ```
 
 
-### Heatmap: 100 most upregulated genes  
+### Heatmap: 200 most upregulated genes  
 ```{r}
-up.100 <- dplyr::arrange(rank.sum.up, P.Val.Adj, Rank.Sum) %>% 
-  head(.,100) %>% .$Gene
-head(up.100)
-mx.up.100 <- ranks.up.mx.2[up.100,] %>% 
+up.200 <- dplyr::arrange(rank.sum.up, P.Val.Adj, Rank.Sum) %>% 
+  head(.,200) %>% .$Gene
+# tail(up.200)
+mx.up.200 <- ranks.up.mx.2[up.200,] %>% 
   set_colnames(names(all.data.list))
-colnames(mx.down.100) <- str_replace(colnames(mx.down.100), "_DC", " (DC)")
-colnames(mx.down.100) <- str_replace(colnames(mx.down.100), "_MP", " (MP)")
-colnames(mx.down.100) <- str_replace(colnames(mx.down.100), ".MF1", " (MF1)")
-colnames(mx.down.100) <- str_replace(colnames(mx.down.100), ".MF2", " (MF2)")
- dim(mx.up.100) # 100   6
-head(mx.up.100)
+colnames(mx.down.200) <- str_replace(colnames(mx.down.200), "_DC", " (DC)")
+colnames(mx.down.200) <- str_replace(colnames(mx.down.200), "_MP", " (MP)")
+colnames(mx.down.200) <- str_replace(colnames(mx.down.200), ".MF1", " (MF1)")
+colnames(mx.down.200) <- str_replace(colnames(mx.down.200), ".MF2", " (MF2)")
+ dim(mx.up.200) # 200   8
+head(mx.up.200)
 
 ```
-### Save top 100 upregulated genes
+### Save top 200 upregulated genes
 ```{r}
-out.file <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".up.100.txt"), sep="/")
+out.file <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".up.200.txt"), sep="/")
 
 out.file
-cat(up.100, file = out.file, sep = "\n")
+cat(up.200, file = out.file, sep = "\n")
 
 ```
 
 
 ```{r}
-up.100.df <- as.data.frame(t(mx.up.100))
-# dim(down.100.df) # 5 100
-row.names(up.100.df) <- names(all.data.list)
+up.200.df <- as.data.frame(t(mx.up.200))
+# dim(down.200.df) # 5 200
+row.names(up.200.df) <- names(all.data.list)
 
-up.100.df <- as.data.frame(t(mx.up.100)) %>% 
+up.200.df <- as.data.frame(t(mx.up.200)) %>% 
   set_rownames(names(all.data.list)) %>% 
   tibble::rownames_to_column("Dataset") %>% 
   dplyr::mutate(Technology = "Microarray") %>%
   dplyr::mutate(Cell.type = "Macrophages") %>%
   dplyr::select(Dataset, Technology, Cell.type, dplyr::everything())
-up.100.df$Technology[up.100.df$Dataset %in% names(rna.seq.data.list)] <- "RNA-seq"
-up.100.df$Cell.type[up.100.df$Dataset %in% c("GSE64179", "A-BUGS-23_DC","GSE34151")] <- "Dendritic cells"
-length(up.100.df)
+up.200.df$Technology[up.200.df$Dataset %in% names(rna.seq.data.list)] <- "RNA-seq"
+up.200.df$Cell.type[up.200.df$Dataset %in% c("GSE64179", "A-BUGS-23_DC","GSE34151")] <- "Dendritic cells"
+
 ```
 
 ```{r}
-col.up <- list(Technology = c("Microarray" = "yellow", "RNA-seq" = "darkgreen"),
+col.up <- list(Technology = c("Microarray" = "darkblue", "RNA-seq" = "lightblue"),
             Cell.type = c("Macrophages" = "grey", "Dendritic cells" = "black"))
 ha.up <- ComplexHeatmap::HeatmapAnnotation(
-  Technology = up.100.df$Technology,
-  Cell.type = up.100.df$Cell.type,
+  Technology = up.200.df$Technology,
+  Cell.type = up.200.df$Cell.type,
   col=col.up
 )
-heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(8, "YlGnBu"))(256) %>% rev
-get.heatmap(mx.up.100, heat.cols, ha.up)
+heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(8, "Oranges"))(256) %>% rev
+get.heatmap(mx.up.200, heat.cols, ha.up)
 ```
 
 ### Save heatmap for up regulated genes
@@ -948,8 +948,8 @@ out.file.map.up
 ```
 
 ```{r}
-pdf(file = out.file.map.up, paper = "a4", , width=6, height=8.5)
-get.heatmap(mx.up.100, heat.cols, ha.up)
+pdf(file = out.file.map.up, paper = "a4", width = 6 , height = 8.5)
+get.heatmap(mx.up.200, heat.cols, ha.up)
 dev.off()
 ```
 
@@ -976,7 +976,7 @@ cat("File saved:", out.file.down.01)
 ```{r results="asis"}
 gs.up.01 <- rank.sum.up %>% 
   dplyr::filter(P.Val.Adj <= 0.01) %>% 
-  use_series("Gene")
+  use_series("Gene") 
 length(gs.up.01) # 912
 cat("Number of consistently <b><i>up</i></b>regulated genes (p <= 0.01):<b>", length(gs.up.01), "</b>")
 ```

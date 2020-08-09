@@ -808,7 +808,9 @@ get.heatmap <- function(mx, heat.cols, ha) {
   col = heat.cols,
   top_annotation = ha,
   cluster_rows = FALSE,
-  show_row_names = FALSE)
+  show_row_names = FALSE,
+  show_column_names = FALSE
+  )
 }
 ```
 
@@ -857,7 +859,7 @@ down.100.df[,1:6]
 
 ```{r}
 # help(HeatmapAnnotation, package="ComplexHeatmap")
-col.down <- list(Technology = c("Microarray" = "lightgreen", "RNA-seq" = "yellow"),
+col.down <- list(Technology = c("Microarray" = "Darkblue", "RNA-seq" = "lightblue"),
             Cell.type = c("Macrophages" = "grey", "Dendritic cells" = "black"))
 ha.down <- ComplexHeatmap::HeatmapAnnotation(
   Technology = down.100.df$Technology,
@@ -870,7 +872,7 @@ rm(col.down)
 ```{r}
 # "YlOrRd", "YlOrBr", "YlGnBu"*, "PuBuGn", "YlGn", "RdPu"-, "PuRd"-, "BuGn"
 # "Blues", "Greens", "Purples", "Oranges"
-heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(7, "YlGnBu"))(256) %>% rev
+heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(7, "Oranges"))(256) %>% rev
 get.heatmap(mx.down.100, heat.cols, ha.down)
 ```
 ### Save heatmap for down regulated genes
@@ -882,7 +884,7 @@ out.file.map.down
 ```
 
 ```{r}
-pdf(file = out.file.map.down, paper = "a4", width=6, height=8.5)
+pdf(file = out.file.map.down, width=6, height=8.5)
 get.heatmap(mx.down.100, heat.cols, ha.down)
 dev.off()
 ```
@@ -926,18 +928,18 @@ up.100.df <- as.data.frame(t(mx.up.100)) %>%
   dplyr::select(Dataset, Technology, Cell.type, dplyr::everything())
 up.100.df$Technology[up.100.df$Dataset %in% names(rna.seq.data.list)] <- "RNA-seq"
 up.100.df$Cell.type[up.100.df$Dataset %in% c("GSE64179", "A-BUGS-23_DC","GSE34151")] <- "Dendritic cells"
-length(up.100.df)
+
 ```
 
 ```{r}
-col.up <- list(Technology = c("Microarray" = "yellow", "RNA-seq" = "darkgreen"),
+col.up <- list(Technology = c("Microarray" = "Darkblue", "RNA-seq" = "lightblue"),
             Cell.type = c("Macrophages" = "grey", "Dendritic cells" = "black"))
 ha.up <- ComplexHeatmap::HeatmapAnnotation(
   Technology = up.100.df$Technology,
   Cell.type = up.100.df$Cell.type,
   col=col.up
 )
-heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(8, "YlGnBu"))(256) %>% rev
+heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(7, "Oranges"))(256) %>% rev
 get.heatmap(mx.up.100, heat.cols, ha.up)
 ```
 
@@ -948,7 +950,7 @@ out.file.map.up
 ```
 
 ```{r}
-pdf(file = out.file.map.up, paper = "a4", , width=6, height=8.5)
+pdf(file = out.file.map.up, width=6, height=8.5)
 get.heatmap(mx.up.100, heat.cols, ha.up)
 dev.off()
 ```
@@ -964,13 +966,31 @@ gs.down.01 <- rank.sum.down %>%
 cat("Number of consistently <b><i>down</i></b>regulated genes (p <= 0.01):<b>", length(gs.down.01), "</b>")
 
 ```
-
 ```{r}
 out.file.down.01 <- paste0("data_out/", this.script, ".down.01.txt")
 cat(gs.down.01, sep="\n", file=out.file.down.01)
 cat("File saved:", out.file.down.01)
 
 ```
+
+### Save down regulated genes with adjusted p value < 0.001
+```{r}
+gs.down.001 <- rank.sum.down %>% 
+  dplyr::filter(P.Val.Adj <= 0.001) %>% 
+  use_series("Gene")
+ length(gs.down.001) # 299
+cat("Number of consistently <b><i>down</i></b>regulated genes (p <= 0.001):<b>", length(gs.down.001), "</b>")
+
+
+```
+
+```{r}
+out.file.down.001 <- paste0("data_out/", this.script, ".down.001.txt")
+cat(gs.down.001, sep="\n", file=out.file.down.001)
+cat("File saved:", out.file.down.001)
+
+```
+
 
 ### Save top upregulated genes  
 ```{r results="asis"}
@@ -985,6 +1005,20 @@ cat("Number of consistently <b><i>up</i></b>regulated genes (p <= 0.01):<b>", le
 out.file.up.01 <- paste0("data_out/", this.script, ".up.01.txt")
 cat(gs.up.01, sep="\n", file=out.file.up.01)
 cat("File saved:", out.file.up.01)
+```
+### Save up regulated genes with adjusted p value < 0.001
+```{r}
+gs.up.001 <- rank.sum.up %>% 
+  dplyr::filter(P.Val.Adj <= 0.001) %>% 
+  use_series("Gene")
+length(gs.up.001) # 479
+cat("Number of consistently <b><i>up</i></b>regulated genes (p <= 0.001):<b>", length(gs.up.001), "</b>")
+```
+
+```{r}
+out.file.up.001 <- paste0("data_out/", this.script, ".up.001.txt")
+cat(gs.up.001, sep="\n", file=out.file.up.001)
+cat("File saved:", out.file.up.001)
 ```
 
 
