@@ -1,0 +1,181 @@
+---
+title: "Enrichr.output.200.up.go.terms"
+author: '9401'
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    df_print: paged
+    toc: yes
+    highlight: tango
+    number_sections: no
+    fig_caption: yes
+    theme: sandstone
+    code_folding: hide
+    toc_depth: 3
+    toc_float: yes
+---
+  
+<style>
+h1 {background: darkblue;color: white;padding-left: 7px;}
+h2 {color: darkblue;}
+.code-folding-btn {display: none;}
+</style>
+  
+<script>
+  function show_span(id) {
+    var x = document.getElementById(id);
+    if (x.style.display === 'none') {
+      x.style.display = 'inline';
+    } else {
+      x.style.display = 'none';
+    }
+  }
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.style.display === 'none') {
+    x.style.display = 'block';
+  } else {
+    x.style.display = 'none';
+  }
+}
+</script>
+
+```{r cleanup, warning=FALSE, message=FALSE, error=FALSE}
+# CHECK R VERSION
+# stopifnot(R.version.string == "R version 3.5.3 (2019-03-11)")
+
+# CLEANUP
+# Clear all variables:
+rm(list=ls(all=TRUE))
+
+# Unload current packages:
+if (!is.null(names(utils::sessionInfo()[["otherPkgs"]]))) pacman::p_unload("all") 
+```
+
+```{r setup}
+# KNITR DEFAULTS
+knitr::opts_chunk$set(eval = TRUE, fig.height = 10)
+```
+
+### Load Packages
+```{r packages, results="hide", warning=FALSE, message=FALSE, error=FALSE}
+if (!require(stringr)) install.packages("stringr")
+if (!require(rstudioapi)) install.packages("rstudioapi")
+if (!require(tidyr)) install.packages("tidyr")
+if (!require(tibble)) install.packages("tibble")
+if (!require(readxl)) install.packages("readxl")
+if (!require(purrr)) install.packages("purrr")
+if (!require(RColorBrewer)) install.packages("RColorBrewer")
+if (!require(devtools)) install.packages("devtools")
+if (!require(magrittr)) install.packages("magrittr")
+if (!require(dplyr)) install.packages("dplyr")
+if (!require(scales)) install.packages("scales")
+if (!require(knitr)) install.packages("knitr")
+if (!require(kableExtra)) install.packages("kableExtra")
+
+library(magrittr)
+library(dplyr)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(RankProd)
+library(stringr)
+```
+
+```{r setup_script, eval=TRUE, results='hide'}
+# GET CURRENT SCRIPT NAME
+(this.script <- rstudioapi::getActiveDocumentContext() %>% .$path %>% basename)
+getwd()
+list.files()
+stopifnot(this.script != "")
+```
+
+### Load Enrichr files
+```{r}
+getwd()
+go.files<- list.files(path = "data.in/enrichr/go.tables", full.names = T)
+go.files
+cat(basename(go.files), sep="<br>\n")
+
+```
+
+```{r}
+go.data.list <- lapply(go.files, function(f) {
+  a <- read.table(f, sep = "\t", header = T, stringsAsFactors = F)
+  a
+})  %>%
+  set_names(stringr::str_remove_all(basename(go.files), "\\_table.up.txt"))
+
+sapply(go.data.list, class)
+```
+
+```{r}
+data.frame(List.item = names(go.data.list),
+           class = sapply(go.data.list, class),
+           Columns = sapply(go.data.list, ncol),
+           Rows = comma(sapply(go.data.list, nrow))) %>% 
+   knitr::kable(., row.names = F, align=c("l", "l", "c", "c"), format = "html", escape = F) %>% 
+   kableExtra::kable_styling("striped", full_width = T)
+
+```
+### Get enriched terms with Adj.P.value <= 0.01
+```{r}
+go.list <- lapply(seq_along(go.data.list), function(i, list.names) {
+  df <- go.data.list[[i]]
+  x <- dplyr::select(df,Term, Overlap,Adjusted.P.value) %>%
+       dplyr::filter(Adjusted.P.value <= 0.01)
+}, list.names = names(go.data.list)) %>% 
+  set_names(names(go.data.list))
+
+    
+```
+
+### Summarise the data frame
+```{r}
+data.frame(
+  List.item = names(go.list),
+  Class = sapply(go.list, function(x) {paste(class(x), collapse=",")}),
+  Columns = sapply(go.list, ncol),
+  Rows = sapply(go.list, nrow)
+) %>% 
+  knitr::kable(., row.names = F, align=c("l", "l", "c", "c"), format = "html", escape = F) %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+```
+
+```{r}
+go.list.subset<- lapply(seq_along(go.list), function(i, list.names) {
+  df <- go.list[[i]]
+  x <- head(df,2)
+},
+  list.names = names(go.list)) %>% 
+  set_names(names(go.list))
+
+# go.list.subset
+# names(go.list.subset)
+```
+### Merge data frames
+```{r}
+class(go.list.subset) #list
+
+merged.df <- go.list.subset %>% 
+  purrr::reduce(dplyr::full_join)
+
+merged.df
+
+merged.df.final <- data.frame(
+  # Library = names(go.list.subset),
+  Term = merged.df$Term,
+  Overlap = merged.df$Overlap,
+  Adjusted.P.value = merged.df$Adjusted.P.value
+)
+
+merged.df.final
+
+```
+
+### Save file
+```{r}
+out.file <- paste("data.out/",this.script, ".txt")
+out.file
+write.table(merged.df.final, file = out.file, sep ="\t")
+```
