@@ -82,7 +82,7 @@ getwd()
 data.file <- (path = "./meta_analyses/meta_analysis_rankprod/data_out/rank_product_01g.3NA.top.200.down.200.txt")
 data.file
 cat(basename(data.file))
-gene.list.down<- scan(file = data.file, what = "character")
+genes.down<- scan(file = data.file, what = "character")
 
  # gene.list.down %>%
    # lapply(scan(what = "character")) %>%
@@ -96,6 +96,7 @@ gene.list.down<- scan(file = data.file, what = "character")
 ### Find library files  
 ```{r results="asis"}
 enrichr.files <- list.files("data.in/enrichr", pattern=".*txt$", full.names = T)
+enrichr.files<-grep(enrichr.files, pattern = "enrichr_TRRUST_Transcription_Factors_2019.txt" , invert = T , value = T)
 cat(basename(enrichr.files), sep="\n")
 ```
 
@@ -111,7 +112,7 @@ class(enrichr.libs.list) # "list"
 length(enrichr.libs.list) # 4
 sapply(enrichr.libs.list, class) %>% as.matrix 
 enrichr.libs.list
-enrichr.libs.list<- grep(pattern = "^TRRUST", invert = T)
+# enrichr.libs.list<- grep(pattern = "^TRRUST", invert = T)
 
 # ARCHS4_TFs_Coexp                  "character"
 # ChEA_2016                         "character"
@@ -127,7 +128,7 @@ Convert to vector:
 ```{r results="hide"}
 enrichr.libs.v <- unlist(enrichr.libs.list) %>% unname
 class(enrichr.libs.v) # "character"
-length(enrichr.libs.v) # 4661
+length(enrichr.libs.v) # 4090
 
 
 ```
@@ -191,18 +192,15 @@ enrichr.gene.sets <- lapply(search.terms, function(st) {
 rm(search.terms.mod, list.names)
 
 class(enrichr.gene.sets) # "list"
-## length(enrichr.gene.sets) # 4
+ length(enrichr.gene.sets) # 3
 # names(enrichr.gene.sets)
 
 str(enrichr.gene.sets)
-# List of 4
+# List of 3
 #[1] "list"
-#List of 4
- #$ ARCHS4_TFs_Coexp_/_ETV3L_human_tf_ARCHS4_coexpression: chr [1:299] "RSAD2" "MX2" "TRAV12-1" "PML" ...
- #$ ChEA_2016_/_24523406                                 : chr [1:1182] "BTBD19" "DICER1" "RFX2" "PDYN" ...
- #$ Submissions_TF_Gene_Coocurrence_/_ETV3L              : chr [1:299] "IL1R1" "CADM1" "EBF1" "RSAD2" ...
- #$ TRRUST_Transcription_Factors_2019_/_RELA_human       : chr [1:301] "BAD" "CCK" "PSMB9" "COL1A2" ...
-" 
+#$ ARCHS4_TFs_Coexp_/_HHEX_human_tf_ARCHS4_coexpression: chr [1:299] "UNC13D" "RUNX1" "SYTL1" "SCAMP2" ...
+ # $ ChEA_2016_/_NR1H3_23393188_ChIP-Seq                 : chr [1:599] "WSB1" "SOX13" "NUP210" "RFX2" ...
+ # $ Submissions_TF_Gene_Coocurrence_/_LYL1              : chr [1:299] "RUNX1" "PSMB9" "COL1A1" "VIM" ...
 ```
 
 
@@ -245,11 +243,11 @@ cat("To caluclate p.value need to know the total number of 'known' genes:", all.
 # geneset.list:   list of downregulated genes for each dataset from GEO
 # gene.symbols.v: vector of gene symbols from the enrichr libraries
 
-get.stats.table <- function(geneset.list, gene.symbols.v, all.genes) {
-  df <- lapply(seq_along(geneset.list), function(i) {
-  study <- names(geneset.list)[i]
+# get.stats.table <- function(geneset.list, gene.symbols.v, all.genes) {
+  # df <- lapply(seq_along(geneset.list), function(i) {
+  # study <- names(geneset.list)[i]
   # Vector of overlapping genes:
-  overlap <- intersect(genes.down[[i]], gene.symbols.v)
+  overlap <- intersect(genes.down, gene.symbols.v)
   # Number of overlapping genes:
   overlap.count <- length(overlap)
   # p.value (hypergeometric test):
@@ -264,7 +262,7 @@ get.stats.table <- function(geneset.list, gene.symbols.v, all.genes) {
              Regulated.genes = drawn.balls.count,
              Overlap = overlap.count,
              p.value = p)
-}) %>% 
+# }) %>% 
   do.call(rbind, .) %>% 
   mutate(TB.Study = stringr::str_remove(TB.Study, "^genes.*.uniq\\.")) %>% 
   mutate(TB.Study = stringr::str_remove(TB.Study, "\\.txt$")) %>% 
