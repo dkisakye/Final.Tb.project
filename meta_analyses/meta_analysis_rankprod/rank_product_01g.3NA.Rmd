@@ -667,26 +667,39 @@ panel.cor <- function(x, y, digits = 3, prefix = "", cex.cor, ...)
      # text(0.5, 0.5, txt, cex = cex.cor * r)
      text(0.5, 0.5, txt, cex=1.0, col="blue", font = 3)
 }
-merged.df %>% 
-  set_colnames(names(all.data.list)) %>% 
-  pairs(., col = alpha("black", 0.3), pch=20, upper.panel = panel.cor,
+
+cor.df<- merged.df %>% 
+  set_colnames(names(all.data.list)) 
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\_DC", " \nDC")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\_MP", " \nMP")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\.MF1", " \nMF1")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\.MF2", " \nMF2") 
+  
+  pairs(cor.df, col = alpha("black", 0.3), pch=20, upper.panel = panel.cor,
         xaxt='n', yaxt='n',
-        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=2, font=2)})
+        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=1.0, font=2)}) 
+  
 ```
 
-### Save plot as a pdf
+### Save plot as a png
 ```{r}
-out.file <- paste("data_out", stringr::str_replace(this.script, "\\.[Rr][Mm][Dd]$", ".pdf"), sep="/")
+out.file <- paste("data_out", stringr::str_replace(this.script, "\\.[Rr][Mm][Dd]$", ".png"), sep="/")
 out.file
 ```
 
 ```{r}
-pdf(file=out.file, width = 6.7, height=4)
-merged.df %>% 
-  set_colnames(names(all.data.list)) %>% 
-  pairs(., col = alpha("black", 0.2), pch=20, upper.panel = panel.cor,
+png(file=out.file, width = 580, height= 480, units = "px")
+cor.df<- merged.df %>% 
+  set_colnames(names(all.data.list)) 
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\_DC", " \nDC")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\_MP", " \nMP")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\.MF1", " \nMF1")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\.MF2", " \nMF2") 
+  
+  pairs(cor.df, col = alpha("black", 0.3), pch=20, upper.panel = panel.cor,
         xaxt='n', yaxt='n',
-        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=0.5, font=2)})
+        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=1.0, font=2)}) 
+  
 dev.off()
 ```
 
