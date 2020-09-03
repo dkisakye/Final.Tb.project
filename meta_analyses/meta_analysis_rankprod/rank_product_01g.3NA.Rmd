@@ -1,6 +1,6 @@
 ---
 title: "Meta analysis - rank product method"
-author: "A. Nohturfft"
+author: "9401"
 date: "`r Sys.Date()`"
 output:
   html_notebook:
@@ -527,7 +527,7 @@ Key paramters:
 * keeping NAs results in different maximum ranks  
 * (will have to rank again after filling NAs)  
 
-### Ranks: downregulated  
+### Ranks: down-regulated  
 ```{r}
 ranks.down.mx <- apply(merged.df.filt.na, 2, rank, ties.method="average", na.last="keep")
 # class(ranks.down.mx) # matrix
@@ -551,7 +551,7 @@ apply(ranks.down.mx, 2, max, na.rm=T) %>%
   kableExtra::kable_styling("striped")
 ```
 
-### Ranks: upregulated  
+### Ranks: up-regulated  
 ```{r}
 ranks.up.mx <- apply((merged.df.filt.na * -1), 2, rank, ties.method="average", na.last="keep")
 ```
@@ -585,7 +585,7 @@ na.to.average <- function(x) {
 }
 ```
 
-### Replace NAs: downregulation  
+### Replace NAs: down-regulation  
 ```{r}
 ranks.down.nona.mx <- t(apply(ranks.down.mx, 1, na.to.average))
 # dim(ranks.down.mx) # 12786     5
@@ -597,7 +597,7 @@ ranks.down.nona.mx[order(rowMeans(ranks.down.nona.mx, na.rm=T)),] %>%
   head
 ```
 
-### Replace NAs: upregulation  
+### Replace NAs: up-regulation  
 ```{r}
 ranks.up.nona.mx <- t(apply(ranks.up.mx, 1, na.to.average))
 # dim(ranks.up.mx) # 12786     5
@@ -616,7 +616,7 @@ Key paramters:
 
 * ties are averaged  
 
-### Ranks: downregulated (2)  
+### Ranks: down-regulated (2)  
 ```{r}
 ranks.down.mx.2 <- apply(ranks.down.nona.mx, 2, rank, ties.method="average", na.last="keep")
 # class(ranks.down.mx.2) # matrix
@@ -635,7 +635,7 @@ apply(ranks.down.mx.2, 2, max) %>%
   kableExtra::kable_styling("striped")
 ```
 
-### Ranks: upregulated (2)  
+### Ranks: up-regulated (2)  
 ```{r}
 ranks.up.mx.2 <- apply(ranks.up.nona.mx, 2, rank, ties.method="average", na.last="keep")
 # ranks.up.mx.2[1:10,]
@@ -665,7 +665,7 @@ panel.cor <- function(x, y, digits = 3, prefix = "", cex.cor, ...)
      txt <- paste0("r=", txt)
      # if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
      # text(0.5, 0.5, txt, cex = cex.cor * r)
-     text(0.5, 0.5, txt, cex=1.0, col="blue", font = 3)
+     text(0.5, 0.5, txt, cex=1.5, col="blue", font = 3)
 }
 
 cor.df<- merged.df %>% 
@@ -674,10 +674,16 @@ cor.df<- merged.df %>%
   colnames(cor.df) <- str_replace(colnames(cor.df), "\\_MP", " \nMP")
   colnames(cor.df) <- str_replace(colnames(cor.df), "\\.MF1", " \nMF1")
   colnames(cor.df) <- str_replace(colnames(cor.df), "\\.MF2", " \nMF2") 
+  colnames(cor.df) <- str_replace(colnames(cor.df), "GSE103092", "GSE103092\nMP")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "GSE64179", "GSE64179\nDC")              
+  colnames(cor.df) <- str_replace(colnames(cor.df),"GSE34151", "GSE34151\nDC")
+  colnames(cor.df) <- str_replace(colnames(cor.df),"GSE67427",
+"GSE67427\nMP")
   
   pairs(cor.df, col = alpha("black", 0.3), pch=20, upper.panel = panel.cor,
         xaxt='n', yaxt='n',
         text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=1.0, font=2)}) 
+  
   
 ```
 
@@ -688,17 +694,22 @@ out.file
 ```
 
 ```{r}
-png(file=out.file, width = 580, height= 480, units = "px")
+png(file=out.file, width = 680, height= 480, units = "px")
 cor.df<- merged.df %>% 
   set_colnames(names(all.data.list)) 
   colnames(cor.df) <- str_replace(colnames(cor.df), "\\_DC", " \nDC")
   colnames(cor.df) <- str_replace(colnames(cor.df), "\\_MP", " \nMP")
   colnames(cor.df) <- str_replace(colnames(cor.df), "\\.MF1", " \nMF1")
   colnames(cor.df) <- str_replace(colnames(cor.df), "\\.MF2", " \nMF2") 
+    colnames(cor.df) <- str_replace(colnames(cor.df), "GSE103092", "GSE103092\nMP")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "GSE64179", "GSE64179\nDC")              
+  colnames(cor.df) <- str_replace(colnames(cor.df),"GSE34151", "GSE34151\nDC")
+  colnames(cor.df) <- str_replace(colnames(cor.df),"GSE67427",
+"GSE67427\nMP")
   
   pairs(cor.df, col = alpha("black", 0.3), pch=20, upper.panel = panel.cor,
         xaxt='n', yaxt='n',
-        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=1.0, font=2)}) 
+        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=1.4, font=2)}) 
   
 dev.off()
 ```
@@ -768,7 +779,7 @@ get.rank.sum.stats <- function(rank.sum.result) {
 ```
 
 
-### Rank sum stats: downregulation  
+### Rank sum stats: down-regulation  
 ```{r message=FALSE}
 rank.sum.down <- get.rank.sum(ranks.down.mx.2) %>% 
   get.rank.sum.stats(.)
@@ -782,14 +793,14 @@ top.10.down<- rank.sum.down %>%
 top.10.down
 
 ```
-### Save top 10 down regulated genes
+### Save top 10 down-regulated genes
 ```{r}
 out.table.down <- paste0("data_out/",this.script, ".top.down.txt")
 out.table.down
 write.table(top.10.down, file = out.table.down, sep = "\t")
 ```
 
-### Rank sum stats: upregulation  
+### Rank sum stats: up-regulation  
 ```{r message=FALSE}
 rank.sum.up <- get.rank.sum(ranks.up.mx.2) %>% 
   get.rank.sum.stats(.)
@@ -803,7 +814,7 @@ top.10.up <- rank.sum.up %>%
 top.10.up
 ```
 `
-### Save top 10 up regulated genes
+### Save top 10 up-regulated genes
 ```{r}
 out.table.up <- paste0("data_out/",this.script, ".top.up.txt")
 out.table.up
@@ -822,12 +833,13 @@ get.heatmap <- function(mx, heat.cols, ha) {
   top_annotation = ha,
   cluster_rows = FALSE,
   show_row_names = FALSE,
-  show_column_names = FALSE
+  show_column_names = TRUE
   )
 }
+
 ```
 
-### Heatmap: 100 most downregulated genes  
+### Heatmap: 100 most down-regulated genes  
 ```{r}
 # nrow(subset(rank.sum.up, P.Val.Adj <= 0.05)) # 594
 # nrow(subset(rank.sum.up, P.Val.Adj <= 0.01)) # 317
@@ -836,14 +848,14 @@ down.100 <- dplyr::arrange(rank.sum.down, P.Val.Adj, Rank.Sum) %>%
 # down.100
 mx.down.100 <- ranks.down.mx.2[down.100,] %>% 
   set_colnames(names(all.data.list))
-colnames(mx.down.100) <- str_replace(colnames(mx.down.100), "_DC", " (DC)")
-colnames(mx.down.100) <- str_replace(colnames(mx.down.100), "_MP", " (MP)")
+ colnames(mx.down.100) <- str_replace(colnames(mx.down.100), "_DC", " (DC)")
+ colnames(mx.down.100) <- str_replace(colnames(mx.down.100), "_MP", " (MP)")
 colnames(mx.down.100) <- str_replace(colnames(mx.down.100), ".MF1", " (MF1)")
 colnames(mx.down.100) <- str_replace(colnames(mx.down.100), ".MF2", " (MF2)")
 # dim(mx.down.100) # 100   5
 head(mx.down.100)
 ```
-### Save top 100 upregulated genes
+### Save top 100 up-regulated genes
 ```{r}
 out.file <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".down.100.txt"), sep="/")
 
@@ -873,7 +885,7 @@ down.100.df[,1:6]
 ```{r}
 # help(HeatmapAnnotation, package="ComplexHeatmap")
 col.down <- list(Technology = c("Microarray" = "Darkblue", "RNA-seq" = "lightblue"),
-            Cell.type = c("Macrophages" = "grey", "Dendritic cells" = "black"))
+            Cell.type = c("Macrophages" = "white", "Dendritic cells" = "black"))
 ha.down <- ComplexHeatmap::HeatmapAnnotation(
   Technology = down.100.df$Technology,
   Cell.type = down.100.df$Cell.type,
@@ -888,7 +900,7 @@ rm(col.down)
 heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(7, "Oranges"))(256) %>% rev
 get.heatmap(mx.down.100, heat.cols, ha.down)
 ```
-### Save heatmap for down regulated genes
+### Save heatmap for down-regulated genes
 ```{r}
 out.file.map.down <- paste("data_out",
                            str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".map.down.pdf"),
@@ -903,7 +915,7 @@ dev.off()
 ```
 
 
-### Heatmap: 100 most upregulated genes  
+### Heatmap: 100 most up-regulated genes  
 ```{r}
 up.100 <- dplyr::arrange(rank.sum.up, P.Val.Adj, Rank.Sum) %>% 
   head(.,100) %>% .$Gene
@@ -918,7 +930,7 @@ colnames(mx.down.100) <- str_replace(colnames(mx.down.100), ".MF2", " (MF2)")
 head(mx.up.100)
 
 ```
-### Save top 100 upregulated genes
+### Save top 100 up-regulated genes
 ```{r}
 out.file <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".up.100.txt"), sep="/")
 
@@ -956,7 +968,7 @@ heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(7, "Oranges"))(256) %>% r
 get.heatmap(mx.up.100, heat.cols, ha.up)
 ```
 
-### Save heatmap for up regulated genes
+### Save heatmap for up-regulated genes
 ```{r}
 out.file.map.up <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".map.up.pdf"), sep="/")
 out.file.map.up
@@ -970,7 +982,7 @@ dev.off()
 
 
 ## Save genes  
-### Save top downregulated genes  
+### Save top down-regulated genes  
 ```{r results="asis"}
 gs.down.01 <- rank.sum.down %>% 
   dplyr::filter(P.Val.Adj <= 0.01) %>% 
@@ -986,7 +998,7 @@ cat("File saved:", out.file.down.01)
 
 ```
 
-### Save down regulated genes with adjusted p value < 0.001
+### Save down-regulated genes with adjusted p value <= 0.001
 ```{r}
 gs.down.001 <- rank.sum.down %>% 
   dplyr::filter(P.Val.Adj <= 0.001) %>% 
@@ -1005,7 +1017,7 @@ cat("File saved:", out.file.down.001)
 ```
 
 
-### Save top upregulated genes  
+### Save top up-regulated genes  
 ```{r results="asis"}
 gs.up.01 <- rank.sum.up %>% 
   dplyr::filter(P.Val.Adj <= 0.01) %>% 
@@ -1019,7 +1031,7 @@ out.file.up.01 <- paste0("data_out/", this.script, ".up.01.txt")
 cat(gs.up.01, sep="\n", file=out.file.up.01)
 cat("File saved:", out.file.up.01)
 ```
-### Save up regulated genes with adjusted p value < 0.001
+### Save up-regulated genes with adjusted p value <= 0.001
 ```{r}
 gs.up.001 <- rank.sum.up %>% 
   dplyr::filter(P.Val.Adj <= 0.001) %>% 
