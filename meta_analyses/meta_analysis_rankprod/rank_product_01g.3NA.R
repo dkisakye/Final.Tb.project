@@ -1,0 +1,1077 @@
+#' ---
+#' title: "Meta analysis - rank product method"
+#' author: '9401'
+#' date: "`r Sys.Date()`"
+#' output:
+#'   pdf_document:
+#'     toc: yes
+#'     toc_depth: '3'
+#'   html_notebook:
+#'     df_print: paged
+#'     toc: yes
+#'     highlight: tango
+#'     number_sections: no
+#'     fig_caption: yes
+#'     theme: sandstone
+#'     code_folding: hide
+#'     toc_depth: 3
+#'     toc_float: yes
+#'   html_document:
+#'     toc: yes
+#'     toc_depth: '3'
+#'     df_print: paged
+#' ---
+#'   
+#' <style>
+#' h1 {background: darkblue;color: white;padding-left: 7px;}
+#' h2 {color: darkblue;}
+#' .code-folding-btn {display: none;}
+#' </style>
+#'   
+#' <script>
+#'   function show_span(id) {
+#'     var x = document.getElementById(id);
+#'     if (x.style.display === 'none') {
+#'       x.style.display = 'inline';
+#'     } else {
+#'       x.style.display = 'none';
+#'     }
+#'   }
+#' function myFunction(id) {
+#'   var x = document.getElementById(id);
+#'   if (x.style.display === 'none') {
+#'     x.style.display = 'block';
+#'   } else {
+#'     x.style.display = 'none';
+#'   }
+#' }
+#' </script>
+#' 
+#' ## Objective  
+#' 
+#' Perform meta analysis of TB microarray AND RNA-seq data using the Rank Sum approach.  
+#' Overview:  
+#' 
+#' 1. Microarray data: load log(fold change) data that Diana generated with Geo2r  
+#' 2. RNA-seq data: load published tables  
+#' 3. Aggregate microarray data by gene symbol; where the same gene is represented by several probes, calculate the _**median**_ log(fold change)  
+#' 4. Merge fold change data from all datasets into a single matrix (**outer join**)  
+#' 5. Filter out genes with missing values (NA): keep only genes with a maximum number of missing values  
+#' 6. In each dataset rank genes by fold change (convert fold changes to ranks; NAs stay NAs; maximum ranks will vary by NA count)  
+#' 7. Replace NAs with average ranks in the other datasets  
+#' 8. Now rank again so number of ranks in each dataset is the same  
+#' 9. Calculate **rank sum** statistics and p values using RankProd package  
+#' 10. Generate heatmaps of top 100 regulated genes  
+#'   
+## ----include=FALSE-------------------------------------------------------
+# About <style> chunk above:
+# * provides custom formatting for level-1 and level-2 headers
+# * hides the 'code' buttons next to every code chunk in the html output; leaves only one 'code' button at the top of the html notebook.
+
+# About the <script> chunk at the top and bottom of the file:
+# * allows to insert <div>'s whose content visbility is toggled with a button.
+# * I use this to show/hide te output of sessionInfo() at the end of the script (see below)
+
+#' 
+#' 
+## ----include=FALSE-------------------------------------------------------
+# RMARKDOWN HELP
+# Rmarkdown:
+# https://bookdown.org/yihui/rmarkdown/
+
+# Chunk options:
+# https://yihui.name/knitr/options
+
+#' 
+## ----cleanup, warning=FALSE, message=FALSE, error=FALSE------------------
+# CHECK R VERSION
+# stopifnot(R.version.string == "R version 3.4.3 (2017-11-30)")
+
+# CLEANUP
+# Clear all variables:
+rm(list=ls(all=TRUE))
+
+# Unload current packages:
+# if (!is.null(names(utils::sessionInfo()[["otherPkgs"]]))) pacman::p_unload("all")
+
+#' 
+## ----setup---------------------------------------------------------------
+# KNITR DEFAULTS
+knitr::opts_chunk$set(eval = TRUE, fig.height = 10)
+
+#' 
+## ----packages, results="hide", warning=FALSE, message=FALSE, error=FALSE----
+# LOAD PACKAGES:
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) BiocManager::install("ComplexHeatmap")
+if (!require(stringr)) install.packages("stringr")
+if (!require(rstudioapi)) install.packages("rstudioapi")
+if (!require(tidyr)) install.packages("tidyr")
+if (!require(tibble)) install.packages("tibble")
+if (!require(readxl)) install.packages("readxl")
+if (!require(purrr)) install.packages("purrr")
+if (!require(RColorBrewer)) install.packages("RColorBrewer")
+if (!require(devtools)) install.packages("devtools")
+if (!require(magrittr)) install.packages("magrittr")
+if (!require(dplyr)) install.packages("dplyr")
+if (!require(scales)) install.packages("scales")
+if (!require(knitr)) install.packages("knitr")
+if (!require(kableExtra)) install.packages("kableExtra")
+if (!requireNamespace("RankProd", quietly = TRUE)) BiocManager::install("RankProd")
+
+library(magrittr)
+library(dplyr)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(RankProd)
+library(stringr)
+
+#' 
+#' 
+## ----setup_script, eval=TRUE, results='hide'-----------------------------
+# GET CURRENT SCRIPT NAME
+(this.script <- rstudioapi::getActiveDocumentContext() %>% .$path %>% basename)
+getwd()
+list.files()
+stopifnot(this.script != "")
+
+#' 
+#' ## Data: microarray studies    
+#' 
+#' ### Geo2r data files  
+## ----results="hide"------------------------------------------------------
+geo2r.data.files <- list.files(path="../source_data", recursive = T, 
+                               pattern="^GSE.*Geo2r.*txt$", full.names = T)
+geo2r.data.files <- grep(pattern = "GSE108363", geo2r.data.files, invert = T, value = T)
+cat(basename(geo2r.data.files), sep="<br>\n")
+
+#' 
+## ----results="hide"------------------------------------------------------
+tailleux.data.files <- list.files(path="../source_data", recursive = T,
+                                  pattern="*tailleux.*txt", full.names = T)
+cat(basename(tailleux.data.files), sep="<br>\n")
+
+
+#' 
+## ----results="asis"------------------------------------------------------
+muarray.data.files <- c(geo2r.data.files, tailleux.data.files)
+muarray.data.files <- grep("GSE29731", muarray.data.files, invert = T, value=T)
+cat(basename(muarray.data.files), sep="<br>\n")
+
+#' ### Load Geo2r data  
+## ----results="hide"------------------------------------------------------
+geo2r.data.list <- lapply(muarray.data.files, function(f) {
+  a <- read.table(f, sep="\t", header=T, quote='"', stringsAsFactors = F)
+  names(a)[grep("symbol", names(a), ignore.case = T)] <- "Gene.symbol"
+  names(a) <- stringr::str_remove(names(a), "^X\\.")
+  names(a) <- stringr::str_remove(names(a), "\\.$")
+  a
+}) %>% 
+  set_names(stringr::str_remove_all(basename(muarray.data.files), "\\.txt"))
+
+
+names(geo2r.data.list) <- stringr::str_remove(names(geo2r.data.list), "^X")
+names(geo2r.data.list)[grep("DC", names(geo2r.data.list))] <- "A-BUGS-23_DC"
+names(geo2r.data.list)[grep("MP", names(geo2r.data.list))] <- "A-BUGS-23_MP"
+
+# class(geo2r.data.list) # "list"
+# length(geo2r.data.list) # 4
+# sapply(geo2r.data.list, class) # "data.frame"
+# sapply(geo2r.data.list, nrow) %>% unname # 29102 47231 24501 24501
+
+#' 
+## ------------------------------------------------------------------------
+data.frame(List.item = names(geo2r.data.list),
+           class = sapply(geo2r.data.list, class),
+           Columns = sapply(geo2r.data.list, ncol),
+           Rows = comma(sapply(geo2r.data.list, nrow)),
+           Has.Gene.Symbols = sapply(geo2r.data.list, function(x) {any(grepl("Gene.symbol", names(x)))})
+           # Unique.genes = sapply(geo2r.data.list, function(x) {length(unique(x$))})
+           ) %>% 
+  mutate(Has.Gene.Symbols = cell_spec(Has.Gene.Symbols, "html", color = ifelse(Has.Gene.Symbols == "TRUE", "black", "red"))) %>% 
+  knitr::kable(., row.names = F, align=c("l", "l", "c", "c", "c"), format = "html", escape = F) %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+
+#' 
+## ----results="hide"------------------------------------------------------
+# head(geo2r.data.list[[2]])
+
+#' 
+#' 
+#' ### Aggregate logFC by gene symbol  
+## ------------------------------------------------------------------------
+geo.fold.change.list <- lapply(seq_along(geo2r.data.list), function(i, list.names) {
+  df <- geo2r.data.list[[i]]
+  x <- dplyr::select(df, Gene.symbol, logFC) %>% 
+    dplyr::mutate(Gene.symbol = ifelse(Gene.symbol=="", NA, Gene.symbol)) %>% 
+    tidyr::drop_na(.) %>% 
+    dplyr::mutate(logFC = as.numeric(logFC)) %>% 
+    dplyr::mutate(Gene.symbol = stringr::str_remove_all(Gene.symbol, '\\"')) %>% 
+    tidyr::drop_na(.) %>% 
+    dplyr::group_by(Gene.symbol) %>% 
+    dplyr::summarise(logFC = median(logFC), .groups="drop") %>% 
+    tidyr::drop_na(.) %>% 
+    as.data.frame(., stringsAsFactors=FALSE)
+  # names(x)[names(x) == "logFC"] <- list.names[i]
+  x
+}, list.names = names(geo2r.data.list)) %>% 
+  set_names(names(geo2r.data.list))
+names(geo.fold.change.list) <- stringr::str_remove(names(geo.fold.change.list), "_Geo2r.*$")
+
+#' 
+#' 
+## ------------------------------------------------------------------------
+data.frame(
+  List.item = names(geo.fold.change.list),
+  Class = sapply(geo.fold.change.list, function(x) {paste(class(x), collapse=",")}),
+  Columns = sapply(geo.fold.change.list, ncol),
+  Rows = comma(sapply(geo.fold.change.list, nrow)),
+  Duplicated.genes = sapply(geo.fold.change.list, function(x) {any(duplicated(x$Gene.symbol))})
+) %>% 
+  knitr::kable(., row.names = F, align=c("l", "l", "c", "c", "c"), format = "html", escape = F) %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+
+#' 
+#' ## Data: RNA-seq studies  
+## ------------------------------------------------------------------------
+# <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE64179">GSE64179</a>
+# https://pubmed.ncbi.nlm.nih.gov/26392366/
+add.geo.hyperlink <- function(id) {
+  a <- "<a href='https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc="
+  b <- "'>"
+  c <- "</a>"
+  res <- paste0(a, id, b, id, c)
+  res
+}
+
+add.pubmed.hyperlink <- function(id) {
+  a <- "<a href='https://pubmed.ncbi.nlm.nih.gov/"
+  b <- "/'>"
+  c <- "</a>"
+  res <- paste0(a, id, b, id, c)
+  res
+}
+
+#' 
+#' 
+## ------------------------------------------------------------------------
+rs.dataset.table <- data.frame(
+  c=c("GSE64179", "26392366", "6", "Dendritic cells"),
+  b=c("GSE67427", "26586179", "8", "Monocyte derived macrophages"),
+  a=c("GSE148731", "32341411", "6", "M1, M2 macrophages")
+) %>%
+  t %>% 
+  as.data.frame(., stringsAsFactors=F) %>% 
+  set_colnames(c("Accession", "Pubmed", "Replicates", "Cell.Type")) %>% 
+  mutate(Accession=add.geo.hyperlink(Accession)) %>% 
+  mutate(Pubmed = add.pubmed.hyperlink(Pubmed))
+knitr::kable(rs.dataset.table, row.names = F, escape=F, format = "html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+
+#' 
+#' 
+#' ### Load RNA-seq data: GSE64179  
+## ----message=FALSE-------------------------------------------------------
+# list.files("../source_data/rna_seq/GSE64179")
+rna.seq.data.files <- list()
+rna.seq.data.files$GSE64179 <- "../source_data/rna_seq/GSE64179/Pacis_2015_TableS6_DEG.xlsx"
+stopifnot(file.exists(rna.seq.data.files$GSE64179))
+rna.seq.data.list <- list()
+rna.seq.data.list$GSE64179 <- readxl::read_xlsx(path=rna.seq.data.files$GSE64179, range = "B3:C18818") %>%
+set_colnames(c("Gene.symbol", "logFC")) %>% 
+mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+group_by(Gene.symbol) %>% 
+summarise(logFC = median(logFC), .groups="drop") %>% 
+as.data.frame(., stringsAsFactors=FALSE)
+
+#' 
+#' 
+## ------------------------------------------------------------------------
+# WITHOUT GROUPING / AGGREGATING:
+# dim(rna.seq.data$GSE64179) # 18815     2
+# sapply(rna.seq.data$GSE64179, class) # "character"   "numeric"
+# range(rna.seq.data$GSE64179$logFC) # -9.426613 11.612170
+# sum(rna.seq.data$GSE64179$logFC == 0) # 0
+# sum(duplicated(rna.seq.data$GSE64179$Gene.symbol)) # 37
+# dups <- rna.seq.data$GSE64179$Gene.symbol[duplicated(rna.seq.data$GSE64179$Gene.symbol)]
+# subset(rna.seq.data$GSE64179, Gene.symbol %in% dups) %>% 
+#   arrange(Gene.symbol, logFC)
+# head(rna.seq.data$GSE64179)
+
+#' 
+## ------------------------------------------------------------------------
+# WITH AGGREGATING: 
+# dim(rna.seq.data$GSE64179) # 18776     2
+# sapply(rna.seq.data$GSE64179, class) # "character"   "numeric"
+# range(rna.seq.data$GSE64179$logFC) # -9.426613 11.612170
+# sum(rna.seq.data$GSE64179$logFC == 0) # 0
+# sum(duplicated(rna.seq.data$GSE64179$Gene.symbol)) # 0
+head(rna.seq.data.list$GSE64179) %>% 
+  knitr::kable(., row.names = F, format="html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+
+#' 
+#' 
+#' 
+#' 
+#' ### Load RNA-seq data: GSE67427
+## ------------------------------------------------------------------------
+rna.seq.data.files$GSE67427 <-"../source_data/rna_seq/GSE67427/GSE67427_table_s2.txt"
+stopifnot(file.exists(rna.seq.data.files$GSE67427))
+#rna.seq.data.list <-list()
+rna.seq.data.list$GSE67427<- read.table(file = rna.seq.data.files$GSE67427, header = T, sep = "\t", stringsAsFactors = FALSE)  %>% 
+#str(rna.seq.data.list$GSE67427) #data.frame':	12728 obs. of  140 variables:
+  # head(rna.seq.data.list$GSE67427)
+  
+  # names(rna.seq.data.list$GSE67427)
+  # select(matches(c("name", "Rv.18")))
+ select(matches(c("name","Rv.18.logFC"), ignore.case = TRUE)) %>%
+   # head(rna.seq.data.list$GSE67427)
+  set_colnames(c("Gene.symbol", "logFC")) %>%
+  mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+  group_by(Gene.symbol) %>% 
+  summarise(logFC = median(logFC), .groups="drop") %>% 
+  as.data.frame(., stringsAsFactors=FALSE)
+ head(rna.seq.data.list$GSE67427)
+
+#' 
+## ------------------------------------------------------------------------
+# WITHOUT GROUPING / AGGREGATING:
+dim(rna.seq.data.list$GSE67427) #  12724     2
+sapply(rna.seq.data.list$GSE67427, class) # "character"   "numeric"
+range(rna.seq.data.list$GSE67427$logFC) # -4.155479  8.205439
+sum(rna.seq.data.list$GSE67427$logFC == 0) # 0
+sum(duplicated(rna.seq.data.list$GSE67427$Gene.symbol)) # 0
+# dups <- rna.seq.data$GSE64179$Gene.symbol[duplicated(rna.seq.data$GSE64179$Gene.symbol)]
+# subset(rna.seq.data$GSE64179, Gene.symbol %in% dups) %>% 
+#   arrange(Gene.symbol, logFC)
+# head(rna.seq.data$GSE64179)
+
+#' 
+## ------------------------------------------------------------------------
+# WITH AGGREGATING: 
+# dim(rna.seq.data$GSE64179) # 18776     2
+# sapply(rna.seq.data$GSE64179, class) # "character"   "numeric"
+# range(rna.seq.data$GSE64179$logFC) # -9.426613 11.612170
+# sum(rna.seq.data$GSE64179$logFC == 0) # 0
+# sum(duplicated(rna.seq.data$GSE64179$Gene.symbol)) # 0
+head(rna.seq.data.list$GSE67427) %>% 
+  knitr::kable(., row.names = F, format="html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+
+
+#' 
+#' ### Load RNA-seq data: GSE48731.MF1
+## ----message=FALSE-------------------------------------------------------
+# list.files("../source_data/rna_seq/GSE148731")
+# rna.seq.data.files <- list()
+rna.seq.data.files$GSE148731.MF1 <- "../source_data/rna_seq/GSE148731/GSE148731_toptable_MF1_01.Rmd.2020_07_09.txt"
+stopifnot(file.exists(rna.seq.data.files$GSE148731.MF1))
+ # rna.seq.data.list <- list()
+rna.seq.data.list$GSE148731.MF1 <- read.table(file = rna.seq.data.files$GSE148731.MF1, header = TRUE, sep = "\t", stringsAsFactors = FALSE) %>%
+   select(c("Gene.symbol", "logFC")) %>% 
+  mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+  # summarise(logFC = median(logFC), .groups="drop") %>% 
+   as.data.frame(., stringsAsFactors=FALSE)
+head(rna.seq.data.list$GSE148731.MF1)
+
+## ------------------------------------------------------------------------
+# WITH AGGREGATING:
+dim(rna.seq.data.list$GSE148731.MF1) # 17802     2
+sapply(rna.seq.data.list$GSE148731.MF1, class) # "character"   "numeric"
+range(rna.seq.data.list$GSE148731.MF1$logFC) # -2.386124  9.704865
+sum(rna.seq.data.list$GSE148731.MF1$logFC == 0) #
+sum(duplicated(rna.seq.data.list$GSE148731.MF1$Gene.symbol)) # 0
+
+
+#' 
+## ------------------------------------------------------------------------
+head(rna.seq.data.list$GSE148731.MF1) %>% 
+  knitr::kable(., row.names = F, format="html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+
+#' 
+#' 
+#' ### Load RNA-seq data: GSE48731.MF2
+## ----message=FALSE-------------------------------------------------------
+ # list.files("../source_data/rna_seq/GSE148731")
+# rna.seq.data.files <- list()
+rna.seq.data.files$GSE148731.MF2 <- "../source_data/rna_seq/GSE148731/GSE148731_toptable_MF2_01.Rmd.2020_07_09.txt"
+stopifnot(file.exists(rna.seq.data.files$GSE148731.MF2))
+ # rna.seq.data.list <- list()
+rna.seq.data.list$GSE148731.MF2 <- read.table(file = rna.seq.data.files$GSE148731.MF2, header = TRUE, sep = "\t", stringsAsFactors = FALSE) %>%
+   select(c("Gene.symbol", "logFC")) %>% 
+  mutate(Gene.symbol = toupper(Gene.symbol)) %>% 
+ # summarise(logFC = median(logFC), .groups="drop") %>% 
+   as.data.frame(., stringsAsFactors=FALSE)
+head(rna.seq.data.list$GSE148731.MF2)
+
+#' 
+#' 
+## ------------------------------------------------------------------------
+# WITH AGGREGATING:
+dim(rna.seq.data.list$GSE148731.MF2) #  17085     2
+sapply(rna.seq.data.list$GSE148731.MF2, class) # "character"   "numeric"
+range(rna.seq.data.list$GSE148731.MF2$logFC) # -7.524136  9.795100
+sum(rna.seq.data.list$GSE148731.MF2$logFC == 0) #
+sum(duplicated(rna.seq.data.list$GSE148731.MF2$Gene.symbol)) # 0
+
+
+#' 
+## ------------------------------------------------------------------------
+head(rna.seq.data.list$GSE148731.MF2) %>% 
+  knitr::kable(., row.names = F, format="html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+
+#' 
+#' ## Combine all data frames  
+## ------------------------------------------------------------------------
+# length(rna.seq.data.list) #4
+# length(geo.fold.change.list)# 4
+all.data.list <- c(geo.fold.change.list, rna.seq.data.list)
+all(sapply(all.data.list, class) == "data.frame") # TRUE
+
+#' 
+## ------------------------------------------------------------------------
+lapply(all.data.list, names)
+length(all.data.list) # 8
+
+#' 
+#' 
+#' ### Merge data frames  
+## ------------------------------------------------------------------------
+merged.df <- all.data.list %>% purrr::reduce(dplyr::full_join, by="Gene.symbol") %>% 
+  tibble::column_to_rownames("Gene.symbol") %>% 
+  set_colnames(paste0("dataset", seq_along(.)))
+
+dim(merged.df) # 30687     8
+head(merged.df) %>% 
+  knitr::kable(., row.names = T, format="html") %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+
+#' 
+#' Summary table:  
+## ------------------------------------------------------------------------
+df.summary <- data.frame(
+  Column = names(merged.df),
+  Dataset=names(all.data.list),
+  Min = round(sapply(merged.df, min, na.rm=T), 2),
+  Max = round(sapply(merged.df, max, na.rm=T), 2),
+  Count.zero = sapply(merged.df, function(x) {sum(x==0, na.rm=T)}),
+  Count.NA = comma(sapply(merged.df, function(x) {sum(is.na(x))}))
+) %>% 
+  mutate(Count.zero = comma(as.integer(Count.zero), accuracy=1))
+knitr::kable(df.summary, row.names = F, format="html", align=rep("l", 5)) %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+
+#' 
+#' 
+## ----results="asis"------------------------------------------------------
+cat("Number of rows in merged data frame:<b>", comma(nrow(merged.df)), "</b><br>\n")
+cat("Number of gene symbols in merged data frame:<b>", comma(length(unique(row.names(merged.df)))), "</b><br>\n")
+
+#' 
+## ----results="asis"------------------------------------------------------
+cat("Number of complete data rows: <b>", comma(sum(complete.cases(merged.df))), "</b> (",
+    percent(sum(complete.cases(merged.df))/length(unique(row.names(merged.df)))),
+    ")<br>\n", sep="")
+
+#' 
+#' ### Filter rows: Three NA max  
+## ------------------------------------------------------------------------
+three.na.max.count <- as.matrix(merged.df) %>% 
+  apply(., 1, function(x) {  # 1 = select rows
+    n <- sum(is.na(x))
+    n
+  })
+class(three.na.max.count) # integer
+length(three.na.max.count) # 30687
+merged.df.filt.na <- merged.df[three.na.max.count <= 3,]
+dim(merged.df.filt.na)# 14743 8 vs 11873     8  vs  8626    8 (one NA max)
+ dim(merged.df)    #  30687     8  
+
+#' 
+#' 
+## ------------------------------------------------------------------------
+cat("Number of rows with max three NA: <b>", comma(nrow(merged.df.filt.na)), "</b> (",
+    percent(nrow(merged.df.filt.na)/length(unique(row.names(merged.df)))),
+    ")<br>\n", sep="")
+
+
+#' 
+#' Print 10 rows:  
+## ------------------------------------------------------------------------
+head(merged.df.filt.na, 10) %>% 
+  knitr::kable(., row.names = T, format="html", align=rep("l", 5)) %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+
+#' 
+#' ### Summary table after filtering NAs:  
+## ------------------------------------------------------------------------
+df.summary.2 <- data.frame(
+  Column = names(merged.df.filt.na),
+  Dataset=names(all.data.list),
+  Min = round(sapply(merged.df.filt.na, min, na.rm=T), 2),
+  Max = round(sapply(merged.df.filt.na, max, na.rm=T), 2),
+  Count.zero = sapply(merged.df.filt.na, function(x) {sum(x==0, na.rm=T)}),
+  Count.NA = comma(sapply(merged.df.filt.na, function(x) {sum(is.na(x))}))
+) %>% 
+  mutate(Count.zero = comma(as.integer(Count.zero), accuracy=1))
+knitr::kable(df.summary.2, row.names = F, format="html", align=rep("l", 5)) %>% 
+  kableExtra::kable_styling("striped", full_width = T)
+rm(df.summary.2)
+
+#' 
+#' 
+#' 
+#' ## Calculate ranks (1)  
+#' 
+#' Key paramters:  
+#' 
+#' * NAs stay NAs  
+#' * ties are averaged  
+#' * keeping NAs results in different maximum ranks  
+#' * (will have to rank again after filling NAs)  
+#' 
+#' ### Ranks: down-regulated  
+## ------------------------------------------------------------------------
+ranks.down.mx <- apply(merged.df.filt.na, 2, rank, ties.method="average", na.last="keep")
+# class(ranks.down.mx) # matrix
+# dim(ranks.down.mx) # 12786     5
+# ranks.down.mx[1:10,]
+
+#' 
+#' Print 6 rows (sorted):  
+## ------------------------------------------------------------------------
+ranks.down.mx[order(rowMeans(ranks.down.mx, na.rm=T)),] %>% head
+
+#' 
+#' The maximum ranks will vary by dataset:  
+## ------------------------------------------------------------------------
+apply(ranks.down.mx, 2, max, na.rm=T) %>%
+  as.data.frame(., stringsAsFactors=F) %>% 
+  tibble::rownames_to_column() %>% 
+  set_colnames(c("Dataset (down)", "Max.Rank")) %>% 
+  mutate(Max.Rank = comma(Max.Rank)) %>% 
+  knitr::kable(., row.names = F, align=c("l","r"), format="html") %>% 
+  kableExtra::kable_styling("striped")
+
+#' 
+#' ### Ranks: up-regulated  
+## ------------------------------------------------------------------------
+ranks.up.mx <- apply((merged.df.filt.na * -1), 2, rank, ties.method="average", na.last="keep")
+
+#' 
+#' Print 6 rows (sorted):  
+## ------------------------------------------------------------------------
+ranks.up.mx[order(rowMeans(ranks.up.mx, na.rm=T)),] %>% head
+
+#' 
+#' 
+## ------------------------------------------------------------------------
+apply(ranks.up.mx, 2, max, na.rm=T) %>%
+  as.data.frame(., stringsAsFactors=F) %>% 
+  tibble::rownames_to_column() %>% 
+  set_colnames(c("Dataset (up)", "Max.Rank")) %>% 
+  mutate(Max.Rank = comma(Max.Rank)) %>% 
+  knitr::kable(., row.names = F, align=c("l","r"), format="html") %>% 
+  kableExtra::kable_styling("striped")
+
+#' 
+#' ## Replace missing values with averages  
+## ------------------------------------------------------------------------
+na.to.average <- function(x) {
+  any.na <- any(is.na(x))
+  if (isTRUE(any.na)) {
+    indx.na <- which(is.na(x))
+    ave <- mean(x, na.rm=T)
+    x[indx.na] <- ave
+  }
+  x
+}
+
+#' 
+#' ### Replace NAs: down-regulation  
+## ------------------------------------------------------------------------
+ranks.down.nona.mx <- t(apply(ranks.down.mx, 1, na.to.average))
+# dim(ranks.down.mx) # 12786     5
+# dim(ranks.down.nona.mx) # 12786     5
+# sum(is.na(ranks.down.mx)) # 1436
+# sum(is.na(ranks.down.nona.mx)) # 0
+# ranks.down.nona.mx[1:4,1:4]
+ranks.down.nona.mx[order(rowMeans(ranks.down.nona.mx, na.rm=T)),] %>% 
+  head
+
+#' 
+#' ### Replace NAs: up-regulation  
+## ------------------------------------------------------------------------
+ranks.up.nona.mx <- t(apply(ranks.up.mx, 1, na.to.average))
+# dim(ranks.up.mx) # 12786     5
+# dim(ranks.up.nona.mx) # 12786     5
+# sum(is.na(ranks.up.mx)) # 1436
+# sum(is.na(ranks.up.nona.mx)) # 0
+# ranks.up.nona.mx[1:4,1:4]
+ranks.up.nona.mx[order(rowMeans(ranks.up.nona.mx, na.rm=T)),] %>% 
+  head
+
+#' 
+#' 
+#' ## Calculate ranks (2)  
+#' Having replaced missing values with averages, repeat the ranking such that maximum ranks will be the same for each dataset.  
+#' Key paramters:  
+#' 
+#' * ties are averaged  
+#' 
+#' ### Ranks: down-regulated (2)  
+## ------------------------------------------------------------------------
+ranks.down.mx.2 <- apply(ranks.down.nona.mx, 2, rank, ties.method="average", na.last="keep")
+# class(ranks.down.mx.2) # matrix
+# dim(ranks.down.mx.2) # 12786     5
+# ranks.down.mx.2[1:10,]
+ranks.down.mx.2[order(rowMeans(ranks.down.mx.2, na.rm=T)),] %>% 
+  head
+
+#' 
+## ------------------------------------------------------------------------
+apply(ranks.down.mx.2, 2, max) %>%
+  as.data.frame(., stringsAsFactors=F) %>% 
+  tibble::rownames_to_column() %>% 
+  set_colnames(c("Dataset (down)", "Max.Rank")) %>% 
+  knitr::kable(., row.names = F, align=c("l","r"), format="html") %>% 
+  kableExtra::kable_styling("striped")
+
+#' 
+#' ### Ranks: up-regulated (2)  
+## ------------------------------------------------------------------------
+ranks.up.mx.2 <- apply(ranks.up.nona.mx, 2, rank, ties.method="average", na.last="keep")
+# ranks.up.mx.2[1:10,]
+ranks.up.mx.2[order(rowMeans(ranks.up.mx.2, na.rm=T)),] %>% head
+
+#' 
+## ------------------------------------------------------------------------
+apply(ranks.up.mx.2, 2, max) %>%
+  as.data.frame(., stringsAsFactors=F) %>% 
+  tibble::rownames_to_column() %>% 
+  set_colnames(c("Dataset (up)", "Max.Rank")) %>% 
+  knitr::kable(., row.names = F, align=c("l","r"), format="html") %>% 
+  kableExtra::kable_styling("striped")
+
+#' 
+#' 
+#' 
+#' ## Plot correlations  
+#' ### Plot fold changes  
+## ------------------------------------------------------------------------
+panel.cor <- function(x, y, digits = 3, prefix = "", cex.cor, ...)
+{
+     usr <- par("usr"); on.exit(par(usr))
+     par(usr = c(0, 1, 0, 1))
+     r <- cor(x, y, use="pairwise.complete.obs")
+     txt <- format(c(r, 0.123456789), digits = digits)[1]
+     txt <- paste0("r=", txt)
+     # if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
+     # text(0.5, 0.5, txt, cex = cex.cor * r)
+     text(0.5, 0.5, txt, cex=1.5, col="blue", font = 3)
+}
+
+cor.df<- merged.df %>% 
+  set_colnames(names(all.data.list)) 
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\_DC", " \nDC")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\_MP", " \nMP")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\.MF1", " \nMF1")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\.MF2", " \nMF2") 
+  colnames(cor.df) <- str_replace(colnames(cor.df), "GSE103092", "GSE103092\nMP")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "GSE64179", "GSE64179\nDC")              
+  colnames(cor.df) <- str_replace(colnames(cor.df),"GSE34151", "GSE34151\nDC")
+  colnames(cor.df) <- str_replace(colnames(cor.df),"GSE67427",
+"GSE67427\nMP")
+  
+  pairs(cor.df, col = alpha("black", 0.3), pch=20, upper.panel = panel.cor,
+        xaxt='n', yaxt='n',
+        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=1.0, font=2)}) 
+  
+  
+
+#' 
+#' ### Save plot as a png
+## ------------------------------------------------------------------------
+out.file <- paste("data_out", stringr::str_replace(this.script, "\\.[Rr][Mm][Dd]$", ".png"), sep="/")
+out.file
+
+#' 
+## ------------------------------------------------------------------------
+png(file=out.file, width = 680, height= 480, units = "px")
+cor.df<- merged.df %>% 
+  set_colnames(names(all.data.list)) 
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\_DC", " \nDC")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\_MP", " \nMP")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\.MF1", " \nMF1")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "\\.MF2", " \nMF2") 
+    colnames(cor.df) <- str_replace(colnames(cor.df), "GSE103092", "GSE103092\nMP")
+  colnames(cor.df) <- str_replace(colnames(cor.df), "GSE64179", "GSE64179\nDC")              
+  colnames(cor.df) <- str_replace(colnames(cor.df),"GSE34151", "GSE34151\nDC")
+  colnames(cor.df) <- str_replace(colnames(cor.df),"GSE67427",
+"GSE67427\nMP")
+  
+  pairs(cor.df, col = alpha("black", 0.3), pch=20, upper.panel = panel.cor,
+        xaxt='n', yaxt='n',
+        text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=1.4, font=2)}) 
+  
+dev.off()
+
+#' 
+#' 
+#' ### Plot ranks  
+## ------------------------------------------------------------------------
+panel.cor.spearman <- function(x, y, digits = 3, prefix = "", cex.cor, ...)
+{
+     usr <- par("usr"); on.exit(par(usr))
+     par(usr = c(0, 1, 0, 1))
+     r <- cor(x, y, use="pairwise.complete.obs", method="spearman")
+     txt <- format(c(r, 0.123456789), digits = digits)[1]
+     txt <- paste0("r=", txt)
+     text(0.5, 0.5, txt, cex=2.5, col="purple", font = 3)
+}
+ranks.down.mx.2 %>% 
+  set_colnames(names(all.data.list)) %>% 
+  pairs(., col = alpha("black", 0.3), pch=18, upper.panel = panel.cor.spearman,
+        xaxt='n', yaxt='n',
+      text.panel = function(x,y,lab,cex,font) {text(x,y,lab, cex=3, font=2)})
+
+#' 
+#' ## Calculate rank sum statistics  
+## ------------------------------------------------------------------------
+# browseVignettes("RankProd")
+# help(package="RankProd")
+# help(RankProducts, package="RankProd")
+
+#' 
+## ------------------------------------------------------------------------
+get.rank.sum <- function(mx) {
+  cl.down <- rep(1, ncol(mx))
+  rank.sum <- RankProd::RankProducts(
+    data=mx,
+    cl=cl.down,
+    calculateProduct=FALSE,
+    gene.names = row.names(ranks.down.mx.2)
+    )
+  rank.sum
+}
+
+#' 
+## ------------------------------------------------------------------------
+get.rank.sum.stats <- function(rank.sum.result) {
+  # Get rank sums:
+  RS <- as.data.frame(rank.sum.result$RSs) %>% 
+    tibble::rownames_to_column(.) %>% 
+    dplyr::select(1:2) %>% 
+    set_colnames(c("Gene", "Rank.Sum")) %>% 
+    arrange(Rank.Sum)
+  
+  # Get p values:
+  PVAL <- as.data.frame(rank.sum.result$pval) %>% 
+  tibble::rownames_to_column(.) %>% 
+  dplyr::select(1:2) %>% 
+  set_colnames(c("Gene", "P.Val"))
+  
+  # Merge:
+  RS.PVAL <- merge(x=RS, y=PVAL, by="Gene", all=T)
+  
+  # Adjust p values:
+  RS.PVAL$P.Val.Adj <- p.adjust(RS.PVAL$P.Val, method = "fdr")
+  
+  RS.PVAL
+}
+
+#' 
+#' 
+#' ### Rank sum stats: down-regulation  
+## ----message=FALSE-------------------------------------------------------
+rank.sum.down <- get.rank.sum(ranks.down.mx.2) %>% 
+  get.rank.sum.stats(.)
+# class(rank.sum.down) # "data.frame"
+# dim(rank.sum.down) # 11684     4
+top.10.down<- rank.sum.down %>% 
+  arrange(Rank.Sum) %>% 
+  head(., 10) 
+  # knitr::kable(., row.names = F, align=rep("l", 4), format = "html", escape = F) %>% 
+  # kableExtra::kable_styling("striped", full_width = T)
+top.10.down
+
+
+#' ### Save top 10 down-regulated genes
+## ------------------------------------------------------------------------
+out.table.down <- paste0("data_out/",this.script, ".top.down.txt")
+out.table.down
+write.table(top.10.down, file = out.table.down, sep = "\t")
+
+#' 
+#' ### Rank sum stats: up-regulation  
+## ----message=FALSE-------------------------------------------------------
+rank.sum.up <- get.rank.sum(ranks.up.mx.2) %>% 
+  get.rank.sum.stats(.)
+# class(rank.sum.up) # "data.frame"
+# dim(rank.sum.up) # 12786     4
+top.10.up <- rank.sum.up %>% 
+  arrange(Rank.Sum) %>% 
+  head(., 10) 
+  # knitr::kable(., row.names = F, align=rep("l", 4), format = "html", escape = F) %>% 
+  # kableExtra::kable_styling("striped", full_width = T)
+top.10.up
+
+#' `
+#' ### Save top 10 up-regulated genes
+## ------------------------------------------------------------------------
+out.table.up <- paste0("data_out/",this.script, ".top.up.txt")
+out.table.up
+write.table(top.10.up, file = out.table.up, sep = "\t")
+
+#' 
+#' 
+#' ## Heatmaps for top regulated genes  
+#' ([Datanovia Tutorial](https://www.datanovia.com/en/lessons/heatmap-in-r-static-and-interactive-visualization/#r-base-heatmap-heatmap))
+#' 
+## ------------------------------------------------------------------------
+get.heatmap <- function(mx, heat.cols, ha) {
+  ComplexHeatmap::Heatmap(
+  mx, name = "Rank",
+  col = heat.cols,
+  top_annotation = ha,
+  cluster_rows = FALSE,
+  show_row_names = FALSE,
+  show_column_names = TRUE
+  )
+}
+
+
+#' 
+#' ### Heatmap: 100 most down-regulated genes  
+## ------------------------------------------------------------------------
+# nrow(subset(rank.sum.up, P.Val.Adj <= 0.05)) # 594
+# nrow(subset(rank.sum.up, P.Val.Adj <= 0.01)) # 317
+down.100 <- dplyr::arrange(rank.sum.down, P.Val.Adj, Rank.Sum) %>% 
+  head(.,100) %>% .$Gene
+# down.100
+mx.down.100 <- ranks.down.mx.2[down.100,] %>% 
+  set_colnames(names(all.data.list))
+ colnames(mx.down.100) <- str_replace(colnames(mx.down.100), "_DC", " (DC)")
+ colnames(mx.down.100) <- str_replace(colnames(mx.down.100), "_MP", " (MP)")
+colnames(mx.down.100) <- str_replace(colnames(mx.down.100), ".MF1", " (MF1)")
+colnames(mx.down.100) <- str_replace(colnames(mx.down.100), ".MF2", " (MF2)")
+# dim(mx.down.100) # 100   5
+head(mx.down.100)
+
+#' ### Save top 100 up-regulated genes
+## ------------------------------------------------------------------------
+out.file <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".down.100.txt"), sep="/")
+
+out.file
+cat(down.100, file = out.file, sep = "\n")
+
+#' 
+#' 
+#' 
+## ------------------------------------------------------------------------
+down.100.df <- as.data.frame(t(mx.down.100))
+# dim(down.100.df) # 5 100
+
+row.names(down.100.df) <- names(all.data.list)
+
+down.100.df <- as.data.frame(t(mx.down.100)) %>% 
+  set_rownames(names(all.data.list)) %>% 
+  tibble::rownames_to_column("Dataset") %>% 
+  dplyr::mutate(Technology = "Microarray") %>%
+  dplyr::mutate(Cell.type = "Macrophages") %>%
+  dplyr::select(Dataset, Technology, Cell.type, dplyr::everything())
+down.100.df$Technology[down.100.df$Dataset %in% names(rna.seq.data.list)] <- "RNA-seq"
+down.100.df$Cell.type[down.100.df$Dataset %in% c("GSE64179", "A-BUGS-23_DC", "GSE34151")] <- "Dendritic cells"
+down.100.df[,1:6]
+
+#' 
+## ------------------------------------------------------------------------
+# help(HeatmapAnnotation, package="ComplexHeatmap")
+col.down <- list(Technology = c("Microarray" = "Darkblue", "RNA-seq" = "lightblue"),
+            Cell.type = c("Macrophages" = "white", "Dendritic cells" = "black"))
+ha.down <- ComplexHeatmap::HeatmapAnnotation(
+  Technology = down.100.df$Technology,
+  Cell.type = down.100.df$Cell.type,
+  col=col.down
+)
+rm(col.down)
+
+#' 
+## ------------------------------------------------------------------------
+# "YlOrRd", "YlOrBr", "YlGnBu"*, "PuBuGn", "YlGn", "RdPu"-, "PuRd"-, "BuGn"
+# "Blues", "Greens", "Purples", "Oranges"
+heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(7, "Oranges"))(256) %>% rev
+get.heatmap(mx.down.100, heat.cols, ha.down)
+
+#' ### Save heatmap for down-regulated genes
+## ------------------------------------------------------------------------
+out.file.map.down <- paste("data_out",
+                           str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".map.down.pdf"),
+                           sep="/")
+out.file.map.down
+
+#' 
+## ------------------------------------------------------------------------
+pdf(file = out.file.map.down, width=6, height=8.5)
+get.heatmap(mx.down.100, heat.cols, ha.down)
+dev.off()
+
+#' 
+#' 
+#' ### Heatmap: 100 most up-regulated genes  
+## ------------------------------------------------------------------------
+up.100 <- dplyr::arrange(rank.sum.up, P.Val.Adj, Rank.Sum) %>% 
+  head(.,100) %>% .$Gene
+head(up.100)
+mx.up.100 <- ranks.up.mx.2[up.100,] %>% 
+  set_colnames(names(all.data.list))
+colnames(mx.down.100) <- str_replace(colnames(mx.down.100), "_DC", " (DC)")
+colnames(mx.down.100) <- str_replace(colnames(mx.down.100), "_MP", " (MP)")
+colnames(mx.down.100) <- str_replace(colnames(mx.down.100), ".MF1", " (MF1)")
+colnames(mx.down.100) <- str_replace(colnames(mx.down.100), ".MF2", " (MF2)")
+ dim(mx.up.100) # 100   6
+head(mx.up.100)
+
+
+#' ### Save top 100 up-regulated genes
+## ------------------------------------------------------------------------
+out.file <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".up.100.txt"), sep="/")
+
+out.file
+cat(up.100, file = out.file, sep = "\n")
+
+
+#' 
+#' 
+## ------------------------------------------------------------------------
+up.100.df <- as.data.frame(t(mx.up.100))
+# dim(down.100.df) # 5 100
+row.names(up.100.df) <- names(all.data.list)
+
+up.100.df <- as.data.frame(t(mx.up.100)) %>% 
+  set_rownames(names(all.data.list)) %>% 
+  tibble::rownames_to_column("Dataset") %>% 
+  dplyr::mutate(Technology = "Microarray") %>%
+  dplyr::mutate(Cell.type = "Macrophages") %>%
+  dplyr::select(Dataset, Technology, Cell.type, dplyr::everything())
+up.100.df$Technology[up.100.df$Dataset %in% names(rna.seq.data.list)] <- "RNA-seq"
+up.100.df$Cell.type[up.100.df$Dataset %in% c("GSE64179", "A-BUGS-23_DC","GSE34151")] <- "Dendritic cells"
+
+
+#' 
+## ------------------------------------------------------------------------
+col.up <- list(Technology = c("Microarray" = "Darkblue", "RNA-seq" = "lightblue"),
+            Cell.type = c("Macrophages" = "grey", "Dendritic cells" = "black"))
+ha.up <- ComplexHeatmap::HeatmapAnnotation(
+  Technology = up.100.df$Technology,
+  Cell.type = up.100.df$Cell.type,
+  col=col.up
+)
+heat.cols <- colorRampPalette(RColorBrewer::brewer.pal(7, "Oranges"))(256) %>% rev
+get.heatmap(mx.up.100, heat.cols, ha.up)
+
+#' 
+#' ### Save heatmap for up-regulated genes
+## ------------------------------------------------------------------------
+out.file.map.up <- paste("data_out", stringr::str_replace(this.script,"\\.[Rr][Mm][Dd]$", ".map.up.pdf"), sep="/")
+out.file.map.up
+
+#' 
+## ------------------------------------------------------------------------
+pdf(file = out.file.map.up, width=6, height=8.5)
+get.heatmap(mx.up.100, heat.cols, ha.up)
+dev.off()
+
+#' 
+#' 
+#' ## Save genes  
+#' ### Save top down-regulated genes  
+## ----results="asis"------------------------------------------------------
+gs.down.01 <- rank.sum.down %>% 
+  dplyr::filter(P.Val.Adj <= 0.01) %>% 
+  use_series("Gene")
+ length(gs.down.01) # 824
+cat("Number of consistently <b><i>down</i></b>regulated genes (p <= 0.01):<b>", length(gs.down.01), "</b>")
+
+
+## ------------------------------------------------------------------------
+out.file.down.01 <- paste0("data_out/", this.script, ".down.01.txt")
+cat(gs.down.01, sep="\n", file=out.file.down.01)
+cat("File saved:", out.file.down.01)
+
+
+#' 
+#' ### Save down-regulated genes with adjusted p value <= 0.001
+## ------------------------------------------------------------------------
+gs.down.001 <- rank.sum.down %>% 
+  dplyr::filter(P.Val.Adj <= 0.001) %>% 
+  use_series("Gene")
+ length(gs.down.001) # 299
+cat("Number of consistently <b><i>down</i></b>regulated genes (p <= 0.001):<b>", length(gs.down.001), "</b>")
+
+
+
+#' 
+## ------------------------------------------------------------------------
+out.file.down.001 <- paste0("data_out/", this.script, ".down.001.txt")
+cat(gs.down.001, sep="\n", file=out.file.down.001)
+cat("File saved:", out.file.down.001)
+
+
+#' 
+#' 
+#' ### Save top up-regulated genes  
+## ----results="asis"------------------------------------------------------
+gs.up.01 <- rank.sum.up %>% 
+  dplyr::filter(P.Val.Adj <= 0.01) %>% 
+  use_series("Gene")
+length(gs.up.01) # 912
+cat("Number of consistently <b><i>up</i></b>regulated genes (p <= 0.01):<b>", length(gs.up.01), "</b>")
+
+#' 
+## ------------------------------------------------------------------------
+out.file.up.01 <- paste0("data_out/", this.script, ".up.01.txt")
+cat(gs.up.01, sep="\n", file=out.file.up.01)
+cat("File saved:", out.file.up.01)
+
+#' ### Save up-regulated genes with adjusted p value <= 0.001
+## ------------------------------------------------------------------------
+gs.up.001 <- rank.sum.up %>% 
+  dplyr::filter(P.Val.Adj <= 0.001) %>% 
+  use_series("Gene")
+length(gs.up.001) # 479
+cat("Number of consistently <b><i>up</i></b>regulated genes (p <= 0.001):<b>", length(gs.up.001), "</b>")
+
+#' 
+## ------------------------------------------------------------------------
+out.file.up.001 <- paste0("data_out/", this.script, ".up.001.txt")
+cat(gs.up.001, sep="\n", file=out.file.up.001)
+cat("File saved:", out.file.up.001)
+
+#' 
+#' 
+#' ## Session info  
+#' <button class="button" onclick="myFunction('DIV_5')">Show/hide session info</button>
+#' <div id="DIV_5" class="div_default_hide">
+#' 
+## ----print_date_and_time-------------------------------------------------
+Sys.time()
+
+#' 
+## ----print_session_info--------------------------------------------------
+# sessionInfo()
+devtools::session_info()
+
+#' </div>
+#'   
+#' <script>
+#'   var divsToHide = document.getElementsByClassName("div_default_hide");
+#' for(var i = 0; i < divsToHide.length; i++)
+#' {
+#'   divsToHide[i].style.display = 'none';
+#' }
+#' </script>
